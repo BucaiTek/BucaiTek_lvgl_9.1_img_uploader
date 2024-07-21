@@ -1,7 +1,34 @@
 <script setup lang="ts">
 import { useHidStore } from '@/stores/useHidStore'
+import { darkTheme, lightTheme } from 'naive-ui'
+import {
+  BrightnessHigh24Filled as BrightnessHigh24FilledIcon,
+  DarkTheme20Filled as DarkTheme24FilledIcon
+} from '@vicons/fluent'
 const hidStore = useHidStore()
 const router = useRouter()
+
+const themeRef = ref(lightTheme)
+const themeOverrides = {
+  common: {
+    primaryColor: '#b6925d',
+    secondaryColor: '#b6925d',
+    primaryColorHover: '#b6925d',
+    primaryColorPressed: '#b6925d',
+    primaryColorSuppl: '#b6925d'
+  }
+}
+
+const changeTheme = () => {
+  console.log(themeRef.value)
+  if (themeRef.value.name === 'dark') {
+    themeRef.value = lightTheme
+    document.documentElement.style.setProperty('--svg-stroke-color', '--svg-stroke-light')
+  } else {
+    themeRef.value = darkTheme
+    document.documentElement.style.setProperty('--svg-stroke-color', '--svg-stroke-dark')
+  }
+}
 
 if ('hid' in navigator) {
   hidStore.support = true
@@ -23,10 +50,122 @@ if ('hid' in navigator) {
 } else {
   hidStore.support = false
 }
+
+const menuValue = ref('home')
+const menuOptions = computed(() => [
+  {
+    label: 'Home',
+    key: 'home',
+    onClick: () => {
+      router.push({ name: 'home' })
+      menuValue.value = 'home'
+    }
+  },
+  {
+    label: 'Configurator',
+    key: 'configurator',
+    onClick: () => {
+      router.push({ name: 'configurator' })
+      menuValue.value = 'configurator'
+    }
+  }
+])
 </script>
 
 <template>
-  <RouterView />
+  <n-config-provider :theme="themeRef" :theme-overrides="themeOverrides">
+    <n-layout-header bordered class="nav">
+      <n-text tag="div" class="ui-logo" :depth="1">
+        <div class="ui-logo">
+          <svg
+            width="65"
+            height="106"
+            viewBox="0 0 65 106"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M3 3L3 103" stroke="currentColor" stroke-width="5" stroke-linecap="round" />
+            <path
+              d="M61.4243 83.5802C58.7066 89.9843 53.841 95.2403 47.6653 98.443C41.4895 101.646 34.3903 102.595 27.5901 101.127C20.79 99.6586 14.7146 95.8652 10.4103 90.3998C6.10593 84.9345 3.84207 78.1393 4.00858 71.1844C4.17508 64.2296 6.76151 57.5505 11.3224 52.2974C15.8834 47.0443 22.1333 43.546 28.9959 42.405C35.8585 41.2639 42.9043 42.5516 48.9197 46.0462C54.935 49.5408 59.5436 55.0236 61.9517 61.5504"
+              stroke="currentColor"
+              stroke-width="5"
+              stroke-linecap="round"
+            />
+          </svg>
+        </div>
+
+        <span>BucaiTek</span>
+      </n-text>
+      <div>
+        <div class="nav-menu">
+          <n-menu
+            ref="menuInstRef"
+            responsive
+            mode="horizontal"
+            :value="menuValue"
+            :options="menuOptions"
+          />
+        </div>
+      </div>
+      <div class="nav-end">
+        <n-divider vertical />
+        <n-button quaternary circle class="nav-picker padded" @click="changeTheme">
+          <template #icon>
+            <n-icon v-if="themeRef.name != 'dark'">
+              <BrightnessHigh24FilledIcon />
+            </n-icon>
+            <n-icon v-else>
+              <DarkTheme24FilledIcon />
+            </n-icon>
+          </template>
+        </n-button>
+      </div>
+    </n-layout-header>
+    <n-layout style="height: calc(100vh - 54px)">
+      <n-layout-content content-style="padding: 12px 0 24px 0">
+        <router-view />
+      </n-layout-content>
+    </n-layout>
+  </n-config-provider>
 </template>
 
-<style scoped></style>
+<style scoped>
+:root {
+  --svg-stroke-light: #000000; /* 浅色主题下的颜色 */
+  --svg-stroke-dark: #ffffff; /* 深色主题下的颜色 */
+}
+
+.nav {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  padding: 0 28px;
+  height: 54px;
+}
+
+.nav-menu {
+  padding-left: 36px;
+  overflow: hidden;
+  flex-grow: 0;
+  flex-shrink: 1;
+}
+
+.nav-end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.ui-logo {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+}
+.ui-logo > div {
+  margin-right: 10px;
+  margin-bottom: 8px;
+  height: 20px;
+  width: 20px;
+}
+</style>
