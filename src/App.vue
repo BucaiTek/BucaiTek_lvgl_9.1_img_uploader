@@ -5,6 +5,9 @@ import {
   BrightnessHigh24Filled as BrightnessHigh24FilledIcon,
   DarkTheme20Filled as DarkTheme24FilledIcon
 } from '@vicons/fluent'
+
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 const hidStore = useHidStore()
 const router = useRouter()
 
@@ -23,10 +26,8 @@ const changeTheme = () => {
   console.log(themeRef.value)
   if (themeRef.value.name === 'dark') {
     themeRef.value = lightTheme
-    document.documentElement.style.setProperty('--svg-stroke-color', '--svg-stroke-light')
   } else {
     themeRef.value = darkTheme
-    document.documentElement.style.setProperty('--svg-stroke-color', '--svg-stroke-dark')
   }
 }
 
@@ -54,7 +55,7 @@ if ('hid' in navigator) {
 const menuValue = ref('home')
 const menuOptions = computed(() => [
   {
-    label: 'Home',
+    label: t('nav_lable.home'),
     key: 'home',
     onClick: () => {
       router.push({ name: 'home' })
@@ -62,7 +63,7 @@ const menuOptions = computed(() => [
     }
   },
   {
-    label: 'Configurator',
+    label: t('nav_lable.configurator'),
     key: 'configurator',
     onClick: () => {
       router.push({ name: 'configurator' })
@@ -70,6 +71,51 @@ const menuOptions = computed(() => [
     }
   }
 ])
+const dropdownOptions = computed(() => {
+  try {
+    if (hidStore.device) {
+      console.log('hidStore.device: ', hidStore.device)
+    }
+    return [
+      {
+        label: '未连接',
+        key: 'disconnect'
+      }
+    ]
+  } catch (error) {
+    return []
+  }
+})
+
+const handleDropdownSelect = (key: string) => {
+  if (key === 'disconnect') {
+    hidStore.closeDevice()
+    menuValue.value = 'home'
+    router.push({ name: 'home' })
+  }
+}
+
+const handleConectionStateButtonClick = async () => {
+  try {
+    if (!hidStore.device) {
+      await hidStore.requestDevice()
+    }
+    if (hidStore.device) {
+      menuValue.value = 'configure'
+      router.push({ name: 'configurator' })
+    }
+  } catch (error) {
+    console.log('Error: ', error)
+  }
+}
+
+const getConnecttionState = computed(() => {
+  if (hidStore.device) {
+    return t('connection.connected')
+  } else {
+    return t('connection.disconnected')
+  }
+})
 </script>
 
 <template>
@@ -108,6 +154,21 @@ const menuOptions = computed(() => [
         </div>
       </div>
       <div class="nav-end">
+        <n-dropdown
+          :disabled="hidStore.device === null"
+          :options="dropdownOptions"
+          @select="handleDropdownSelect"
+        >
+          <n-button
+            :disabled="!hidStore.support"
+            size="small"
+            quaternary
+            class="nav-picker"
+            @click="handleConectionStateButtonClick"
+          >
+            {{ getConnecttionState }}
+          </n-button></n-dropdown
+        >
         <n-divider vertical />
         <n-button quaternary circle class="nav-picker padded" @click="changeTheme">
           <template #icon>
@@ -130,11 +191,6 @@ const menuOptions = computed(() => [
 </template>
 
 <style scoped>
-:root {
-  --svg-stroke-light: #000000; /* 浅色主题下的颜色 */
-  --svg-stroke-dark: #ffffff; /* 深色主题下的颜色 */
-}
-
 .nav {
   display: grid;
   grid-template-columns: auto 1fr auto;
@@ -163,8 +219,8 @@ const menuOptions = computed(() => [
   font-size: 18px;
 }
 .ui-logo > div {
-  margin-right: 10px;
-  margin-bottom: 8px;
+  margin-right: 15px;
+  margin-bottom: 4px;
   height: 20px;
   width: 20px;
 }
