@@ -2,7 +2,7 @@
 
 <template>
   <main>
-    <h1>Screen</h1>
-    <p>Welcome to the Screen page!</p>
+    <h1>Configurator</h1>
+    <p>Welcome to the Configurator page!</p>
   </main>
 </template>

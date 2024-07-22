@@ -5,6 +5,7 @@ export default {
   },
   connection: {
     connected: 'Connected',
-    disconnected: 'Disconnected'
+    notConnected: 'Not Connected',
+    disconnect: 'Disconnect'
   }
 }

@@ -5,6 +5,7 @@ export default {
   },
   connection: {
     connected: '已连接',
-    disconnected: '未连接'
+    notConnected: '未连接',
+    disconnect: '断开连接'
   }
 }

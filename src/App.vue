@@ -78,7 +78,7 @@ const dropdownOptions = computed(() => {
     }
     return [
       {
-        label: '未连接',
+        label: t('connection.disconnect'),
         key: 'disconnect'
       }
     ]
@@ -113,7 +113,7 @@ const getConnecttionState = computed(() => {
   if (hidStore.device) {
     return t('connection.connected')
   } else {
-    return t('connection.disconnected')
+    return t('connection.notConnected')
   }
 })
 </script>
@@ -213,7 +213,7 @@ const getConnecttionState = computed(() => {
 }
 
 .ui-logo {
-  cursor: pointer;
+  user-select: none;
   display: flex;
   align-items: center;
   font-size: 18px;
