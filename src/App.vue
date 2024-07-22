@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useHidStore } from '@/stores/useHidStore'
+import { useColorStore } from '@/stores/useColorStore'
 import { darkTheme, lightTheme } from 'naive-ui'
 import {
   BrightnessHigh24Filled as BrightnessHigh24FilledIcon,
@@ -9,18 +10,31 @@ import {
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 const hidStore = useHidStore()
+const colorStore = useColorStore()
 const router = useRouter()
 
+let intervalId = 0
+
+onMounted(() => {
+  intervalId = colorStore.cycleColors()
+})
+
+onUnmounted(() => {
+  clearInterval(intervalId)
+})
+
 const themeRef = ref(lightTheme)
-const themeOverrides = {
-  common: {
-    primaryColor: '#b6925d',
-    secondaryColor: '#b6925d',
-    primaryColorHover: '#b6925d',
-    primaryColorPressed: '#b6925d',
-    primaryColorSuppl: '#b6925d'
+const themeOverrides = computed(() => {
+  return {
+    common: {
+      primaryColor: colorStore.color,
+      secondaryColor: colorStore.color,
+      primaryColorHover: colorStore.color,
+      primaryColorPressed: colorStore.color,
+      primaryColorSuppl: colorStore.color
+    }
   }
-}
+})
 
 const changeTheme = () => {
   console.log(themeRef.value)
