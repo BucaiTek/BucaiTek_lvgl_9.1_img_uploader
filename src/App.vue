@@ -21,7 +21,10 @@ onUnmounted(() => {
   colorStore.stopCycle()
 })
 
-const themeRef = ref(lightTheme)
+const themeRef = ref(
+  window.matchMedia('(prefers-color-scheme: dark)').matches ? darkTheme : lightTheme
+)
+
 const themeOverrides = computed(() => {
   return {
     common: {
