@@ -3,10 +3,15 @@ import { useHidStore } from '@/stores/useHidStore'
 import { useColorStore } from '@/stores/useColorStore'
 import { darkTheme, lightTheme } from 'naive-ui'
 import {
-  BrightnessHigh24Filled as BrightnessHigh24FilledIcon,
-  BrightnessHigh24Regular as BrightnessHigh24RegularIcon
+  BrightnessHigh32Filled as BrightnessHigh32FilledIcon,
+  BrightnessHigh32Regular as BrightnessHigh32RegularIcon
 } from '@vicons/fluent'
 
+import {
+  HomeOutline as HomeOutlineIcon,
+  LaptopOutline as LaptopOutlineIcon
+} from '@vicons/ionicons5'
+import { NIcon } from 'naive-ui'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 const hidStore = useHidStore()
@@ -34,6 +39,15 @@ const themeOverrides = computed(() => {
       primaryColorHover: colorStore.color,
       primaryColorPressed: colorStore.color,
       primaryColorSuppl: colorStore.color
+    },
+    Layout: {
+      headerColor: null,
+      siderColor: null
+    },
+    Menu: {
+      itemColorActive: null,
+      itemColorActiveHover: null,
+      itemColorActiveCollapsed: null
     }
   }
 })
@@ -68,11 +82,17 @@ if ('hid' in navigator) {
   hidStore.support = false
 }
 
+const collapsed = ref(false)
 const menuValue = ref('home')
+function renderIcon(icon: Component) {
+  return () => h(NIcon, null, { default: () => h(icon) })
+}
+
 const menuOptions = computed(() => [
   {
     label: t('nav_lable.home'),
     key: 'home',
+    icon: renderIcon(HomeOutlineIcon),
     onClick: () => {
       router.push({ name: 'home' })
       menuValue.value = 'home'
@@ -81,6 +101,7 @@ const menuOptions = computed(() => [
   {
     label: t('nav_lable.configurator'),
     key: 'configurator',
+    icon: renderIcon(LaptopOutlineIcon),
     onClick: () => {
       router.push({ name: 'configurator' })
       menuValue.value = 'configurator'
@@ -136,10 +157,22 @@ const getConnecttionState = computed(() => {
 
 <template>
   <n-config-provider :theme="themeRef" :theme-overrides="themeOverrides">
-    <n-layout position="absolute">
-      <n-layout-header bordered class="nav">
+    <n-layout has-sider>
+      <n-layout-sider
+        content-style="padding: 15px;"
+        bordered
+        collapse-mode="width"
+        :collapsed-width="88"
+        :width="240"
+        :collapsed="collapsed"
+        show-trigger
+        trigger-style="top: 84px;"
+        collapsed-trigger-style="top: 84px;"
+        @collapse="collapsed = true"
+        @expand="collapsed = false"
+      >
         <n-text tag="div" class="ui-logo" :depth="1">
-          <n-icon size="28" style="margin-right: 3px; margin-bottom: 5px">
+          <n-icon size="65" style="margin-right: 8px; margin-bottom: 10px">
             <svg
               width="65"
               height="106"
@@ -156,57 +189,63 @@ const getConnecttionState = computed(() => {
               />
             </svg>
           </n-icon>
-
-          <span class="flow">BucaiTek</span>
+          <span class="rgb" style="font-size: 35px">BucaiTek</span>
         </n-text>
         <div>
-          <div class="nav-menu">
-            <n-menu
-              ref="menuInstRef"
-              responsive
-              mode="horizontal"
-              :value="menuValue"
-              :options="menuOptions"
-            />
+          <n-menu
+            :value="menuValue"
+            :collapsed="collapsed"
+            :collapsed-width="58"
+            :collapsed-icon-size="31"
+            :icon-size="30"
+            :options="menuOptions"
+          />
+        </div>
+      </n-layout-sider>
+      <n-layout style="height: 100vh">
+        <n-layout-header class="nav">
+          <div>
+            <h1 style="font-size: 30px; margin: 10px 0 0 20px">
+              {{ t('nav_lable.' + menuValue) }}
+            </h1>
           </div>
-        </div>
-        <div class="nav-end">
-          <n-dropdown
-            :disabled="hidStore.device === null"
-            :options="dropdownOptions"
-            @select="handleDropdownSelect"
-          >
-            <n-button
-              :disabled="!hidStore.support"
-              size="small"
-              quaternary
-              class="nav-picker"
-              @click="handleConectionStateButtonClick"
+          <div class="nav-end">
+            <n-dropdown
+              :disabled="hidStore.device === null"
+              :options="dropdownOptions"
+              @select="handleDropdownSelect"
             >
-              {{ getConnecttionState }}
+              <n-button
+                :disabled="!hidStore.support"
+                size="medium"
+                quaternary
+                class="nav-picker"
+                @click="handleConectionStateButtonClick"
+              >
+                {{ getConnecttionState }}
+              </n-button>
+            </n-dropdown>
+            <n-divider vertical />
+            <n-button
+              text
+              circle
+              class="nav-picker padded"
+              size="large"
+              @click="changeTheme"
+              :color="themeRef.name === 'dark' ? '#ffffff' : '#000000'"
+            >
+              <template #icon>
+                <n-icon v-if="themeRef.name != 'dark'">
+                  <BrightnessHigh32RegularIcon />
+                </n-icon>
+                <n-icon v-else>
+                  <BrightnessHigh32FilledIcon />
+                </n-icon>
+              </template>
             </n-button>
-          </n-dropdown>
-          <n-divider vertical />
-          <n-button
-            text
-            circle
-            class="nav-picker padded"
-            @click="changeTheme"
-            :color="themeRef.name === 'dark' ? '#ffffff' : '#000000'"
-          >
-            <template #icon>
-              <n-icon v-if="themeRef.name != 'dark'">
-                <BrightnessHigh24RegularIcon />
-              </n-icon>
-              <n-icon v-else>
-                <BrightnessHigh24FilledIcon />
-              </n-icon>
-            </template>
-          </n-button>
-        </div>
-      </n-layout-header>
-      <n-layout style="height: calc(100vh - 54px)">
-        <n-layout-content content-style="padding: 12px 0 24px 0">
+          </div>
+        </n-layout-header>
+        <n-layout-content style="z-index: 0">
           <router-view />
         </n-layout-content>
       </n-layout>
@@ -220,14 +259,7 @@ const getConnecttionState = computed(() => {
   grid-template-columns: auto 1fr auto;
   align-items: center;
   padding: 0 28px;
-  height: 54px;
-}
-
-.nav-menu {
-  padding-left: 36px;
-  overflow: hidden;
-  flex-grow: 0;
-  flex-shrink: 1;
+  height: 80px;
 }
 
 .nav-end {
@@ -240,6 +272,22 @@ const getConnecttionState = computed(() => {
   user-select: none;
   display: flex;
   align-items: center;
-  font-size: 18px;
+  font-size: 30px;
+}
+
+.rgb {
+  background: linear-gradient(to right, red, green, blue);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: hue 4s linear infinite;
+}
+@keyframes hue {
+  0% {
+    filter: hue-rotate(360deg);
+  }
+  100% {
+    filter: hue-rotate(0deg);
+  }
 }
 </style>

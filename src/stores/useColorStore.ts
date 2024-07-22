@@ -3,10 +3,10 @@ import { ref } from 'vue'
 
 export const useColorStore = defineStore('colorStore', {
   state: () => ({
-    color: ref('rgb(180,90,90)'),
-    r: 180,
-    g: 90,
-    b: 90,
+    color: ref('rgb(90,150,180)'),
+    r: 90,
+    g: 150,
+    b: 180,
     intervalId: null as number | null
   }),
   actions: {
