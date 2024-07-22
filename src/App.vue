@@ -53,12 +53,7 @@ const themeOverrides = computed(() => {
 })
 
 const changeTheme = () => {
-  console.log(themeRef.value)
-  if (themeRef.value.name === 'dark') {
-    themeRef.value = lightTheme
-  } else {
-    themeRef.value = darkTheme
-  }
+  themeRef.value = themeRef.value.name === 'dark' ? lightTheme : darkTheme
 }
 
 if ('hid' in navigator) {
@@ -176,7 +171,7 @@ const getConnecttionState = computed(() => {
         @expand="collapsed = false"
       >
         <n-text tag="div" class="ui-logo" :depth="1" @click="handleLogoClick">
-          <n-icon size="65" style="margin-right: 5px; margin-bottom: 10px">
+          <n-icon size="60" style="margin-right: 9px; margin-bottom: 10px; margin-left: 1px">
             <svg
               width="65"
               height="106"
@@ -193,7 +188,7 @@ const getConnecttionState = computed(() => {
               />
             </svg>
           </n-icon>
-          <span class="rgb" style="font-size: 35px">BucaiTek</span>
+          <span class="rgb" style="font-size: 34px">BucaiTek</span>
         </n-text>
         <div>
           <n-menu
@@ -222,7 +217,7 @@ const getConnecttionState = computed(() => {
             >
               <n-button
                 :disabled="!hidStore.support"
-                size="medium"
+                size="large"
                 quaternary
                 class="nav-picker"
                 @click="handleConectionStateButtonClick"
@@ -230,20 +225,20 @@ const getConnecttionState = computed(() => {
                 {{ getConnecttionState }}
               </n-button>
             </n-dropdown>
-            <n-divider vertical />
+            <n-divider vertical style="margin-right: 8px" />
             <n-button
               text
               circle
               class="nav-picker padded"
-              size="large"
               @click="changeTheme"
               :color="themeRef.name === 'dark' ? '#ffffff' : '#000000'"
+              style="font-size: 50px; padding: 15px"
             >
               <template #icon>
-                <n-icon v-if="themeRef.name != 'dark'">
+                <n-icon size="30" v-if="themeRef.name != 'dark'">
                   <BrightnessHigh32RegularIcon />
                 </n-icon>
-                <n-icon v-else>
+                <n-icon size="30" v-else>
                   <BrightnessHigh32FilledIcon />
                 </n-icon>
               </template>
