@@ -4,7 +4,7 @@ import { useColorStore } from '@/stores/useColorStore'
 import { darkTheme, lightTheme } from 'naive-ui'
 import {
   BrightnessHigh24Filled as BrightnessHigh24FilledIcon,
-  DarkTheme20Filled as DarkTheme24FilledIcon
+  BrightnessHigh24Regular as BrightnessHigh24RegularIcon
 } from '@vicons/fluent'
 
 import { useI18n } from 'vue-i18n'
@@ -136,7 +136,7 @@ const getConnecttionState = computed(() => {
     <n-layout position="absolute">
       <n-layout-header bordered class="nav">
         <n-text tag="div" class="ui-logo" :depth="1">
-          <div class="ui-logo">
+          <n-icon size="28" style="margin-right: 3px; margin-bottom: 5px">
             <svg
               width="65"
               height="106"
@@ -152,7 +152,7 @@ const getConnecttionState = computed(() => {
                 stroke-linecap="round"
               />
             </svg>
-          </div>
+          </n-icon>
 
           <span class="flow">BucaiTek</span>
         </n-text>
@@ -181,16 +181,23 @@ const getConnecttionState = computed(() => {
               @click="handleConectionStateButtonClick"
             >
               {{ getConnecttionState }}
-            </n-button></n-dropdown
-          >
+            </n-button>
+          </n-dropdown>
           <n-divider vertical />
-          <n-button quaternary circle class="nav-picker padded" @click="changeTheme">
+          <n-button
+            text
+            quaternary
+            circle
+            class="nav-picker padded"
+            @click="changeTheme"
+            :color="themeRef.name === 'dark' ? '#ffffff' : '#000000'"
+          >
             <template #icon>
               <n-icon v-if="themeRef.name != 'dark'">
-                <BrightnessHigh24FilledIcon />
+                <BrightnessHigh24RegularIcon />
               </n-icon>
               <n-icon v-else>
-                <DarkTheme24FilledIcon />
+                <BrightnessHigh24FilledIcon />
               </n-icon>
             </template>
           </n-button>
@@ -232,11 +239,5 @@ const getConnecttionState = computed(() => {
   display: flex;
   align-items: center;
   font-size: 18px;
-}
-.ui-logo > div {
-  margin-right: 10px;
-  margin-bottom: 6px;
-  height: 18px;
-  width: 18px;
 }
 </style>
