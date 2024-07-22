@@ -234,9 +234,9 @@ const getConnecttionState = computed(() => {
   font-size: 18px;
 }
 .ui-logo > div {
-  margin-right: 15px;
-  margin-bottom: 4px;
-  height: 20px;
-  width: 20px;
+  margin-right: 10px;
+  margin-bottom: 6px;
+  height: 18px;
+  width: 18px;
 }
 </style>
