@@ -186,7 +186,6 @@ const getConnecttionState = computed(() => {
           <n-divider vertical />
           <n-button
             text
-            quaternary
             circle
             class="nav-picker padded"
             @click="changeTheme"
