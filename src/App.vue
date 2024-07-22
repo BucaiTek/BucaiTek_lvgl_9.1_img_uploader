@@ -101,7 +101,7 @@ const handleConectionStateButtonClick = async () => {
       await hidStore.requestDevice()
     }
     if (hidStore.device) {
-      menuValue.value = 'configure'
+      menuValue.value = 'configurator'
       router.push({ name: 'configurator' })
     }
   } catch (error) {
