@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "main": "dist-electron/index.js",
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
@@ -10,7 +11,30 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "dev-client": "vite --config vite.config.electron.ts",
+    "build-client": "vite build --config vite.config.electron.ts && electron-builder --mac"
+  },
+  "build": {
+    "appId": "com.BucaiTek.imgUploader",
+    "productName": "BucaiTek",
+    "copyright": "Copyright © 2024 kuari",
+    "mac": {
+      "category": "public.app-category.utilities"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets",
+      "output": "electron/release"
+    },
+    "npmRebuild": false
   },
   "dependencies": {
     "@vicons/fluent": "^0.12.0",
@@ -39,6 +63,8 @@
     "unplugin-auto-import": "^0.18.0",
     "vfonts": "^0.0.3",
     "vite": "^5.3.1",
+    "vite-plugin-electron": "^0.28.7",
+    "vite-plugin-electron-renderer": "^0.14.5",
     "vite-plugin-vue-devtools": "^7.3.1",
     "vue-tsc": "^2.0.21"
   }
