@@ -82,6 +82,10 @@ if ('hid' in navigator) {
   hidStore.support = false
 }
 
+const handleLogoClick = () => {
+  router.push({ name: 'home' })
+  menuValue.value = 'home'
+}
 const collapsed = ref(false)
 const menuValue = ref('home')
 function renderIcon(icon: Component) {
@@ -171,8 +175,8 @@ const getConnecttionState = computed(() => {
         @collapse="collapsed = true"
         @expand="collapsed = false"
       >
-        <n-text tag="div" class="ui-logo" :depth="1">
-          <n-icon size="65" style="margin-right: 8px; margin-bottom: 10px">
+        <n-text tag="div" class="ui-logo" :depth="1" @click="handleLogoClick">
+          <n-icon size="65" style="margin-right: 5px; margin-bottom: 10px">
             <svg
               width="65"
               height="106"
@@ -199,6 +203,7 @@ const getConnecttionState = computed(() => {
             :collapsed-icon-size="31"
             :icon-size="30"
             :options="menuOptions"
+            style="font-size: 18px"
           />
         </div>
       </n-layout-sider>

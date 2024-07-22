@@ -2,21 +2,21 @@
 
 <template>
   <div class="home">
-    <n-h1>Home</n-h1>
+    <n-card title="卡片"> 卡片内容 </n-card>
+    <n-card title="卡片"> 卡片内容 </n-card>
   </div>
 </template>
 
 <style scoped>
 .home {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: calc(100vh - 54px);
-  text-align: center;
-  margin-top: -54px;
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
+  align-items: flex-start;
+  min-height: calc(100vh - 100px);
+  padding: 10px 15px;
+}
+.n-card {
+  max-width: 300px;
+  margin: 10px 10px;
+  min-height: 500px;
 }
 </style>
