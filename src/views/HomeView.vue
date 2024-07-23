@@ -8,6 +8,8 @@ onMounted(async () => {
   infoStore.startTimer()
   await infoStore.fetchIPInfo()
   await infoStore.fetchWeatherInfo()
+  const result = await window.electronAPI?.ping("ping");
+  console.log(result)
 })
 
 onUnmounted(() => {

@@ -2,8 +2,7 @@ import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import electron from 'vite-plugin-electron'
-import renderer from 'vite-plugin-electron-renderer'
+import electron from 'vite-plugin-electron/simple'
 import AutoImport from 'unplugin-auto-import/vite'
 
 export default defineConfig({
@@ -14,12 +13,15 @@ export default defineConfig({
       viteOptimizeDeps: true,
       dts: true
     }),
-    electron([
-      {
+    electron({
+      main: {
         entry: 'electron/index.ts'
-      }
-    ]),
-    renderer()
+      },
+      preload: {
+        input: 'electron/preload.ts'
+      },
+      renderer: {}
+    })
   ],
   resolve: {
     alias: {

@@ -1,15 +1,27 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
 import { spawn } from 'child_process'
+import path from 'path'
+import { fileURLToPath } from 'node:url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
+    title: 'Main window',
     width: 800,
     height: 600,
     minWidth: 800,
-    minHeight: 600
+    minHeight: 600,
+    webPreferences: {
+      preload: path.join(__dirname, '../dist-electron/preload.mjs')
+    }
   })
 
-  mainWindow.loadFile('dist/index.html')
+  mainWindow.loadFile('dist/index.html', { hash: 'home' })
+
+  ipcMain.handle('ping', (event, value) => {
+    return `${value} pong`
+  })
 
   let cpuModel = ''
 
@@ -63,7 +75,11 @@ function createWindow() {
     }
 
     const allSensors = efficiencyCores.concat(performanceCores, gpuCores)
-    const child = spawn('./sys_reader', ['list'])
+    
+    //const sysReaderPath = path.join(process.resourcesPath, 'tools/sys_reader')
+    //const child = spawn(sysReaderPath)
+
+    const child = spawn('tools/sys_reader')
     let sensorInfo = ''
 
     child.stdout.on('data', (data) => {

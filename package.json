@@ -19,6 +19,11 @@
     "appId": "com.BucaiTek.imgUploader",
     "productName": "BucaiTek",
     "copyright": "Copyright © 2024 kuari",
+    "asar": false,
+    "extraResources": {
+      "from": "./tools/",
+      "to": "tools"
+    },
     "mac": {
       "category": "public.app-category.utilities"
     },
@@ -58,6 +63,7 @@
     "@vue/eslint-config-typescript": "^13.0.0",
     "@vue/tsconfig": "^0.5.1",
     "electron": "^31.2.1",
+    "electron-builder": "^24.13.3",
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.23.0",
     "naive-ui": "^2.39.0",
