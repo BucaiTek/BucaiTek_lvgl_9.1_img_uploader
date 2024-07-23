@@ -40,6 +40,7 @@
     "@vicons/fluent": "^0.12.0",
     "@vicons/ionicons5": "^0.12.0",
     "axios": "^1.7.2",
+    "child_process": "^1.0.2",
     "lv_img_conv": "^0.4.0",
     "pinia": "^2.1.7",
     "vue": "^3.4.29",

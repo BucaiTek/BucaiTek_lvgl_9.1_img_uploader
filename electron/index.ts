@@ -1,5 +1,5 @@
 import { app, BrowserWindow } from 'electron'
-
+import { spawn } from 'child_process'
 function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 800,
@@ -42,11 +42,28 @@ function createWindow() {
   })
 
   mainWindow.loadFile('dist/index.html')
+  // 启动子进程来执行 Bash 命令获取 sensor 型号
+  const child = spawn('./smc', ['list'])
+  let sensorInfo = ''
+
+  child.stdout.on('data', (data) => {
+    sensorInfo += data.toString()
+  })
+
+  child.stderr.on('data', (data) => {
+    console.error(`stderr: ${data}`)
+  })
+
+  child.on('close', (code) => {
+    console.log(`child process exited with code ${code}`)
+    console.log(sensorInfo)
+    // 可以选择发送信息到渲染进程，或做其他处理
+    mainWindow.webContents.send('sensor-model', sensorInfo)
+  })
 }
 
 app.whenReady().then(() => {
   createWindow()
-
   app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
