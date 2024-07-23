@@ -161,8 +161,8 @@ const getConnecttionState = computed(() => {
         content-style="padding: 15px;"
         bordered
         collapse-mode="width"
-        :collapsed-width="88"
-        :width="240"
+        :collapsed-width="82"
+        :width="210"
         :collapsed="collapsed"
         show-trigger
         trigger-style="top: 84px;"
@@ -171,7 +171,7 @@ const getConnecttionState = computed(() => {
         @expand="collapsed = false"
       >
         <n-text tag="div" class="ui-logo" :depth="1" @click="handleLogoClick">
-          <n-icon size="60" style="margin-right: 9px; margin-bottom: 10px; margin-left: 1px">
+          <n-icon size="55" style="margin: 3px 10px 15px 0">
             <svg
               width="65"
               height="106"
@@ -188,17 +188,17 @@ const getConnecttionState = computed(() => {
               />
             </svg>
           </n-icon>
-          <span class="rgb" style="font-size: 34px">BucaiTek</span>
+          <span class="rgb" style="font-size: 28px">BucaiTek</span>
         </n-text>
         <div>
           <n-menu
             :value="menuValue"
             :collapsed="collapsed"
-            :collapsed-width="58"
-            :collapsed-icon-size="31"
+            :collapsed-width="52"
+            :collapsed-icon-size="30"
             :icon-size="30"
             :options="menuOptions"
-            style="font-size: 18px"
+            style="font-size: 15px"
           />
         </div>
       </n-layout-sider>

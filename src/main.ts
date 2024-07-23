@@ -14,7 +14,7 @@ import naive from 'naive-ui'
 import 'vfonts/Lato.css'
 import 'vfonts/FiraCode.css'
 
-const browserLanguage = navigator.language.includes('zh') ? 'zh_CN' : 'en_US'
+const browserLanguage = navigator.language.includes('zh') ? 'en_US' : 'en_US'
 
 const app = createApp(App)
 const i18n = createI18n({
