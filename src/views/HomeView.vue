@@ -8,8 +8,9 @@ onMounted(async () => {
   infoStore.startTimer()
   await infoStore.fetchIPInfo()
   await infoStore.fetchWeatherInfo()
-  const result = await window.electronAPI?.ping("ping");
-  console.log(result)
+
+  const result = await window.electronAPI?.ping('ping')
+  console.log(`[*] ipcMain -> renderer, renderer receive result from ipcMain : ${result}`)
 })
 
 onUnmounted(() => {

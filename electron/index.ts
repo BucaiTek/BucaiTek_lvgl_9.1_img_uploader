@@ -75,10 +75,12 @@ function createWindow() {
     }
 
     const allSensors = efficiencyCores.concat(performanceCores, gpuCores)
-    
+
+    //生产环境
     //const sysReaderPath = path.join(process.resourcesPath, 'tools/sys_reader')
     //const child = spawn(sysReaderPath)
 
+    //开发环境
     const child = spawn('tools/sys_reader')
     let sensorInfo = ''
 

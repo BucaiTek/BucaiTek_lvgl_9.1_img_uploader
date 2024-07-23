@@ -1,9 +1,20 @@
-import { contextBridge, ipcRenderer } from "electron";
+// All of the Node.js APIs are available in the preload process.
+// It has the same sandbox as a Chrome extension.
+import { contextBridge, ipcRenderer } from 'electron'
 
-//通过contextBridge 向渲染进程暴露一个全局的window.electronAPI
-contextBridge.exposeInMainWorld('electronAPI', {
-  ping: async (data: string) => {
-    const result = await ipcRenderer.invoke('ping', data);
-    return result;
+declare global {
+  interface Window {
+    electronAPI: any
   }
-});
+}
+
+contextBridge.exposeInMainWorld('electronAPI', {
+  modifyTitle: (newTitle: string) => {
+    ipcRenderer.send('setTitle', newTitle)
+  },
+  ping: async (data: string) => {
+    console.log(`[*] renderer -> preload, preload receive data from renderer: ${data}`)
+    const result = await ipcRenderer.invoke('ping', data)
+    return result
+  }
+})
