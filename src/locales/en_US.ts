@@ -16,9 +16,9 @@ export default {
       time: 'Time',
       location: 'Location',
       temperature: 'Temperature',
-      current_temperature: 'Current Temperature:',
-      min_temperature: 'Minimum Temperature:',
-      max_temperature: 'Maximum Temperature:',
+      current_temperature: 'Cur Temp:',
+      min_temperature: 'Min Temp:',
+      max_temperature: 'Max Temp:',
       weather: 'Weather'
     }
   }

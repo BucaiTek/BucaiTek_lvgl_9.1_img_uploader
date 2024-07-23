@@ -59,9 +59,6 @@ export const useInfoStore = defineStore('infoStore', {
       } catch (error) {
         console.error('Failed to fetch weather info:', error)
       }
-      console.log(this.temperature.current)
-      console.log(this.temperature.min)
-      console.log(this.temperature.max)
     }
   }
 })
