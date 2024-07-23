@@ -39,6 +39,7 @@
   "dependencies": {
     "@vicons/fluent": "^0.12.0",
     "@vicons/ionicons5": "^0.12.0",
+    "axios": "^1.7.2",
     "lv_img_conv": "^0.4.0",
     "pinia": "^2.1.7",
     "vue": "^3.4.29",
@@ -54,6 +55,7 @@
     "@vue/eslint-config-prettier": "^9.0.0",
     "@vue/eslint-config-typescript": "^13.0.0",
     "@vue/tsconfig": "^0.5.1",
+    "electron": "^31.2.1",
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.23.0",
     "naive-ui": "^2.39.0",
