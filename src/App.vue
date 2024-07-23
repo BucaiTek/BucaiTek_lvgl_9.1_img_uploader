@@ -20,6 +20,7 @@ const router = useRouter()
 
 onMounted(() => {
   colorStore.cycleColors()
+  router.push({ name: 'home' })
 })
 
 onUnmounted(() => {

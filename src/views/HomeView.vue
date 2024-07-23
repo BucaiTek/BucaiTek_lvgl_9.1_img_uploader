@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { useInfoStore } from '@/stores/useInfoStore'
+import { useHardwareStore } from '@/stores/useHardwareStore'
 import { useI18n } from 'vue-i18n'
 const { t, locale } = useI18n()
 const infoStore = useInfoStore()
+const hardwareStore = useHardwareStore()
 
 onMounted(async () => {
   infoStore.startTimer()
   await infoStore.fetchIPInfo()
   await infoStore.fetchWeatherInfo()
-
-  const result = await window.electronAPI?.ping('ping')
-  console.log(`[*] ipcMain -> renderer, renderer receive result from ipcMain : ${result}`)
+  const result = await window.electronAPI?.fetchSensorData('')
+  console.log('fetchSensorData', result)
+  hardwareStore.init()
 })
 
 onUnmounted(() => {

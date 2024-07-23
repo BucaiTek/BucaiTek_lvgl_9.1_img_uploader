@@ -19,10 +19,6 @@ function createWindow() {
 
   mainWindow.loadFile('dist/index.html', { hash: 'home' })
 
-  ipcMain.handle('ping', (event, value) => {
-    return `${value} pong`
-  })
-
   let cpuModel = ''
 
   // 启动子进程来执行 Bash 命令获取 CPU 型号
@@ -88,8 +84,13 @@ function createWindow() {
       sensorInfo += data.toString()
     })
 
-    child.on('close', () => {
-      processSensorData(sensorInfo, allSensors)
+    child.on('close', () => {})
+    ipcMain.handle('request-chip-model', (event, value) => {
+      return cpuModel
+    })
+    
+    ipcMain.handle('request-sensor-data', (event, value) => {
+      return processSensorData(sensorInfo, allSensors)
     })
   }
 
@@ -105,14 +106,14 @@ function createWindow() {
         if (sensorList.includes(key)) {
           const value = parseFloat(parts[1])
           sensorValues[key] = value
-          console.log(`${key}: ${value}`)
         }
       }
     })
+    return sensorValues
   }
 
   // 定时调用 fetchSensorData 函数
-  setInterval(() => fetchSensorData(cpuModel), 2000)
+  // setInterval(() => fetchSensorData(cpuModel), 2000)
 }
 
 app.whenReady().then(() => {

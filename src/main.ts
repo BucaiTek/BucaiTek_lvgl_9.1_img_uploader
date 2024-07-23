@@ -14,6 +14,12 @@ import naive from 'naive-ui'
 import 'vfonts/Lato.css'
 import 'vfonts/FiraCode.css'
 
+declare global {
+  interface Window {
+    electronAPI: any
+  }
+}
+
 const browserLanguage = navigator.language.includes('zh') ? 'zh_CN' : 'en_US'
 
 const app = createApp(App)
@@ -30,4 +36,3 @@ app.use(createPinia())
 app.use(router).use(naive).use(i18n)
 
 app.mount('#app')
-
