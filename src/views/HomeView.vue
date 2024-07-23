@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useInfoStore } from '@/stores/useInfoStore'
 import { useI18n } from 'vue-i18n'
-const { t } = useI18n()
+const { t,locale} = useI18n()
 const infoStore = useInfoStore()
 
 onMounted(async () => {
@@ -42,11 +42,11 @@ const showMaxTemperature = computed(() => {
         <n-h2 style="margin: 0">{{ t('home.lable.info') }}</n-h2>
       </template>
       <div class="text_in_one_line">
-        <n-h3 style="margin: 0 20px 0 0">{{ t('home.lable.location') }}</n-h3>
+        <n-h3 :style="locale === 'zh_CN' ? 'margin: 0 20px 0 0;min-width: 60px' : 'margin: 0; min-width: 110px'">{{ t('home.lable.location') }}</n-h3>
         <n-text> {{ showLocation }} </n-text>
       </div>
       <div class="text_in_one_line">
-        <n-h3 style="margin: 0 20px 0 0">{{ t('home.lable.time') }}</n-h3>
+        <n-h3 :style="locale === 'zh_CN' ? 'margin: 0 20px 0 0;min-width: 60px' : 'margin: 0; min-width: 110px'">{{ t('home.lable.time') }}</n-h3>
         <n-text>
           <n-time :time="infoStore.time" :time-zone="infoStore.timeZone" type="datetime" />
         </n-text>
@@ -55,22 +55,22 @@ const showMaxTemperature = computed(() => {
       <n-collapse>
         <n-collapse-item style="margin-left: -22px">
           <template #header>
-            <n-h3 style="margin: 0; min-width: 40px">{{ t('home.lable.temperature') }}</n-h3>
+            <n-h3 :style="locale === 'zh_CN' ? 'margin: 0 20px 0 0;min-width: 44px' : 'margin: 0; min-width: 110px'">{{ t('home.lable.temperature') }}</n-h3>
           </template>
           <template #header-extra>
             <n-text style=""> {{ showCurrentTemperature }} </n-text>
           </template>
           <div style="margin-left: 30px; margin-top: -10px">
             <div class="text_in_one_line">
-              <n-h6 style="margin: 0 20px 0 0">{{ t('home.lable.current_temperature') }}</n-h6>
+              <n-h6 :style="locale === 'zh_CN' ? 'margin: 0 20px 0 0' : 'margin: 0 20px 0 0; min-width: 173px'">{{ t('home.lable.current_temperature') }}</n-h6>
               <n-text> {{ showCurrentTemperature }} </n-text>
             </div>
             <div class="text_in_one_line">
-              <n-h6 style="margin: 0 20px 0 0">{{ t('home.lable.max_temperature') }}</n-h6>
+              <n-h6 :style="locale === 'zh_CN' ? 'margin: 0 20px 0 0' : 'margin: 0 20px 0 0; min-width: 173px'">{{ t('home.lable.max_temperature') }}</n-h6>
               <n-text> {{ showMaxTemperature }} </n-text>
             </div>
             <div class="text_in_one_line">
-              <n-h6 style="margin: 0 20px 0 0">{{ t('home.lable.min_temperature') }}</n-h6>
+              <n-h6 :style="locale === 'zh_CN' ? 'margin: 0 20px 0 0' : 'margin: 0 20px 0 0; min-width: 173px'">{{ t('home.lable.min_temperature') }}</n-h6>
               <n-text> {{ showMinTemperature }} </n-text>
             </div>
           </div>
