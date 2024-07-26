@@ -3,23 +3,68 @@ import { spawn } from 'child_process'
 import path from 'path'
 import { fileURLToPath } from 'node:url'
 
+function processSensorData(sensorData, sensorList) {
+  const lines = sensorData.split('\n')
+  const sensorValues = {}
+  let fanNumber = 0 // 初始风扇数量为0
+
+  // 第一阶段：预先扫描以确定风扇数量
+  lines.forEach((line) => {
+    const parts = line.split(/\s+/)
+    if (parts.length === 2) {
+      const key = parts[0].replace(/[^\w]/g, '')
+      if (key === 'FNum') {
+        fanNumber = parseInt(parts[1]) // 解析出风扇数量
+      }
+    }
+  })
+  if (fanNumber != 0) {
+    sensorList.push('FNum')
+    // 添加风扇相关的传感器标识到sensorList
+    for (let i = 0; i < fanNumber; i++) {
+      sensorList.push(`F${i}St`, `F${i}Fb`, `F${i}Fc`, `F${i}Mn`, `F${i}Mx`)
+    }
+  }
+
+  // 第二阶段：处理整个数据
+  lines.forEach((line) => {
+    const parts = line.split(/\s+/)
+    if (parts.length === 2) {
+      const key = parts[0].replace(/[^\w]/g, '')
+      if (sensorList.includes(key)) {
+        const value = parseFloat(parts[1])
+        sensorValues[key] = value // 添加到结果中
+      }
+    }
+  })
+  return sensorValues
+}
+
+let cpuModel = ''
+let sensorInfo = ''
+let allSensors = null as null | string[]
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
+ipcMain.handle('request-chip-model', (event, value) => {
+  return cpuModel
+})
+
+ipcMain.handle('request-sensor-data', (event, value) => {
+  return processSensorData(sensorInfo, allSensors)
+})
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
     title: 'Main window',
-    width: 800,
-    height: 600,
-    minWidth: 800,
-    minHeight: 600,
+    width: 900,
+    height: 675,
+    minWidth: 900,
+    minHeight: 675,
     webPreferences: {
       preload: path.join(__dirname, '../dist-electron/preload.mjs')
     }
   })
 
   mainWindow.loadFile('dist/index.html', { hash: 'home' })
-
-  let cpuModel = ''
 
   // 启动子进程来执行 Bash 命令获取 CPU 型号
   const child = spawn('sysctl', ['-a'])
@@ -70,7 +115,7 @@ function createWindow() {
       gpuCores = ['Tf14', 'Tf18', 'Tf19', 'Tf1A', 'Tf24', 'Tf28', 'Tf29', 'Tf2A']
     }
 
-    const allSensors = efficiencyCores.concat(performanceCores, gpuCores)
+    allSensors = efficiencyCores.concat(performanceCores, gpuCores)
 
     //生产环境
     //const sysReaderPath = path.join(process.resourcesPath, 'tools/sys_reader')
@@ -78,38 +123,12 @@ function createWindow() {
 
     //开发环境
     const child = spawn('tools/sys_reader')
-    let sensorInfo = ''
 
     child.stdout.on('data', (data) => {
       sensorInfo += data.toString()
     })
 
     child.on('close', () => {})
-    ipcMain.handle('request-chip-model', (event, value) => {
-      return cpuModel
-    })
-    
-    ipcMain.handle('request-sensor-data', (event, value) => {
-      return processSensorData(sensorInfo, allSensors)
-    })
-  }
-
-  // 处理传感器数据，过滤并输出特定的传感器值
-  function processSensorData(sensorData, sensorList) {
-    const lines = sensorData.split('\n')
-    const sensorValues = {}
-
-    lines.forEach((line) => {
-      const parts = line.split(/\s+/)
-      if (parts.length === 2) {
-        const key = parts[0].replace(/[^\w]/g, '')
-        if (sensorList.includes(key)) {
-          const value = parseFloat(parts[1])
-          sensorValues[key] = value
-        }
-      }
-    })
-    return sensorValues
   }
 
   // 定时调用 fetchSensorData 函数

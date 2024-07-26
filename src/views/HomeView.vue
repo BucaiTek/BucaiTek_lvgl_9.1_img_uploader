@@ -8,11 +8,16 @@ const hardwareStore = useHardwareStore()
 
 onMounted(async () => {
   infoStore.startTimer()
+
   await infoStore.fetchIPInfo()
   await infoStore.fetchWeatherInfo()
-  const result = await window.electronAPI?.fetchSensorData('')
-  console.log('fetchSensorData', result)
-  hardwareStore.init()
+  await hardwareStore.init()
+  console.log(hardwareStore.chipModel)
+  await hardwareStore.getSensorData()
+  console.log(hardwareStore.cpuETemp)
+  console.log(hardwareStore.cpuPTemp)
+  console.log(hardwareStore.gpuTemp)
+  console.log(hardwareStore.fanData)
 })
 
 onUnmounted(() => {
@@ -46,84 +51,91 @@ const showMaxTemperature = computed(() => {
       <template #header>
         <n-h2 style="margin: 0">{{ t('home.lable.info') }}</n-h2>
       </template>
-      <div class="text_in_one_line">
-        <n-h3
-          :style="
-            locale === 'zh_CN'
-              ? 'margin: 0 20px 0 0;min-width: 60px'
-              : 'margin: 0; min-width: 110px'
-          "
-          >{{ t('home.lable.location') }}</n-h3
-        >
-        <n-text>{{ showLocation }}</n-text>
-      </div>
-      <div class="text_in_one_line">
-        <n-h3
-          :style="
-            locale === 'zh_CN'
-              ? 'margin: 0 20px 0 0;min-width: 60px'
-              : 'margin: 0; min-width: 110px'
-          "
-          >{{ t('home.lable.time') }}</n-h3
-        >
-        <n-text>
-          <n-time :time="infoStore.time" :time-zone="infoStore.timeZone" type="datetime" />
-        </n-text>
-      </div>
-      <n-collapse>
-        <n-collapse-item style="margin-left: -22px">
-          <template #header>
-            <n-h3
-              :style="
-                locale === 'zh_CN'
-                  ? 'margin: 0 20px 0 0;min-width: 40px'
-                  : 'margin: 0; min-width: 110px'
-              "
-              >{{ t('home.lable.temperature') }}</n-h3
-            >
-          </template>
-          <template #header-extra>
-            <n-text :style="locale === 'zh_CN' ? 'margin-left: 4px' : ''">
-              {{ showCurrentTemperature }}
-            </n-text>
-          </template>
-          <div style="margin-left: 30px; margin-top: -10px">
-            <div class="text_in_one_line">
-              <n-h6
+
+      <n-collapse-transition :show="infoStore.time != null">
+        <div class="text_in_one_line">
+          <n-h3
+            :style="
+              locale === 'zh_CN'
+                ? 'margin: 0 20px 0 0;min-width: 60px'
+                : 'margin: 0; min-width: 110px'
+            "
+            >{{ t('home.lable.time') }}</n-h3
+          >
+          <n-text>
+            <n-time :time="infoStore.time" :time-zone="infoStore.timeZone" type="datetime" />
+          </n-text>
+        </div>
+      </n-collapse-transition>
+      <n-collapse-transition :show="infoStore.country != ''">
+        <div class="text_in_one_line">
+          <n-h3
+            :style="
+              locale === 'zh_CN'
+                ? 'margin: 0 20px 0 0;min-width: 60px'
+                : 'margin: 0; min-width: 110px'
+            "
+            >{{ t('home.lable.location') }}</n-h3
+          >
+          <n-text>{{ showLocation }}</n-text>
+        </div>
+      </n-collapse-transition>
+      <n-collapse-transition :show="infoStore.temperature.current != null">
+        <n-collapse>
+          <n-collapse-item style="margin-left: -22px">
+            <template #header>
+              <n-h3
                 :style="
                   locale === 'zh_CN'
-                    ? 'margin: 0 20px 0 0;min-width: 85px'
-                    : 'margin: 0 20px 0 0; min-width: 98px'
+                    ? 'margin: 0 20px 0 0;min-width: 40px'
+                    : 'margin: 0; min-width: 110px'
                 "
-                >{{ t('home.lable.current_temperature') }}</n-h6
+                >{{ t('home.lable.temperature') }}</n-h3
               >
-              <n-text>{{ showCurrentTemperature }}</n-text>
+            </template>
+            <template #header-extra>
+              <n-text :style="locale === 'zh_CN' ? 'margin-left: 4px' : ''">
+                {{ showCurrentTemperature }}
+              </n-text>
+            </template>
+            <div style="margin-left: 30px; margin-top: -10px">
+              <div class="text_in_one_line">
+                <n-h6
+                  :style="
+                    locale === 'zh_CN'
+                      ? 'margin: 0 20px 0 0;min-width: 85px'
+                      : 'margin: 0 20px 0 0; min-width: 98px'
+                  "
+                  >{{ t('home.lable.current_temperature') }}</n-h6
+                >
+                <n-text>{{ showCurrentTemperature }}</n-text>
+              </div>
+              <div class="text_in_one_line">
+                <n-h6
+                  :style="
+                    locale === 'zh_CN'
+                      ? 'margin: 0 20px 0 0;min-width: 85px'
+                      : 'margin: 0 20px 0 0; min-width: 98px'
+                  "
+                  >{{ t('home.lable.min_temperature') }}</n-h6
+                >
+                <n-text>{{ showMinTemperature }}</n-text>
+              </div>
+              <div class="text_in_one_line">
+                <n-h6
+                  :style="
+                    locale === 'zh_CN'
+                      ? 'margin: 0 20px 0 0;min-width: 85px'
+                      : 'margin: 0 20px 0 0; min-width: 98px'
+                  "
+                  >{{ t('home.lable.max_temperature') }}</n-h6
+                >
+                <n-text>{{ showMaxTemperature }}</n-text>
+              </div>
             </div>
-            <div class="text_in_one_line">
-              <n-h6
-                :style="
-                  locale === 'zh_CN'
-                    ? 'margin: 0 20px 0 0;min-width: 85px'
-                    : 'margin: 0 20px 0 0; min-width: 98px'
-                "
-                >{{ t('home.lable.min_temperature') }}</n-h6
-              >
-              <n-text>{{ showMinTemperature }}</n-text>
-            </div>
-            <div class="text_in_one_line">
-              <n-h6
-                :style="
-                  locale === 'zh_CN'
-                    ? 'margin: 0 20px 0 0;min-width: 85px'
-                    : 'margin: 0 20px 0 0; min-width: 98px'
-                "
-                >{{ t('home.lable.max_temperature') }}</n-h6
-              >
-              <n-text>{{ showMaxTemperature }}</n-text>
-            </div>
-          </div>
-        </n-collapse-item>
-      </n-collapse>
+          </n-collapse-item>
+        </n-collapse>
+      </n-collapse-transition>
     </n-card>
     <n-card title="卡片"> 卡片内容 </n-card>
   </div>
@@ -138,7 +150,7 @@ const showMaxTemperature = computed(() => {
 }
 
 .n-card {
-  max-width: 280px;
+  max-width: 300px;
   margin: 10px 10px;
   min-height: 450px;
 }

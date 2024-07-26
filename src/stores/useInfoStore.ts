@@ -4,7 +4,7 @@ import { Temperature16Filled } from '@vicons/fluent'
 
 export const useInfoStore = defineStore('infoStore', {
   state: () => ({
-    time: new Date(),
+    time: null as null | Date,
     intervalId: null as number | null,
     timeZone: 'Asia/Shanghai' as string,
     country: '' as string,
@@ -21,6 +21,7 @@ export const useInfoStore = defineStore('infoStore', {
       if (this.intervalId) {
         return
       }
+      this.time = new Date()
       this.intervalId = setInterval(() => {
         this.time = new Date()
       }, 1000)
