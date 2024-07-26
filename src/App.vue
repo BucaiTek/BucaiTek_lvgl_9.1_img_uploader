@@ -9,7 +9,10 @@ import {
 
 import {
   HomeOutline as HomeOutlineIcon,
-  LaptopOutline as LaptopOutlineIcon
+  LaptopOutline as LaptopOutlineIcon,
+  SettingsOutline as SettingsOutlineIcon,
+  LogoGithub as LogoGithubIcon,
+  LinkOutline as LinkOutlineIcon
 } from '@vicons/ionicons5'
 import { NIcon } from 'naive-ui'
 import { useI18n } from 'vue-i18n'
@@ -181,7 +184,7 @@ const buttonTransform = computed(() => {
 const handleMouseMove = (event: MouseEvent) => {
   // 假设监视区域在视口的右下角
   const nearRightEdge = window.innerWidth - event.clientX < 110 // 右边缘100px以内
-  const nearBottomEdge = window.innerHeight - event.clientY < 110 // 底边缘100px以内
+  const nearBottomEdge = window.innerHeight - event.clientY < 280 // 底边缘100px以内
   if (nearRightEdge && nearBottomEdge) {
     isMouseNearButton.value = true
   } else {
@@ -211,7 +214,7 @@ const handleMouseLeave = () => {
         @expand="hidStore.collapsed = false"
       >
         <n-text tag="div" class="ui-logo" :depth="1" @click="handleLogoClick">
-          <n-icon size="55" style="margin: 3px 10px 15px 0">
+          <n-icon size="55" style="margin: 3px 12px 15px 0px">
             <svg
               width="564"
               height="868"
@@ -298,8 +301,16 @@ const handleMouseLeave = () => {
           style="z-index: 0"
         >
           <router-view />
-          <n-float-button :style="{ transform: buttonTransform }" :right="40" :bottom="20">
-            <n-icon size="55" style="margin: 3px 10px 15px 0">
+          <n-float-button
+            type="default"
+            menu-trigger="hover"
+            :style="{ transform: buttonTransform }"
+            :right="25"
+            :bottom="20"
+            width="60"
+            height="60"
+          >
+            <n-icon size="40">
               <svg
                 width="564"
                 height="868"
@@ -321,6 +332,23 @@ const handleMouseLeave = () => {
                 />
               </svg>
             </n-icon>
+            <template #menu>
+              <n-float-button width="40" height="40" style="left: 9px">
+                <n-icon size="30">
+                  <LinkOutlineIcon />
+                </n-icon>
+              </n-float-button>
+              <n-float-button width="40" height="40" style="left: 9px">
+                <n-icon size="30">
+                  <LogoGithubIcon />
+                </n-icon>
+              </n-float-button>
+              <n-float-button width="40" height="40" style="left: 9px">
+                <n-icon size="30">
+                  <SettingsOutlineIcon />
+                </n-icon>
+              </n-float-button>
+            </template>
           </n-float-button>
         </n-layout-content>
       </n-layout>
