@@ -82,7 +82,6 @@ const handleLogoClick = () => {
   router.push({ name: 'home' })
   menuValue.value = 'home'
 }
-const collapsed = ref(false)
 const menuValue = ref('home')
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) })
@@ -164,12 +163,12 @@ const getConnecttionState = computed(() => {
         collapse-mode="width"
         :collapsed-width="82"
         :width="210"
-        :collapsed="collapsed"
+        :collapsed="hidStore.collapsed"
         show-trigger
         trigger-style="top: 84px;"
         collapsed-trigger-style="top: 84px;"
-        @collapse="collapsed = true"
-        @expand="collapsed = false"
+        @collapse="hidStore.collapsed = true"
+        @expand="hidStore.collapsed = false"
       >
         <n-text tag="div" class="ui-logo" :depth="1" @click="handleLogoClick">
           <n-icon size="55" style="margin: 3px 10px 15px 0">
@@ -194,7 +193,7 @@ const getConnecttionState = computed(() => {
         <div>
           <n-menu
             :value="menuValue"
-            :collapsed="collapsed"
+            :collapsed="hidStore.collapsed"
             :collapsed-width="52"
             :collapsed-icon-size="30"
             :icon-size="30"

@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { useInfoStore } from '@/stores/useInfoStore'
+import { useHidStore } from '@/stores/useHidStore'
 import { useHardwareStore } from '@/stores/useHardwareStore'
 import { useI18n } from 'vue-i18n'
 const { t, locale } = useI18n()
 const infoStore = useInfoStore()
+const hidStore = useHidStore()
 const hardwareStore = useHardwareStore()
 
 onMounted(async () => {
@@ -47,7 +49,7 @@ const showMaxTemperature = computed(() => {
 
 <template>
   <div class="home">
-    <n-card size="large">
+    <n-card :class="{ 'expanded-style': hidStore.collapsed }" size="large">
       <template #header>
         <n-h2 style="margin: 0">{{ t('home.lable.info') }}</n-h2>
       </template>
@@ -58,7 +60,7 @@ const showMaxTemperature = computed(() => {
             :style="
               locale === 'zh_CN'
                 ? 'margin: 0 20px 0 0;min-width: 60px'
-                : 'margin: 0; min-width: 110px'
+                : 'margin: 0; min-width: 95px'
             "
             >{{ t('home.lable.time') }}</n-h3
           >
@@ -73,7 +75,7 @@ const showMaxTemperature = computed(() => {
             :style="
               locale === 'zh_CN'
                 ? 'margin: 0 20px 0 0;min-width: 60px'
-                : 'margin: 0; min-width: 110px'
+                : 'margin: 0; min-width: 95px'
             "
             >{{ t('home.lable.location') }}</n-h3
           >
@@ -87,14 +89,12 @@ const showMaxTemperature = computed(() => {
               <n-h3
                 :style="
                   locale === 'zh_CN'
-                    ? 'margin: 0 20px 0 0;min-width: 40px'
-                    : 'margin: 0; min-width: 110px'
+                    ? 'margin: 0; min-width: 113px'
+                    : 'margin: 0; min-width: 126px'
                 "
                 >{{ t('home.lable.temperature') }}</n-h3
               >
-            </template>
-            <template #header-extra>
-              <n-text :style="locale === 'zh_CN' ? 'margin-left: 4px' : ''">
+              <n-text >
                 {{ showCurrentTemperature }}
               </n-text>
             </template>
@@ -137,7 +137,7 @@ const showMaxTemperature = computed(() => {
         </n-collapse>
       </n-collapse-transition>
     </n-card>
-    <n-card title="卡片"> 卡片内容 </n-card>
+    <n-card :class="{ 'expanded-style': hidStore.collapsed }" title="卡片"> 卡片内容 </n-card>
   </div>
 </template>
 
@@ -153,6 +153,9 @@ const showMaxTemperature = computed(() => {
   max-width: 300px;
   margin: 10px 10px;
   min-height: 450px;
+  transition:
+    margin 0.3s ease-in-out,
+    max-width 0.3s ease-in-out; /* 添加max-width到过渡效果 */
 }
 
 .text_in_one_line {
@@ -160,14 +163,19 @@ const showMaxTemperature = computed(() => {
   align-items: center;
 }
 
-.n-card ::v-deep .n-collapse {
+.n-card :v-deep .n-collapse {
   display: block; /* 确保 n-collapse 使用块级布局 */
 }
 
-.n-card ::v-deep .n-collapse-item__header-extra {
-  margin-left: 16px;
+.n-card :v-deep .n-collapse-item__header-extra {
+  margin-left: 13px;
   justify-content: flex-start;
   display: flex;
   width: 100%;
+}
+
+.expanded-style {
+  margin: 10px 18px; /* 增大左右间距 */
+  max-width: 320px; /* 增大最大宽度 */
 }
 </style>

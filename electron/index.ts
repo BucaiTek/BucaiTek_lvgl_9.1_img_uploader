@@ -56,9 +56,9 @@ function createWindow() {
   const mainWindow = new BrowserWindow({
     title: 'Main window',
     width: 900,
-    height: 675,
+    height: 600,
     minWidth: 900,
-    minHeight: 675,
+    minHeight: 600,
     webPreferences: {
       preload: path.join(__dirname, '../dist-electron/preload.mjs')
     }
