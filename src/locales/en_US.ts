@@ -1,4 +1,4 @@
-import { Temperature16Filled } from "@vicons/fluent";
+import { Temperature16Filled } from '@vicons/fluent'
 
 export default {
   nav_lable: {
@@ -23,6 +23,11 @@ export default {
       cpu: 'CPU Temperature',
       gpu: 'GPU Temperature',
       fan: 'Fan Speed',
+      system_data: 'System Data'
+    },
+    text: {
+      not_support:
+        'The browser does not support obtaining system data, please download and use the application!'
     }
   }
 }

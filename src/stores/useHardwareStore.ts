@@ -30,6 +30,7 @@ export const useHardwareStore = defineStore('hardwareStore', {
           this.startReadSysData()
         } else {
           console.log('Electron not available')
+          this.useSystemReader = false
         }
       } catch (e) {
         console.error(e)

@@ -20,7 +20,11 @@ export default {
       weather: '天气',
       cpu: 'CPU温度',
       gpu: 'GPU温度',
-      fan: '风扇转速'
+      fan: '风扇转速',
+      system_data: '系统数据'
+    },
+    text: {
+      not_support: '浏览器不支持获取系统数据，请下载并使用应用程序！'
     }
   }
 }

@@ -117,33 +117,38 @@ const showMaxTemperature = computed(() => {
     </n-card>
     <n-card :class="{ 'expanded-style': hidStore.collapsed }">
       <template #header>
-        <n-h2 style="margin: 0">{{ t('home.lable.info') }}</n-h2>
+        <n-h2 style="margin: 0">{{ t('home.lable.system_data') }}</n-h2>
       </template>
 
-      <n-collapse-transition
-        :show="hardwareStore.cpuETemp != null && hardwareStore.cpuETemp.length > 0"
-      >
-        <div class="text_in_one_line">
-          <n-h3 style="margin: 0; min-width: 170px">{{ t('home.lable.cpu') }}</n-h3>
-          <n-text>{{ hardwareStore.cpuAvgeTemp }}</n-text>
-        </div>
-      </n-collapse-transition>
-      <n-collapse-transition
-        :show="hardwareStore.gpuTemp != null && hardwareStore.gpuTemp.length > 0"
-      >
-        <div class="text_in_one_line">
-          <n-h3 style="margin: 0; min-width: 170px">{{ t('home.lable.gpu') }}</n-h3>
-          <n-text>{{ hardwareStore.gpuAvgeTemp }}</n-text>
-        </div>
-      </n-collapse-transition>
-      <n-collapse-transition
-        :show="hardwareStore.fanData != null && hardwareStore.fanData.length > 0"
-      >
-        <div class="text_in_one_line">
-          <n-h3 style="margin: 0; min-width: 170px">{{ t('home.lable.fan') }}</n-h3>
-          <n-text>{{ hardwareStore.fanData![0]['actual'] }}</n-text>
-        </div>
-      </n-collapse-transition>
+      <div v-if="hardwareStore.useSystemReader">
+        <n-collapse-transition
+          :show="hardwareStore.cpuETemp != null && hardwareStore.cpuETemp.length > 0"
+        >
+          <div class="text_in_one_line">
+            <n-h3 style="margin: 0; min-width: 170px">{{ t('home.lable.cpu') }}</n-h3>
+            <n-text>{{ hardwareStore.cpuAvgeTemp }}</n-text>
+          </div>
+        </n-collapse-transition>
+        <n-collapse-transition
+          :show="hardwareStore.gpuTemp != null && hardwareStore.gpuTemp.length > 0"
+        >
+          <div class="text_in_one_line">
+            <n-h3 style="margin: 0; min-width: 170px">{{ t('home.lable.gpu') }}</n-h3>
+            <n-text>{{ hardwareStore.gpuAvgeTemp }}</n-text>
+          </div>
+        </n-collapse-transition>
+        <n-collapse-transition
+          :show="hardwareStore.fanData != null && hardwareStore.fanData.length > 0"
+        >
+          <div class="text_in_one_line">
+            <n-h3 style="margin: 0; min-width: 170px">{{ t('home.lable.fan') }}</n-h3>
+            <n-text>{{ hardwareStore.fanData![0]['actual'] }}</n-text>
+          </div>
+        </n-collapse-transition>
+      </div>
+      <div v-else-if="hardwareStore.useSystemReader == false">
+        <n-text>{{ t('home.text.not_support') }}</n-text>
+      </div>
     </n-card>
   </div>
 </template>
