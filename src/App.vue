@@ -49,6 +49,19 @@ const themeOverrides = computed(() => {
       itemColorActive: null,
       itemColorActiveHover: null,
       itemColorActiveCollapsed: null
+    },
+    FloatButton: {
+      color: null,
+      colorHover: null,
+      colorPressed: null,
+      colorPrimary: null,
+      colorPrimaryHover: null,
+      colorPrimaryPressed: null,
+      textColor: null,
+      boxShadow: null,
+      boxShadowHover: null,
+      boxShadowPressed: null,
+      borderRadiusSquare: null
     }
   }
 })
@@ -152,6 +165,33 @@ const getConnecttionState = computed(() => {
     return t('connection.notConnected')
   }
 })
+
+const isMouseNearButton = ref(false)
+
+const buttonTransform = computed(() => {
+  if (!hidStore.collapsed) {
+    // 当菜单折叠且鼠标靠近时，按钮移动到可视区域
+    return isMouseNearButton.value ? 'translateX(0px)' : 'translateX(+200%)'
+  } else {
+    // 当菜单展开时，按钮始终在可视区域
+    return 'translateX(0px)'
+  }
+})
+
+const handleMouseMove = (event: MouseEvent) => {
+  // 假设监视区域在视口的右下角
+  const nearRightEdge = window.innerWidth - event.clientX < 110 // 右边缘100px以内
+  const nearBottomEdge = window.innerHeight - event.clientY < 110 // 底边缘100px以内
+  if (nearRightEdge && nearBottomEdge) {
+    isMouseNearButton.value = true
+  } else {
+    isMouseNearButton.value = false
+  }
+}
+
+const handleMouseLeave = () => {
+  isMouseNearButton.value = false
+}
 </script>
 
 <template>
@@ -251,8 +291,37 @@ const getConnecttionState = computed(() => {
             </n-button>
           </div>
         </n-layout-header>
-        <n-layout-content style="z-index: 0">
+
+        <n-layout-content
+          @mousemove="handleMouseMove"
+          @mouseleave="handleMouseLeave"
+          style="z-index: 0"
+        >
           <router-view />
+          <n-float-button :style="{ transform: buttonTransform }" :right="40" :bottom="20">
+            <n-icon size="55" style="margin: 3px 10px 15px 0">
+              <svg
+                width="564"
+                height="868"
+                viewBox="0 0 564 868"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M50 50L50 562"
+                  stroke="currentColor"
+                  stroke-width="100"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M513.108 712.473C481.332 756.21 436.524 788.764 385.108 805.47C333.692 822.177 278.308 822.177 226.892 805.47C175.476 788.764 130.668 756.21 98.8916 712.473C67.1148 668.736 50 616.062 50 562C50 507.938 67.1149 455.264 98.8917 411.527C130.668 367.79 175.476 335.236 226.892 318.53C278.308 301.823 333.693 301.823 385.108 318.53C436.524 335.236 481.332 367.79 513.108 411.527"
+                  stroke="currentColor"
+                  stroke-width="100"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </n-icon>
+          </n-float-button>
         </n-layout-content>
       </n-layout>
     </n-layout>
@@ -295,5 +364,9 @@ const getConnecttionState = computed(() => {
   100% {
     filter: hue-rotate(0deg);
   }
+}
+
+.n-float-button {
+  transition: transform 0.3s ease-in-out;
 }
 </style>

@@ -24,7 +24,7 @@ export default {
       system_data: '系统数据'
     },
     text: {
-      not_support: '浏览器不支持获取系统数据，请下载并使用应用程序！'
+      not_support: '浏览器不支持获取系统数据，请使用应用程序！'
     }
   }
 }

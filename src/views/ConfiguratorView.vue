@@ -8,6 +8,6 @@ const colorStore = useColorStore()
   <main>
     <h1>Configurator</h1>
     <p>Welcome to the Configurator page!</p>
-    <n-color-picker  v-model:value="colorStore.color" />
+    <n-color-picker v-model:value="colorStore.color" />
   </main>
 </template>
