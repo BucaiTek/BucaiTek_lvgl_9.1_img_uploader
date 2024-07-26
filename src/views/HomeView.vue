@@ -87,7 +87,7 @@ const showMaxTemperature = computed(() => {
             <template #header>
               <n-h3
                 :style="
-                  locale === 'zh_CN' ? 'margin: 0; min-width: 113px' : 'margin: 0; min-width: 126px'
+                  locale === 'zh_CN' ? 'margin: 0; min-width: 95px' : 'margin: 0; min-width: 147px'
                 "
                 >{{ t('home.lable.temperature') }}</n-h3
               >
@@ -97,36 +97,21 @@ const showMaxTemperature = computed(() => {
             </template>
             <div style="margin-left: 30px; margin-top: -10px">
               <div class="text_in_one_line">
-                <n-h6
-                  :style="
-                    locale === 'zh_CN'
-                      ? 'margin: 0 20px 0 0;min-width: 85px'
-                      : 'margin: 0 20px 0 0; min-width: 98px'
-                  "
-                  >{{ t('home.lable.current_temperature') }}</n-h6
-                >
+                <n-h6 style="min-width: 140px; margin: 0">{{
+                  t('home.lable.current_temperature')
+                }}</n-h6>
                 <n-text>{{ showCurrentTemperature }}</n-text>
               </div>
               <div class="text_in_one_line">
-                <n-h6
-                  :style="
-                    locale === 'zh_CN'
-                      ? 'margin: 0 20px 0 0;min-width: 85px'
-                      : 'margin: 0 20px 0 0; min-width: 98px'
-                  "
-                  >{{ t('home.lable.min_temperature') }}</n-h6
-                >
+                <n-h6 style="min-width: 140px; margin: 0">{{
+                  t('home.lable.min_temperature')
+                }}</n-h6>
                 <n-text>{{ showMinTemperature }}</n-text>
               </div>
               <div class="text_in_one_line">
-                <n-h6
-                  :style="
-                    locale === 'zh_CN'
-                      ? 'margin: 0 20px 0 0;min-width: 85px'
-                      : 'margin: 0 20px 0 0; min-width: 98px'
-                  "
-                  >{{ t('home.lable.max_temperature') }}</n-h6
-                >
+                <n-h6 style="min-width: 140px; margin: 0">{{
+                  t('home.lable.max_temperature')
+                }}</n-h6>
                 <n-text>{{ showMaxTemperature }}</n-text>
               </div>
             </div>

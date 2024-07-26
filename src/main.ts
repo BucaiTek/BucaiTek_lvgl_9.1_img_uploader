@@ -20,7 +20,7 @@ declare global {
   }
 }
 
-const browserLanguage = navigator.language.includes('zh') ? 'zh_CN' : 'en_US'
+const browserLanguage = navigator.language.includes('zh') ? 'en_US' : 'en_US'
 
 const app = createApp(App)
 const i18n = createI18n({
