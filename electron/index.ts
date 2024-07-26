@@ -1,8 +1,11 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow, ipcMain, Tray, Menu } from 'electron'
 import { spawn } from 'child_process'
 import path from 'path'
 import { fileURLToPath } from 'node:url'
 
+let mainWindow = null as BrowserWindow | null
+
+let willQuitApp = false // 添加一个标志，用于检测是否真的应该退出应用程序
 function processSensorData(sensorData, sensorList) {
   const lines = sensorData.split('\n')
   const sensorValues = {}
@@ -53,7 +56,7 @@ ipcMain.handle('request-sensor-data', (event, value) => {
 })
 
 function createWindow() {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     title: 'Main window',
     width: 900,
     height: 600,
@@ -66,7 +69,6 @@ function createWindow() {
 
   mainWindow.loadFile('dist/index.html', { hash: 'home' })
 
-  // 启动子进程来执行 Bash 命令获取 CPU 型号
   const child = spawn('sysctl', ['-a'])
   child.stdout.on('data', (data) => {
     cpuModel += data.toString()
@@ -77,12 +79,10 @@ function createWindow() {
     if (match) {
       cpuModel = match[1]
       console.log('CPU 型号:', cpuModel)
-      // 读取传感器数据
       fetchSensorData(cpuModel)
     }
   })
 
-  // 根据 CPU 型号获取传感器数据
   function fetchSensorData(cpuModel) {
     let efficiencyCores = [] as string[]
     let performanceCores = [] as string[]
@@ -131,9 +131,41 @@ function createWindow() {
     child.on('close', () => {})
   }
 
-  // 定时调用 fetchSensorData 函数
-  // setInterval(() => fetchSensorData(cpuModel), 2000)
+  mainWindow.on('close', (e) => {
+    if (!willQuitApp && mainWindow !== null) {
+      e.preventDefault() // 阻止窗口的关闭事件
+      mainWindow.hide() // 只隐藏窗口
+    }
+  })
 }
+
+const contextMenu = Menu.buildFromTemplate([
+  {
+    label: '退出',
+    type: 'normal',
+    click: () => {
+      willQuitApp = true // 设置标志为 true 并退出
+      app.quit()
+    }
+  }
+])
+
+app.on('before-quit', () => {
+  willQuitApp = true // 在应用程序即将退出前设置标志为 true
+})
+
+let tray = null as Tray | null
+app.on('ready', () => {
+  tray = new Tray('tools/logo32*32@1x.png')
+
+  tray.on('click', () => {
+    mainWindow?.show()
+  })
+
+  tray.on('right-click', () => {
+    if (tray) tray.popUpContextMenu(contextMenu)
+  })
+})
 
 app.whenReady().then(() => {
   createWindow()
