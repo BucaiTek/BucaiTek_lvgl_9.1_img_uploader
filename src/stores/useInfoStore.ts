@@ -38,7 +38,6 @@ export const useInfoStore = defineStore('infoStore', {
         const response = await axios.get(
           'https://64090833871b4162bbbdbe9d92b87a1a-cn-shenzhen.alicloudapi.com/ip.json'
         )
-        console.log(response)
         this.coordinates = {
           latitude: response.data.lat,
           longitude: response.data.lon

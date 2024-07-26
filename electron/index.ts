@@ -52,38 +52,6 @@ ipcMain.handle('request-chip-model', (event, value) => {
 })
 
 ipcMain.handle('request-sensor-data', (event, value) => {
-  return processSensorData(sensorInfo, allSensors)
-})
-
-function createWindow() {
-  mainWindow = new BrowserWindow({
-    title: 'Main window',
-    width: 900,
-    height: 600,
-    minWidth: 900,
-    minHeight: 600,
-    frame: false,
-    webPreferences: {
-      preload: path.join(__dirname, '../dist-electron/preload.mjs')
-    }
-  })
-
-  mainWindow.loadFile('dist/index.html', { hash: 'home' })
-
-  const child = spawn('sysctl', ['-a'])
-  child.stdout.on('data', (data) => {
-    cpuModel += data.toString()
-  })
-
-  child.on('close', () => {
-    const match = cpuModel.match(/machdep.cpu.brand_string:\s(.+)/)
-    if (match) {
-      cpuModel = match[1]
-      console.log('CPU 型号:', cpuModel)
-      fetchSensorData(cpuModel)
-    }
-  })
-
   function fetchSensorData(cpuModel) {
     let efficiencyCores = [] as string[]
     let performanceCores = [] as string[]
@@ -131,6 +99,41 @@ function createWindow() {
 
     child.on('close', () => {})
   }
+  fetchSensorData(cpuModel)
+  return processSensorData(sensorInfo, allSensors)
+})
+
+ipcMain.handle('check-electron', (event, value) => {
+  return 'BucaiTek'
+})
+
+function createWindow() {
+  mainWindow = new BrowserWindow({
+    title: 'Main window',
+    width: 900,
+    height: 600,
+    minWidth: 900,
+    minHeight: 600,
+    frame: false,
+    webPreferences: {
+      preload: path.join(__dirname, '../dist-electron/preload.mjs')
+    }
+  })
+
+  mainWindow.loadFile('dist/index.html', { hash: 'home' })
+
+  const child = spawn('sysctl', ['-a'])
+  child.stdout.on('data', (data) => {
+    cpuModel += data.toString()
+  })
+
+  child.on('close', () => {
+    const match = cpuModel.match(/machdep.cpu.brand_string:\s(.+)/)
+    if (match) {
+      cpuModel = match[1]
+      console.log('CPU 型号:', cpuModel)
+    }
+  })
 
   mainWindow.on('close', (e) => {
     if (!willQuitApp && mainWindow !== null) {

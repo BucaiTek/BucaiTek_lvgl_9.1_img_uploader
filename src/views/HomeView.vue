@@ -13,13 +13,9 @@ onMounted(async () => {
 
   await infoStore.fetchIPInfo()
   await infoStore.fetchWeatherInfo()
+
   await hardwareStore.init()
-  console.log(hardwareStore.chipModel)
-  await hardwareStore.getSensorData()
-  console.log(hardwareStore.cpuETemp)
-  console.log(hardwareStore.cpuPTemp)
-  console.log(hardwareStore.gpuTemp)
-  console.log(hardwareStore.fanData)
+  await hardwareStore.startReadSysData()
 })
 
 onUnmounted(() => {
@@ -129,7 +125,7 @@ const showMaxTemperature = computed(() => {
       >
         <div class="text_in_one_line">
           <n-h3 style="margin: 0; min-width: 95px">{{ t('home.lable.cpu') }}</n-h3>
-          <n-text>{{ hardwareStore.cpuETemp[0] }}</n-text>
+          <n-text>{{ hardwareStore.cpuETemp![0] }}</n-text>
         </div>
       </n-collapse-transition>
       <n-collapse-transition
@@ -137,7 +133,7 @@ const showMaxTemperature = computed(() => {
       >
         <div class="text_in_one_line">
           <n-h3 style="margin: 0; min-width: 95px">{{ t('home.lable.gpu') }}</n-h3>
-          <n-text>{{ hardwareStore.gpuTemp[0] }}</n-text>
+          <n-text>{{ hardwareStore.gpuTemp![0] }}</n-text>
         </div>
       </n-collapse-transition>
       <n-collapse-transition
@@ -145,7 +141,7 @@ const showMaxTemperature = computed(() => {
       >
         <div class="text_in_one_line">
           <n-h3 style="margin: 0; min-width: 95px">{{ t('home.lable.fan') }}</n-h3>
-          <n-text>{{ hardwareStore.fanData[0]['actual'] }}</n-text>
+          <n-text>{{ hardwareStore.fanData![0]['actual'] }}</n-text>
         </div>
       </n-collapse-transition>
     </n-card>

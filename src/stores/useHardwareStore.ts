@@ -1,20 +1,41 @@
+import { c } from 'naive-ui'
 import { defineStore } from 'pinia'
+
+interface FanData {
+  actual: number // 实际转速
+  min: number // 最小转速
+  max: number // 最大转速
+}
 
 export const useHardwareStore = defineStore('hardwareStore', {
   state: () => ({
+    useSystemReader: null as boolean | null,
     intervalId: null as number | null,
     chipModel: null as null | string,
     cpuETemp: null as null | string[],
     cpuPTemp: null as null | string[],
     gpuTemp: null as null | string[],
-    fanData: null as null | object[]
+    fanData: null as null | FanData[]
   }),
   actions: {
     async init() {
-      this.chipModel = await window.electronAPI?.getChipModel('')
-      console.log('CPU 型号:', this.chipModel)
+      try {
+        const flag = await window.electronAPI?.check_electron()
+        if (flag === 'BucaiTek') {
+          this.useSystemReader = true
+          this.chipModel = await window.electronAPI?.getChipModel('')
+          console.log('CPU 型号:', this.chipModel)
+          this.startReadSysData()
+        } else {
+          console.log('Electron not available')
+        }
+      } catch (e) {
+        console.error(e)
+        this.useSystemReader = false
+      }
     },
     async getSensorData() {
+      if (!this.useSystemReader) return
       let sensorData = await window.electronAPI?.getSensorData('')
       if (!this.chipModel) return
       // 读取风扇数量
@@ -62,6 +83,7 @@ export const useHardwareStore = defineStore('hardwareStore', {
         ]
         gpuCores = ['Tf14', 'Tf18', 'Tf19', 'Tf1A', 'Tf24', 'Tf28', 'Tf29', 'Tf2A']
       }
+      console.log(efficiencyCores.map((core) => `${sensorData[core]}`))
 
       this.cpuETemp = efficiencyCores
         .map((core) => `${sensorData[core]}`)
@@ -72,6 +94,20 @@ export const useHardwareStore = defineStore('hardwareStore', {
       this.gpuTemp = gpuCores
         .map((core) => `${sensorData[core]}`)
         .filter((temp) => temp !== 'undefined')
+    },
+    startReadSysData() {
+      if (this.intervalId || !this.useSystemReader) {
+        return
+      }
+      this.intervalId = setInterval(() => {
+        this.getSensorData()
+      }, 1000)
+    },
+    stopReadSysData() {
+      if (this.intervalId) {
+        clearInterval(this.intervalId)
+        this.intervalId = null
+      }
     }
   }
 })
