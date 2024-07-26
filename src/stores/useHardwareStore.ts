@@ -12,9 +12,11 @@ export const useHardwareStore = defineStore('hardwareStore', {
     useSystemReader: null as boolean | null,
     intervalId: null as number | null,
     chipModel: null as null | string,
-    cpuETemp: null as null | string[],
-    cpuPTemp: null as null | string[],
-    gpuTemp: null as null | string[],
+    cpuETemp: null as null | number[],
+    cpuPTemp: null as null | number[],
+    gpuTemp: null as null | number[],
+    cpuAvgeTemp: null as null | number,
+    gpuAvgeTemp: null as null | number,
     fanData: null as null | FanData[]
   }),
   actions: {
@@ -45,12 +47,25 @@ export const useHardwareStore = defineStore('hardwareStore', {
       for (let i = 0; i < fanNumber; i++) {
         fans.push({
           //如果没有F${i}Ac这个传感器，设置为0
-          actual: sensorData[`F${i}Ac`] || 0, // 实际转速
+          actual: 0, // 实际转速
           min: sensorData[`F${i}Mn`], // 最小值
           max: sensorData[`F${i}Mx`] // 最大值
         })
       }
-
+      for (let i = 0; i < fanNumber; i++) {
+        try {
+          let actual = sensorData[`F${i}Ac`]
+          if (actual) {
+            if (actual < fans[i].min) {
+              fans[i].actual = 0
+            } else {
+              fans[i].actual = actual
+            }
+          }
+        } catch (e) {
+          console.error(e)
+        }
+      }
       this.fanData = fans
 
       let efficiencyCores = [] as string[]
@@ -83,17 +98,27 @@ export const useHardwareStore = defineStore('hardwareStore', {
         ]
         gpuCores = ['Tf14', 'Tf18', 'Tf19', 'Tf1A', 'Tf24', 'Tf28', 'Tf29', 'Tf2A']
       }
-      console.log(this.fanData)
 
-      this.cpuETemp = efficiencyCores
-        .map((core) => `${sensorData[core]}`)
-        .filter((temp) => temp !== 'undefined')
-      this.cpuPTemp = performanceCores
-        .map((core) => `${sensorData[core]}`)
-        .filter((temp) => temp !== 'undefined')
-      this.gpuTemp = gpuCores
-        .map((core) => `${sensorData[core]}`)
-        .filter((temp) => temp !== 'undefined')
+      let cpuETemps = efficiencyCores
+        .map((core) => parseFloat(sensorData[core]))
+        .filter((temp) => !isNaN(temp))
+      let cpuPTemps = performanceCores
+        .map((core) => parseFloat(sensorData[core]))
+        .filter((temp) => !isNaN(temp))
+      let gpuTemps = gpuCores
+        .map((core) => parseFloat(sensorData[core]))
+        .filter((temp) => !isNaN(temp))
+
+      let cpuAverageTemp =
+        [...cpuETemps, ...cpuPTemps].reduce((acc, temp) => acc + temp, 0) /
+        (cpuETemps.length + cpuPTemps.length)
+      let gpuAverageTemp = gpuTemps.reduce((acc, temp) => acc + temp, 0) / gpuTemps.length
+
+      this.cpuAvgeTemp = parseInt(cpuAverageTemp.toFixed(0))
+      this.gpuAvgeTemp = parseInt(gpuAverageTemp.toFixed(0))
+      this.cpuETemp = cpuETemps
+      this.cpuPTemp = cpuPTemps
+      this.gpuTemp = gpuTemps
     },
     startReadSysData() {
       if (this.intervalId || !this.useSystemReader) {
