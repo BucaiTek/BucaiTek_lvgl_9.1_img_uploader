@@ -333,17 +333,17 @@ const handleMouseLeave = () => {
               </svg>
             </n-icon>
             <template #menu>
-              <n-float-button width="40" height="40" style="left: 9px">
+              <n-float-button width="45" height="45" style="left: 7px">
                 <n-icon size="30">
                   <LinkOutlineIcon />
                 </n-icon>
               </n-float-button>
-              <n-float-button width="40" height="40" style="left: 9px">
+              <n-float-button width="45" height="45" style="left: 7px">
                 <n-icon size="30">
                   <LogoGithubIcon />
                 </n-icon>
               </n-float-button>
-              <n-float-button width="40" height="40" style="left: 9px">
+              <n-float-button width="45" height="45" style="left: 7px">
                 <n-icon size="30">
                   <SettingsOutlineIcon />
                 </n-icon>
