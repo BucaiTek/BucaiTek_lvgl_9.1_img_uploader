@@ -83,6 +83,7 @@ export const useHardwareStore = defineStore('hardwareStore', {
         ]
         gpuCores = ['Tf14', 'Tf18', 'Tf19', 'Tf1A', 'Tf24', 'Tf28', 'Tf29', 'Tf2A']
       }
+      console.log(this.fanData)
 
       this.cpuETemp = efficiencyCores
         .map((core) => `${sensorData[core]}`)

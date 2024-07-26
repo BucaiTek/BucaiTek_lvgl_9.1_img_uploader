@@ -25,7 +25,7 @@ function processSensorData(sensorData, sensorList) {
     sensorList.push('FNum')
     // 添加风扇相关的传感器标识到sensorList
     for (let i = 0; i < fanNumber; i++) {
-      sensorList.push(`F${i}St`, `F${i}Fb`, `F${i}Fc`, `F${i}Mn`, `F${i}Mx`)
+      sensorList.push(`F${i}Ac`,  `F${i}Mn`, `F${i}Mx`)
     }
   }
 
