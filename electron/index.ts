@@ -119,7 +119,6 @@ function createWindow() {
     maxWidth: 900,
     maxHeight: 600,
     frame: false,
-    icon: path.join(process.resourcesPath, 'files/favicon.ico'),
     webPreferences: {
       preload: path.join(__dirname, '../dist-electron/preload.mjs')
     }
