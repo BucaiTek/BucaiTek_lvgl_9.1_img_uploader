@@ -28,7 +28,12 @@ onUnmounted(() => {
 
 const showLocation = computed(() => {
   if (!infoStore.country || !infoStore.city) return ''
-  return infoStore.country + ' ' + infoStore.city
+  return infoStore.country + ' ' + infoStore.region + ' ' + infoStore.city
+})
+
+const showWeather = computed(() => {
+  if (!infoStore.weather) return ''
+  return infoStore.weather
 })
 
 const showCurrentTemperature = computed(() => {
@@ -58,7 +63,7 @@ const showMaxTemperature = computed(() => {
         <div class="text_in_one_line">
           <n-h3 style="margin: 0; min-width: 95px">{{ t('home.lable.time') }}</n-h3>
           <n-text>
-            <n-time :time="infoStore.time" :time-zone="infoStore.timeZone" type="datetime" />
+            <n-time :time="infoStore.time" type="datetime" />
           </n-text>
         </div>
       </n-collapse-transition>
@@ -68,6 +73,14 @@ const showMaxTemperature = computed(() => {
           <n-text>{{ showLocation }}</n-text>
         </div>
       </n-collapse-transition>
+
+      <n-collapse-transition :show="infoStore.weather != ''">
+        <div class="text_in_one_line">
+          <n-h3 style="margin: 0; min-width: 95px">{{ t('home.lable.weather') }}</n-h3>
+          <n-text>{{ showWeather }}</n-text>
+        </div>
+      </n-collapse-transition>
+
       <n-collapse-transition :show="infoStore.temperature.current != null">
         <n-collapse>
           <n-collapse-item style="margin-left: -22px">
