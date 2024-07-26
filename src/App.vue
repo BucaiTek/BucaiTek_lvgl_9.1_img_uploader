@@ -172,11 +172,12 @@ const getConnecttionState = computed(() => {
 const isMouseNearButton = ref(false)
 
 const buttonTransform = computed(() => {
+  if (router.currentRoute.value.name != 'home') {
+    return 'translateX(+200%)'
+  }
   if (!hidStore.collapsed) {
-    // 当菜单折叠且鼠标靠近时，按钮移动到可视区域
     return isMouseNearButton.value ? 'translateX(0px)' : 'translateX(+200%)'
   } else {
-    // 当菜单展开时，按钮始终在可视区域
     return 'translateX(0px)'
   }
 })
