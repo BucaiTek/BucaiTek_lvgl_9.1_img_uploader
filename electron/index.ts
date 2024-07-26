@@ -87,11 +87,11 @@ ipcMain.handle('request-sensor-data', (event, value) => {
     allSensors = efficiencyCores.concat(performanceCores, gpuCores)
 
     //生产环境
-    //const sysReaderPath = path.join(process.resourcesPath, 'tools/sys_reader')
-    //const child = spawn(sysReaderPath)
+    const sysReaderPath = path.join(process.resourcesPath, 'tools/sys_reader')
+    const child = spawn(sysReaderPath)
 
     //开发环境
-    const child = spawn('tools/sys_reader')
+    //const child = spawn('tools/sys_reader')
 
     child.stdout.on('data', (data) => {
       sensorInfo += data.toString()
