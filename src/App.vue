@@ -173,17 +173,22 @@ const getConnecttionState = computed(() => {
         <n-text tag="div" class="ui-logo" :depth="1" @click="handleLogoClick">
           <n-icon size="55" style="margin: 3px 10px 15px 0">
             <svg
-              width="65"
-              height="106"
-              viewBox="0 0 65 106"
+              width="564"
+              height="868"
+              viewBox="0 0 564 868"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path d="M3 3L3 103" stroke="currentColor" stroke-width="5" stroke-linecap="round" />
               <path
-                d="M61.4243 83.5802C58.7066 89.9843 53.841 95.2403 47.6653 98.443C41.4895 101.646 34.3903 102.595 27.5901 101.127C20.79 99.6586 14.7146 95.8652 10.4103 90.3998C6.10593 84.9345 3.84207 78.1393 4.00858 71.1844C4.17508 64.2296 6.76151 57.5505 11.3224 52.2974C15.8834 47.0443 22.1333 43.546 28.9959 42.405C35.8585 41.2639 42.9043 42.5516 48.9197 46.0462C54.935 49.5408 59.5436 55.0236 61.9517 61.5504"
+                d="M50 50L50 562"
                 stroke="currentColor"
-                stroke-width="5"
+                stroke-width="100"
+                stroke-linecap="round"
+              />
+              <path
+                d="M513.108 712.473C481.332 756.21 436.524 788.764 385.108 805.47C333.692 822.177 278.308 822.177 226.892 805.47C175.476 788.764 130.668 756.21 98.8916 712.473C67.1148 668.736 50 616.062 50 562C50 507.938 67.1149 455.264 98.8917 411.527C130.668 367.79 175.476 335.236 226.892 318.53C278.308 301.823 333.693 301.823 385.108 318.53C436.524 335.236 481.332 367.79 513.108 411.527"
+                stroke="currentColor"
+                stroke-width="100"
                 stroke-linecap="round"
               />
             </svg>
@@ -203,7 +208,7 @@ const getConnecttionState = computed(() => {
         </div>
       </n-layout-sider>
       <n-layout style="height: 100vh">
-        <n-layout-header class="nav">
+        <n-layout-header class="nav" style="-webkit-app-region: drag">
           <div>
             <h1 style="font-size: 30px; margin: 10px 0 0 20px">
               {{ t('nav_lable.' + menuValue) }}
@@ -214,13 +219,14 @@ const getConnecttionState = computed(() => {
               :disabled="hidStore.device === null"
               :options="dropdownOptions"
               @select="handleDropdownSelect"
+              style="-webkit-app-region: no-drag"
             >
               <n-button
                 :disabled="!hidStore.support"
                 size="large"
                 quaternary
-                class="nav-picker"
                 @click="handleConectionStateButtonClick"
+                style="-webkit-app-region: no-drag"
               >
                 {{ getConnecttionState }}
               </n-button>
@@ -232,7 +238,7 @@ const getConnecttionState = computed(() => {
               class="nav-picker padded"
               @click="changeTheme"
               :color="themeRef.name === 'dark' ? '#ffffff' : '#000000'"
-              style="font-size: 50px; padding: 15px"
+              style="font-size: 50px; padding: 15px; -webkit-app-region: no-drag"
             >
               <template #icon>
                 <n-icon size="30" v-if="themeRef.name != 'dark'">

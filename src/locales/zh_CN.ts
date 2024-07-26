@@ -17,7 +17,10 @@ export default {
       current_temperature: '当前温度:',
       min_temperature: '最低温度:',
       max_temperature: '最高温度:',
-      weather: '天气'
+      weather: '天气',
+      cpu: 'CPU温度',
+      gpu: 'GPU温度',
+      fan: '风扇转速'
     }
   }
 }

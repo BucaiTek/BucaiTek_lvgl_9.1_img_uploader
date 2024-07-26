@@ -19,7 +19,10 @@ export default {
       current_temperature: 'Cur Temp:',
       min_temperature: 'Min Temp:',
       max_temperature: 'Max Temp:',
-      weather: 'Weather'
+      weather: 'Weather',
+      cpu: 'CPU Temperature',
+      gpu: 'GPU Temperature',
+      fan: 'Fan Speed',
     }
   }
 }

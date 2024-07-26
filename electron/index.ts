@@ -62,6 +62,7 @@ function createWindow() {
     height: 600,
     minWidth: 900,
     minHeight: 600,
+    frame: false,
     webPreferences: {
       preload: path.join(__dirname, '../dist-electron/preload.mjs')
     }
@@ -144,22 +145,32 @@ const contextMenu = Menu.buildFromTemplate([
     label: '退出',
     type: 'normal',
     click: () => {
-      willQuitApp = true // 设置标志为 true 并退出
+      willQuitApp = true
       app.quit()
     }
   }
 ])
 
 app.on('before-quit', () => {
-  willQuitApp = true // 在应用程序即将退出前设置标志为 true
+  willQuitApp = true
 })
 
 let tray = null as Tray | null
 app.on('ready', () => {
-  tray = new Tray('tools/logo32*32@1x.png')
+  app.dock.hide()
+  tray = new Tray('tools/logo_Template@2x.png')
 
   tray.on('click', () => {
-    mainWindow?.show()
+    if (mainWindow === null) {
+      willQuitApp = true
+      app.quit()
+    } else {
+      if (mainWindow.isVisible()) {
+        mainWindow.hide()
+      } else {
+        mainWindow.show()
+      }
+    }
   })
 
   tray.on('right-click', () => {
