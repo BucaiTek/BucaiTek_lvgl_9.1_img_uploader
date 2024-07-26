@@ -18,14 +18,15 @@
   "build": {
     "appId": "com.BucaiTek.imgUploader",
     "productName": "BucaiTek",
-    "copyright": "Copyright © 2024 kuari",
+    "copyright": "Copyright © 2024 BucaiTek",
     "asar": false,
     "extraResources": {
-      "from": "./tools/",
-      "to": "tools"
+      "from": "./files/",
+      "to": "files"
     },
     "mac": {
-      "category": "public.app-category.utilities"
+      "category": "public.app-category.utilities",
+      "icon": "./public/Application.png"
     },
     "nsis": {
       "oneClick": false,

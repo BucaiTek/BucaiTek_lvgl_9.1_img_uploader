@@ -3,6 +3,13 @@ import { spawn } from 'child_process'
 import path from 'path'
 import { fileURLToPath } from 'node:url'
 
+//生产环境
+//const sysReaderPath = path.join(process.resourcesPath, 'files/sys_reader')
+const sysReaderPath = 'files/sys_reader'
+
+//const logo_path = path.join(process.resourcesPath, 'files/logo_Template@2x.png')
+const logo_path = 'files/logo_Template@2x.png'
+
 let mainWindow = null as BrowserWindow | null
 
 let willQuitApp = false // 添加一个标志，用于检测是否真的应该退出应用程序
@@ -86,12 +93,7 @@ ipcMain.handle('request-sensor-data', (event, value) => {
 
     allSensors = efficiencyCores.concat(performanceCores, gpuCores)
 
-    //生产环境
-    const sysReaderPath = path.join(process.resourcesPath, 'tools/sys_reader')
     const child = spawn(sysReaderPath)
-
-    //开发环境
-    //const child = spawn('tools/sys_reader')
 
     child.stdout.on('data', (data) => {
       sensorInfo += data.toString()
@@ -114,7 +116,10 @@ function createWindow() {
     height: 600,
     minWidth: 900,
     minHeight: 600,
+    maxWidth: 900,
+    maxHeight: 600,
     frame: false,
+    icon: path.join(process.resourcesPath, 'files/favicon.ico'),
     webPreferences: {
       preload: path.join(__dirname, '../dist-electron/preload.mjs')
     }
@@ -160,8 +165,9 @@ app.on('before-quit', () => {
 
 let tray = null as Tray | null
 app.on('ready', () => {
-  app.dock.hide()
-  tray = new Tray('tools/logo_Template@2x.png')
+  //app.dock.hide()
+
+  tray = new Tray(logo_path)
 
   tray.on('click', () => {
     if (mainWindow === null) {
