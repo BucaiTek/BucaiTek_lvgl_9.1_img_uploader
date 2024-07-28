@@ -54,17 +54,7 @@ const themeOverrides = computed(() => {
       itemColorActiveCollapsed: null
     },
     FloatButton: {
-      color: null,
-      colorHover: null,
-      colorPressed: null,
-      colorPrimary: null,
-      colorPrimaryHover: null,
-      colorPrimaryPressed: null,
-      textColor: null,
-      boxShadow: null,
-      boxShadowHover: null,
-      boxShadowPressed: null,
-      borderRadiusSquare: null
+      colorHover: null
     }
   }
 })
@@ -181,14 +171,20 @@ const buttonTransform = computed(() => {
     return 'translateX(0px)'
   }
 })
-
+const showMenu = ref(false)
 const handleMouseMove = (event: MouseEvent) => {
   // 假设监视区域在视口的右下角
   const nearRightEdge = window.innerWidth - event.clientX < 110 // 右边缘100px以内
-  const nearBottomEdge = window.innerHeight - event.clientY < 280 // 底边缘100px以内
+  const nearBottomEdge = window.innerHeight - event.clientY < 240 // 底边缘100px以内
   if (nearRightEdge && nearBottomEdge) {
+    if (window.innerHeight - event.clientY > 85) {
+      showMenu.value = true
+    } else {
+      showMenu.value = false
+    }
     isMouseNearButton.value = true
   } else {
+    showMenu.value = false
     isMouseNearButton.value = false
   }
 }
@@ -225,13 +221,13 @@ const handleMouseLeave = () => {
             >
               <path
                 d="M50 50L50 562"
-                stroke="currentColor"
+                :stroke="themeRef.name === 'dark' ? 'white' : 'black'"
                 stroke-width="100"
                 stroke-linecap="round"
               />
               <path
                 d="M513.108 712.473C481.332 756.21 436.524 788.764 385.108 805.47C333.692 822.177 278.308 822.177 226.892 805.47C175.476 788.764 130.668 756.21 98.8916 712.473C67.1148 668.736 50 616.062 50 562C50 507.938 67.1149 455.264 98.8917 411.527C130.668 367.79 175.476 335.236 226.892 318.53C278.308 301.823 333.693 301.823 385.108 318.53C436.524 335.236 481.332 367.79 513.108 411.527"
-                stroke="currentColor"
+                :stroke="themeRef.name === 'dark' ? 'white' : 'black'"
                 stroke-width="100"
                 stroke-linecap="round"
               />
@@ -276,26 +272,16 @@ const handleMouseLeave = () => {
               </n-button>
             </n-dropdown>
             <n-divider vertical style="margin-right: 8px" />
-            <n-button
-              text
-              circle
-              class="nav-picker padded"
-              @click="changeTheme"
-              :color="themeRef.name === 'dark' ? '#ffffff' : '#000000'"
-              style="font-size: 50px; padding: 15px; -webkit-app-region: no-drag"
-            >
-              <template #icon>
-                <n-icon size="30" v-if="themeRef.name != 'dark'">
-                  <BrightnessHigh32RegularIcon />
-                </n-icon>
-                <n-icon size="30" v-else>
-                  <BrightnessHigh32FilledIcon />
-                </n-icon>
-              </template>
-            </n-button>
+            <div class="themeButton">
+              <n-icon @click="changeTheme" size="30" v-if="themeRef.name != 'dark'">
+                <BrightnessHigh32RegularIcon />
+              </n-icon>
+              <n-icon @click="changeTheme" size="30" v-else>
+                <BrightnessHigh32FilledIcon />
+              </n-icon>
+            </div>
           </div>
         </n-layout-header>
-
         <n-layout-content
           @mousemove="handleMouseMove"
           @mouseleave="handleMouseLeave"
@@ -310,6 +296,7 @@ const handleMouseLeave = () => {
             :bottom="20"
             width="60"
             height="60"
+            :show-menu="showMenu"
           >
             <n-icon size="40">
               <svg
@@ -321,34 +308,34 @@ const handleMouseLeave = () => {
               >
                 <path
                   d="M50 50L50 562"
-                  stroke="currentColor"
+                  :stroke="themeRef.name === 'dark' ? 'white' : 'black'"
                   stroke-width="100"
                   stroke-linecap="round"
                 />
                 <path
                   d="M513.108 712.473C481.332 756.21 436.524 788.764 385.108 805.47C333.692 822.177 278.308 822.177 226.892 805.47C175.476 788.764 130.668 756.21 98.8916 712.473C67.1148 668.736 50 616.062 50 562C50 507.938 67.1149 455.264 98.8917 411.527C130.668 367.79 175.476 335.236 226.892 318.53C278.308 301.823 333.693 301.823 385.108 318.53C436.524 335.236 481.332 367.79 513.108 411.527"
-                  stroke="currentColor"
+                  :stroke="themeRef.name === 'dark' ? 'white' : 'black'"
                   stroke-width="100"
                   stroke-linecap="round"
                 />
               </svg>
             </n-icon>
             <template #menu>
-              <n-float-button width="45" height="45" style="left: 7px">
+              <n-button quaternary round style="right: 2px">
                 <n-icon size="30">
                   <LinkOutlineIcon />
                 </n-icon>
-              </n-float-button>
-              <n-float-button width="45" height="45" style="left: 7px">
+              </n-button>
+              <n-button quaternary round style="right: 2px">
                 <n-icon size="30">
                   <LogoGithubIcon />
                 </n-icon>
-              </n-float-button>
-              <n-float-button width="45" height="45" style="left: 7px">
+              </n-button>
+              <n-button quaternary round style="right: 2px">
                 <n-icon size="30">
                   <SettingsOutlineIcon />
                 </n-icon>
-              </n-float-button>
+              </n-button>
             </template>
           </n-float-button>
         </n-layout-content>
@@ -362,7 +349,7 @@ const handleMouseLeave = () => {
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  padding: 0 28px;
+  padding: 0 12px;
   height: 80px;
 }
 
@@ -377,6 +364,12 @@ const handleMouseLeave = () => {
   display: flex;
   align-items: center;
   font-size: 30px;
+}
+.themeButton {
+  padding: 15px;
+  margin-top: 5px;
+  -webkit-app-region: no-drag;
+  z-index: 2;
 }
 
 .rgb {

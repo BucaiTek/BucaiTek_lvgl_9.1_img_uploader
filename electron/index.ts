@@ -13,6 +13,7 @@ const logo_path = 'files/logo_Template@2x.png'
 let mainWindow = null as BrowserWindow | null
 
 let willQuitApp = false // 添加一个标志，用于检测是否真的应该退出应用程序
+
 function processSensorData(sensorData, sensorList) {
   const lines = sensorData.split('\n')
   const sensorValues = {}

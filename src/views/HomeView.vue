@@ -115,7 +115,7 @@ const showMaxTemperature = computed(() => {
         </n-collapse>
       </n-collapse-transition>
     </n-card>
-    <n-card :class="{ 'expanded-style': hidStore.collapsed }">
+    <n-card :class="{ 'expanded-style': hidStore.collapsed }" size="large">
       <template #header>
         <n-h2 style="margin: 0">{{ t('home.lable.system_data') }}</n-h2>
       </template>
