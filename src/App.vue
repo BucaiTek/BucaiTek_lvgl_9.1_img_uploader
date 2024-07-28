@@ -205,8 +205,8 @@ const handleMouseLeave = () => {
         :width="210"
         :collapsed="hidStore.collapsed"
         show-trigger
-        trigger-style="top: 84px;"
-        collapsed-trigger-style="top: 84px;"
+        trigger-style="top: 80px;"
+        collapsed-trigger-style="top: 80px;"
         @collapse="hidStore.collapsed = true"
         @expand="hidStore.collapsed = false"
       >
