@@ -3,6 +3,7 @@ import '@/assets/main.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { createI18n } from 'vue-i18n'
+import { install as VueMonacoEditorPlugin } from '@guolao/vue-monaco-editor'
 
 import zhCN from '@/locales/zh_CN'
 import enUS from '@/locales/en_US'
@@ -33,6 +34,15 @@ const i18n = createI18n({
 })
 
 app.use(createPinia())
-app.use(router).use(naive).use(i18n)
+app
+  .use(router)
+  .use(naive)
+  .use(i18n)
+  .use(VueMonacoEditorPlugin, {
+    paths: {
+      // The recommended CDN config
+      vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.43.0/min/vs'
+    }
+  })
 
 app.mount('#app')

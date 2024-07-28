@@ -12,7 +12,8 @@ import {
   LaptopOutline as LaptopOutlineIcon,
   SettingsOutline as SettingsOutlineIcon,
   LogoGithub as LogoGithubIcon,
-  LinkOutline as LinkOutlineIcon
+  LinkOutline as LinkOutlineIcon,
+  LogoPython as LogoPythonIcon
 } from '@vicons/ionicons5'
 import { NIcon } from 'naive-ui'
 import { useI18n } from 'vue-i18n'
@@ -111,6 +112,15 @@ const menuOptions = computed(() => [
       router.push({ name: 'configurator' })
       menuValue.value = 'configurator'
     }
+  },
+  {
+    label: 'Python',
+    key: 'python',
+    icon: renderIcon(LogoPythonIcon),
+    onClick: () => {
+      router.push({ name: 'python' })
+      menuValue.value = 'python'
+    }
   }
 ])
 const dropdownOptions = computed(() => {
@@ -192,10 +202,14 @@ const handleMouseMove = (event: MouseEvent) => {
 const handleMouseLeave = () => {
   isMouseNearButton.value = false
 }
+import hljs from 'highlight.js/lib/core'
+import python from 'highlight.js/lib/languages/javascript'
+
+hljs.registerLanguage('python', python)
 </script>
 
 <template>
-  <n-config-provider :theme="themeRef" :theme-overrides="themeOverrides">
+  <n-config-provider :theme="themeRef" :theme-overrides="themeOverrides" :hljs="hljs">
     <n-layout has-sider>
       <n-layout-sider
         content-style="padding: 15px;"

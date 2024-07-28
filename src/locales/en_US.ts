@@ -1,9 +1,8 @@
-import { Temperature16Filled } from '@vicons/fluent'
-
 export default {
   nav_lable: {
     home: 'Home',
-    configurator: 'Configurator'
+    configurator: 'Configurator',
+    python: 'Python'
   },
   connection: {
     connected: 'Connected',
