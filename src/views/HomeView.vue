@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useInfoStore } from '@/stores/useInfoStore'
-import { useHidStore } from '@/stores/useHidStore'
+import { useBrowserStore } from '@/stores/useBrowserStore'
 import { useHardwareStore } from '@/stores/useHardwareStore'
 import { useI18n } from 'vue-i18n'
 const { t, locale } = useI18n()
 const infoStore = useInfoStore()
-const hidStore = useHidStore()
+const browserStore = useBrowserStore()
 const hardwareStore = useHardwareStore()
 
 onMounted(async () => {
@@ -50,7 +50,7 @@ const showMaxTemperature = computed(() => {
 
 <template>
   <div class="home">
-    <n-card :class="{ 'expanded-style': hidStore.collapsed }" size="large">
+    <n-card :class="{ 'expanded-style': browserStore.collapsed }" size="large">
       <template #header>
         <n-h2 style="margin: 0">{{ t('home.lable.info') }}</n-h2>
       </template>
@@ -115,7 +115,7 @@ const showMaxTemperature = computed(() => {
         </n-collapse>
       </n-collapse-transition>
     </n-card>
-    <n-card :class="{ 'expanded-style': hidStore.collapsed }" size="large">
+    <n-card :class="{ 'expanded-style': browserStore.collapsed }" size="large">
       <template #header>
         <n-h2 style="margin: 0">{{ t('home.lable.system_data') }}</n-h2>
       </template>

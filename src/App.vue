@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useHidStore } from '@/stores/useHidStore'
 import { useColorStore } from '@/stores/useColorStore'
+import { useBrowserStore } from '@/stores/useBrowserStore'
 import { darkTheme, lightTheme } from 'naive-ui'
 import {
   BrightnessHigh32Filled as BrightnessHigh32FilledIcon,
@@ -20,6 +21,7 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 const hidStore = useHidStore()
 const colorStore = useColorStore()
+const browserStore = useBrowserStore()
 const router = useRouter()
 
 onMounted(() => {
@@ -31,9 +33,9 @@ onUnmounted(() => {
   colorStore.stopCycle()
 })
 
-const themeRef = ref(
-  window.matchMedia('(prefers-color-scheme: dark)').matches ? darkTheme : lightTheme
-)
+browserStore.theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+  ? darkTheme
+  : lightTheme
 
 const themeOverrides = computed(() => {
   return {
@@ -61,11 +63,11 @@ const themeOverrides = computed(() => {
 })
 
 const changeTheme = () => {
-  themeRef.value = themeRef.value.name === 'dark' ? lightTheme : darkTheme
+  browserStore.theme = browserStore.theme.name === 'dark' ? lightTheme : darkTheme
 }
 
 if ('hid' in navigator) {
-  hidStore.support = true
+  browserStore.supportHid = true
   navigator.hid.onconnect = (event: any) => {
     console.log('HID connected: ', event.device)
   }
@@ -82,7 +84,7 @@ if ('hid' in navigator) {
     }
   }
 } else {
-  hidStore.support = false
+  browserStore.supportHid = false
 }
 
 const handleLogoClick = () => {
@@ -175,7 +177,7 @@ const buttonTransform = computed(() => {
   if (router.currentRoute.value.name != 'home') {
     return 'translateX(+200%)'
   }
-  if (!hidStore.collapsed) {
+  if (!browserStore.collapsed) {
     return isMouseNearButton.value ? 'translateX(0px)' : 'translateX(+200%)'
   } else {
     return 'translateX(0px)'
@@ -209,7 +211,7 @@ hljs.registerLanguage('python', python)
 </script>
 
 <template>
-  <n-config-provider :theme="themeRef" :theme-overrides="themeOverrides" :hljs="hljs">
+  <n-config-provider :theme="browserStore.theme" :theme-overrides="themeOverrides" :hljs="hljs">
     <n-layout has-sider>
       <n-layout-sider
         content-style="padding: 15px;"
@@ -217,12 +219,12 @@ hljs.registerLanguage('python', python)
         collapse-mode="width"
         :collapsed-width="82"
         :width="210"
-        :collapsed="hidStore.collapsed"
+        :collapsed="browserStore.collapsed"
         show-trigger
         trigger-style="top: 80px;"
         collapsed-trigger-style="top: 80px;"
-        @collapse="hidStore.collapsed = true"
-        @expand="hidStore.collapsed = false"
+        @collapse="browserStore.collapsed = true"
+        @expand="browserStore.collapsed = false"
       >
         <n-text tag="div" class="ui-logo" :depth="1" @click="handleLogoClick">
           <n-icon size="55" style="margin: 3px 12px 15px 0px">
@@ -235,13 +237,13 @@ hljs.registerLanguage('python', python)
             >
               <path
                 d="M50 50L50 562"
-                :stroke="themeRef.name === 'dark' ? 'white' : 'black'"
+                :stroke="browserStore.theme.name === 'dark' ? 'white' : 'black'"
                 stroke-width="100"
                 stroke-linecap="round"
               />
               <path
                 d="M513.108 712.473C481.332 756.21 436.524 788.764 385.108 805.47C333.692 822.177 278.308 822.177 226.892 805.47C175.476 788.764 130.668 756.21 98.8916 712.473C67.1148 668.736 50 616.062 50 562C50 507.938 67.1149 455.264 98.8917 411.527C130.668 367.79 175.476 335.236 226.892 318.53C278.308 301.823 333.693 301.823 385.108 318.53C436.524 335.236 481.332 367.79 513.108 411.527"
-                :stroke="themeRef.name === 'dark' ? 'white' : 'black'"
+                :stroke="browserStore.theme.name === 'dark' ? 'white' : 'black'"
                 stroke-width="100"
                 stroke-linecap="round"
               />
@@ -252,7 +254,7 @@ hljs.registerLanguage('python', python)
         <div>
           <n-menu
             :value="menuValue"
-            :collapsed="hidStore.collapsed"
+            :collapsed="browserStore.collapsed"
             :collapsed-width="52"
             :collapsed-icon-size="30"
             :icon-size="30"
@@ -276,7 +278,7 @@ hljs.registerLanguage('python', python)
               style="-webkit-app-region: no-drag"
             >
               <n-button
-                :disabled="!hidStore.support"
+                :disabled="!browserStore.supportHid"
                 size="large"
                 quaternary
                 @click="handleConectionStateButtonClick"
@@ -287,7 +289,7 @@ hljs.registerLanguage('python', python)
             </n-dropdown>
             <n-divider vertical style="margin-right: 8px" />
             <div class="themeButton">
-              <n-icon @click="changeTheme" size="30" v-if="themeRef.name != 'dark'">
+              <n-icon @click="changeTheme" size="30" v-if="browserStore.theme.name != 'dark'">
                 <BrightnessHigh32RegularIcon />
               </n-icon>
               <n-icon @click="changeTheme" size="30" v-else>
@@ -322,13 +324,13 @@ hljs.registerLanguage('python', python)
               >
                 <path
                   d="M50 50L50 562"
-                  :stroke="themeRef.name === 'dark' ? 'white' : 'black'"
+                  :stroke="browserStore.theme.name === 'dark' ? 'white' : 'black'"
                   stroke-width="100"
                   stroke-linecap="round"
                 />
                 <path
                   d="M513.108 712.473C481.332 756.21 436.524 788.764 385.108 805.47C333.692 822.177 278.308 822.177 226.892 805.47C175.476 788.764 130.668 756.21 98.8916 712.473C67.1148 668.736 50 616.062 50 562C50 507.938 67.1149 455.264 98.8917 411.527C130.668 367.79 175.476 335.236 226.892 318.53C278.308 301.823 333.693 301.823 385.108 318.53C436.524 335.236 481.332 367.79 513.108 411.527"
-                  :stroke="themeRef.name === 'dark' ? 'white' : 'black'"
+                  :stroke="browserStore.theme.name === 'dark' ? 'white' : 'black'"
                   stroke-width="100"
                   stroke-linecap="round"
                 />

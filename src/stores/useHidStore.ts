@@ -2,8 +2,6 @@ import { defineStore } from 'pinia'
 
 export const useHidStore = defineStore('hidStore', {
   state: () => ({
-    collapsed: false,
-    support: false,
     device: null as HIDDevice | null
   }),
   actions: {

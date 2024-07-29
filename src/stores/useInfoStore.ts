@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
-import { Temperature16Filled } from '@vicons/fluent'
 
 export const useInfoStore = defineStore('infoStore', {
   state: () => ({
