@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useWeatherStore } from '@/stores/useWeatherStore'
+import { useTimeStore } from '@/stores/useTimeStore'
 import { useBrowserStore } from '@/stores/useBrowserStore'
 import { useHardwareStore } from '@/stores/useHardwareStore'
 import { useI18n } from 'vue-i18n'
@@ -7,6 +8,7 @@ const { t, locale } = useI18n()
 const weatherStore = useWeatherStore()
 const browserStore = useBrowserStore()
 const hardwareStore = useHardwareStore()
+const timeStore = useTimeStore()
 
 onMounted(async () => {})
 
@@ -75,11 +77,11 @@ const formatSensor = (value: number) => {
       </template>
 
       <n-scrollbar style="max-height: 340px">
-        <n-collapse-transition :show="weatherStore.time != null">
+        <n-collapse-transition :show="timeStore.time != null">
           <div class="text_in_one_line">
             <n-h3 style="margin: 0; min-width: 95px">{{ t('home.lable.time') }}</n-h3>
             <n-text>
-              <n-time :time="weatherStore.time" type="datetime" />
+              <n-time :time="timeStore.time" type="datetime" />
             </n-text>
           </div>
         </n-collapse-transition>

@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { useBrowserStore } from '@/stores/useBrowserStore'
+import { useWeatherStore } from '@/stores/useWeatherStore'
 
 const browserStore = useBrowserStore()
-const containerRef: Ref<HTMLElement | null> = ref(null)
+const weatherStore = useWeatherStore()
+
 </script>
 
 <template>
@@ -11,7 +13,9 @@ const containerRef: Ref<HTMLElement | null> = ref(null)
       class="cards-container"
       :style="{ 'scroll-padding-left': browserStore.collapsed ? '12px' : '14px' }"
     >
-      <n-card :class="{ 'expanded-card-style': !browserStore.collapsed }">1</n-card>
+      <n-card :class="{ 'expanded-card-style': !browserStore.collapsed }">
+
+      </n-card>
       <n-card :class="{ 'expanded-card-style': !browserStore.collapsed }">2</n-card>
       <n-card :class="{ 'expanded-card-style': !browserStore.collapsed }">3</n-card>
       <n-card :class="{ 'expanded-card-style': !browserStore.collapsed }">1</n-card>

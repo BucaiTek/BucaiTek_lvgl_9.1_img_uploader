@@ -3,8 +3,6 @@ import axios from 'axios'
 
 export const useWeatherStore = defineStore('weatherStore', {
   state: () => ({
-    time: null as null | Date,
-    timerIntervalId: null as number | null,
     weatherIntervalId: null as number | null,
     country: '' as string,
     region: '' as string,
@@ -19,21 +17,6 @@ export const useWeatherStore = defineStore('weatherStore', {
     }
   }),
   actions: {
-    startTimer() {
-      if (this.timerIntervalId) {
-        return
-      }
-      this.time = new Date()
-      this.timerIntervalId = setInterval(() => {
-        this.time = new Date()
-      }, 1000)
-    },
-    stopTimer() {
-      if (this.timerIntervalId) {
-        clearInterval(this.timerIntervalId)
-        this.timerIntervalId = null
-      }
-    },
     async init() {
       try {
         const response = await axios.get(
@@ -71,12 +54,13 @@ export const useWeatherStore = defineStore('weatherStore', {
           (lang: any) => lang.lang_iso === systemLanguage
         )
         if (languageDescription) {
-          if (this.time && (this.time.getHours() > 18 || this.time.getHours() < 6)) {
+          let time = new Date()
+          if (time && (time.getHours() > 18 || time.getHours() < 6)) {
             this.weather = languageDescription.night_text
           } else {
             this.weather = languageDescription.day_text
           }
-        } 
+        }
 
         this.temperature.current = weatherResponse.data.current.temp_c
         this.temperature.min = weatherResponse.data.forecast.forecastday[0].day.mintemp_c

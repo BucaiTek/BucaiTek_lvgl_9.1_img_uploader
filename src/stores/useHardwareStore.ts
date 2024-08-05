@@ -327,14 +327,17 @@ export const useHardwareStore = defineStore('hardwareStore', {
       }))
 
       const fanCount = data.Sensors.FNum
-      this.fans = []
-      for (let i = 0; i < fanCount; i++) {
-        const fanData: FanData = {
-          actual: data.Sensors[`F${i}Ac`],
-          min: data.Sensors[`F${i}Mn`],
-          max: data.Sensors[`F${i}Mx`]
+      if (fanCount) {
+        var tempFan = [] as FanData[]
+        for (let i = 0; i < fanCount; i++) {
+          const fanData: FanData = {
+            actual: data.Sensors[`F${i}Ac`],
+            min: data.Sensors[`F${i}Mn`],
+            max: data.Sensors[`F${i}Mx`]
+          }
+          tempFan.push(fanData)
         }
-        this.fans.push(fanData)
+        this.fans = tempFan
       }
       this.updateUtilizationHistory()
     },
