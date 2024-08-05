@@ -22,6 +22,9 @@ export const useTimeStore = defineStore('timeStore', {
         clearInterval(this.timerIntervalId)
         this.timerIntervalId = null
       }
+    },
+    formatTime: (unit: number) => {
+      return unit.toString().padStart(2, '0')
     }
   }
 })

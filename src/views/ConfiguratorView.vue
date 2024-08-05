@@ -16,17 +16,24 @@ const timeStore = useTimeStore()
       :style="{ 'scroll-padding-left': browserStore.collapsed ? '12px' : '14px' }"
     >
       <n-card :class="{ 'expanded-card-style': !browserStore.collapsed }">
-        <template #header>
-          <div>
-            <div style="font-size: 80px">
-              {{ timeStore.days[timeStore.time!.getDay()] }}
-            </div>
-            <div style="font-size: 20px; margin-top: -25px; margin-left: 35px">
-              {{ timeStore.time!.getHours() }}:{{ timeStore.time!.getMinutes() }} ·
-              {{ timeStore.month[timeStore.time!.getMonth() - 1] }}, {{ timeStore.time!.getDay() }}
-            </div>
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+          "
+        >
+          <div style="font-size: 80px">
+            {{ timeStore.days[timeStore.time!.getDay()] }}
           </div>
-        </template>
+          <div style="font-size: 21px; margin-top: -25px">
+            {{ timeStore.formatTime(timeStore.time!.getHours()) }}:{{
+              timeStore.formatTime(timeStore.time!.getMinutes())
+            }}
+            · {{ timeStore.month[timeStore.time!.getMonth() - 1] }}, {{ timeStore.time!.getDay() }}
+          </div>
+        </div>
       </n-card>
       <n-card :class="{ 'expanded-card-style': !browserStore.collapsed }">2</n-card>
       <n-card :class="{ 'expanded-card-style': !browserStore.collapsed }">3</n-card>
