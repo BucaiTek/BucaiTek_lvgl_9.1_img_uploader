@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useInfoStore } from '@/stores/useInfoStore'
+import { useWeatherStore } from '@/stores/useWeatherStore'
 import { useBrowserStore } from '@/stores/useBrowserStore'
 import { useHardwareStore } from '@/stores/useHardwareStore'
 import { useI18n } from 'vue-i18n'
 const { t, locale } = useI18n()
-const infoStore = useInfoStore()
+const weatherStore = useWeatherStore()
 const browserStore = useBrowserStore()
 const hardwareStore = useHardwareStore()
 
@@ -17,28 +17,28 @@ onUnmounted(() => {
 })
 
 const showLocation = computed(() => {
-  if (!infoStore.country || !infoStore.city) return ''
-  return infoStore.country + ' ' + infoStore.region + ' ' + infoStore.city
+  if (!weatherStore.country || !weatherStore.city) return ''
+  return weatherStore.country + ' ' + weatherStore.region + ' ' + weatherStore.city
 })
 
 const showWeather = computed(() => {
-  if (!infoStore.weather) return ''
-  return infoStore.weather
+  if (!weatherStore.weather) return ''
+  return weatherStore.weather
 })
 
 const showCurrentTemperature = computed(() => {
-  if (!infoStore.temperature.current) return ''
-  return infoStore.temperature.current + '°C'
+  if (!weatherStore.temperature.current) return ''
+  return weatherStore.temperature.current + '°C'
 })
 
 const showMinTemperature = computed(() => {
-  if (!infoStore.temperature.current) return ''
-  return infoStore.temperature.min + '°C'
+  if (!weatherStore.temperature.current) return ''
+  return weatherStore.temperature.min + '°C'
 })
 
 const showMaxTemperature = computed(() => {
-  if (!infoStore.temperature.max) return ''
-  return infoStore.temperature.max + '°C'
+  if (!weatherStore.temperature.max) return ''
+  return weatherStore.temperature.max + '°C'
 })
 </script>
 
@@ -49,29 +49,29 @@ const showMaxTemperature = computed(() => {
         <n-h2 style="margin: 0">{{ t('home.lable.info') }}</n-h2>
       </template>
 
-      <n-collapse-transition :show="infoStore.time != null">
+      <n-collapse-transition :show="weatherStore.time != null">
         <div class="text_in_one_line">
           <n-h3 style="margin: 0; min-width: 95px">{{ t('home.lable.time') }}</n-h3>
           <n-text>
-            <n-time :time="infoStore.time" type="datetime" />
+            <n-time :time="weatherStore.time" type="datetime" />
           </n-text>
         </div>
       </n-collapse-transition>
-      <n-collapse-transition :show="infoStore.country != ''">
+      <n-collapse-transition :show="weatherStore.country != ''">
         <div class="text_in_one_line">
           <n-h3 style="margin: 0; min-width: 95px">{{ t('home.lable.location') }}</n-h3>
           <n-text>{{ showLocation }}</n-text>
         </div>
       </n-collapse-transition>
 
-      <n-collapse-transition :show="infoStore.weather != ''">
+      <n-collapse-transition :show="weatherStore.weather != ''">
         <div class="text_in_one_line">
           <n-h3 style="margin: 0; min-width: 95px">{{ t('home.lable.weather') }}</n-h3>
           <n-text>{{ showWeather }}</n-text>
         </div>
       </n-collapse-transition>
 
-      <n-collapse-transition :show="infoStore.temperature.current != null">
+      <n-collapse-transition :show="weatherStore.temperature.current != null">
         <n-collapse>
           <n-collapse-item style="margin-left: -22px">
             <template #header>

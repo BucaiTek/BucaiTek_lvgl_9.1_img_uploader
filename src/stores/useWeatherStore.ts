@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
 
-export const useInfoStore = defineStore('infoStore', {
+export const useWeatherStore = defineStore('weatherStore', {
   state: () => ({
     time: null as null | Date,
     intervalId: null as number | null,
@@ -59,15 +59,19 @@ export const useInfoStore = defineStore('infoStore', {
         let conditionsResponse = await axios.get('https://www.weatherapi.com/docs/conditions.json')
         let conditions = conditionsResponse.data.find((c: any) => c.code === currentWeather)
 
-        // Determine the system language
         const systemLanguage = navigator.language.split('-')[0]
         console.log('System language:', systemLanguage)
 
-        // Find the language-specific description for the current condition
         let languageDescription = conditions.languages.find(
           (lang: any) => lang.lang_iso === systemLanguage
         )
         if (languageDescription) {
+          if (this.time && (this.time.getHours() > 18 || this.time.getHours() < 6)) {
+            this.weather = languageDescription.night_text
+          } else {
+            this.weather = languageDescription.day_text
+          }
+
           this.weather = `${languageDescription.day_text} / ${languageDescription.night_text}`
         } else {
           console.log('No description available for your language.')

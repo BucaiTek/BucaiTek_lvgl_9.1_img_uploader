@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
 
 interface FanData {
-  actual: number // 实际转速
-  min: number // 最小转速
-  max: number // 最大转速
+  actual: number
+  min: number
+  max: number
 }
 
 type Platform = 'M1' | 'M2' | 'M3'
@@ -11,7 +11,7 @@ type HardwareType = 'CPU' | 'GPU'
 
 export const useHardwareStore = defineStore('hardwareStore', {
   state: () => ({
-    useSystemReader: false as boolean,
+    useSystemReader: null as boolean | null,
     intervalId: null as number | null,
     cpu: {
       efficiencyCoreCount: 0 as number,
@@ -59,7 +59,7 @@ export const useHardwareStore = defineStore('hardwareStore', {
     },
     disks: [] as { storeUsed: number; storeFree: number; storeTotal: number; name: string }[],
     fans: [] as FanData[],
-    sensors: {} as Record<string, number> // 由于传感器类型多样，使用键值对来存储所有传感器数据
+    sensors: {} as Record<string, number>
   }),
   actions: {
     async init() {
@@ -256,7 +256,6 @@ export const useHardwareStore = defineStore('hardwareStore', {
       this.gpuUtilizationHistory.tiler.push(this.gpu.utilizationTiler)
       this.gpuUtilizationHistory.device.push(this.gpu.utilizationDevice)
 
-      // 保持数组长度，例如最多保留100个数据点
       const maxLength = 100
       if (this.cpuUtilizationHistory.user.length > maxLength) {
         this.cpuUtilizationHistory.user.shift()
