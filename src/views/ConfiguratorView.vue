@@ -70,7 +70,7 @@ const timeStore = useTimeStore()
 .n-card {
   flex: 0 0 auto; /* 避免卡片被拉伸或压缩 */
   width: 255px;
-  height: 450px;
+  height: 460px;
   margin-right: 14px; /* 添加间隔 */
   scroll-snap-align: start;
   transition:
