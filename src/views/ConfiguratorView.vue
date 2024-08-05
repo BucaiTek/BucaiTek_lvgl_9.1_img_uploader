@@ -57,7 +57,7 @@ const timeStore = useTimeStore()
 }
 
 .cards-container {
-  padding: 40px 0 0 12px;
+  padding: 30px 0 0 12px;
   display: flex; /* 使用flex布局使元素横向排列 */
   flex-direction: row; /* 横向排列 */
   align-items: center; /* 垂直居中对齐（根据需要调整） */
@@ -70,7 +70,7 @@ const timeStore = useTimeStore()
 .n-card {
   flex: 0 0 auto; /* 避免卡片被拉伸或压缩 */
   width: 255px;
-  height: 460px;
+  height: 470px;
   margin-right: 14px; /* 添加间隔 */
   scroll-snap-align: start;
   transition:

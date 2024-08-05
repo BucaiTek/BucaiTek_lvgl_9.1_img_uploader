@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import ConfiguratorView from '@/views/ConfiguratorView.vue'
-import Python from '@/views/PythonView.vue'
+import TerminalView from '@/views/TerminalView.vue'
+import SettingView from '@/views/SettingView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,9 +18,14 @@ const router = createRouter({
       component: ConfiguratorView
     },
     {
-      path: '/python',
-      name: 'python',
-      component: Python
+      path: '/terminal',
+      name: 'terminal',
+      component: TerminalView
+    },
+    {
+      path: '/setting',
+      name: 'setting',
+      component: SettingView
     }
   ]
 })

@@ -17,7 +17,8 @@ import {
   SettingsOutline as SettingsOutlineIcon,
   LogoGithub as LogoGithubIcon,
   LinkOutline as LinkOutlineIcon,
-  LogoPython as LogoPythonIcon
+  TerminalOutline as TerminalOutlineIcon
+  
 } from '@vicons/ionicons5'
 import { NIcon } from 'naive-ui'
 import { useI18n } from 'vue-i18n'
@@ -130,12 +131,21 @@ const menuOptions = computed(() => [
     }
   },
   {
-    label: 'Python',
-    key: 'python',
-    icon: renderIcon(LogoPythonIcon),
+    label: t('nav_lable.terminal'),
+    key: 'terminal',
+    icon: renderIcon(TerminalOutlineIcon),
     onClick: () => {
-      router.push({ name: 'python' })
-      menuValue.value = 'python'
+      router.push({ name: 'terminal' })
+      menuValue.value = 'terminal'
+    }
+  },
+  {
+    label: t('nav_lable.setting'),
+    key: 'setting',
+    icon: renderIcon(SettingsOutlineIcon),
+    onClick: () => {
+      router.push({ name: 'setting' })
+      menuValue.value = 'setting'
     }
   }
 ])
@@ -235,8 +245,8 @@ hljs.registerLanguage('python', python)
         :width="210"
         :collapsed="browserStore.collapsed"
         show-trigger
-        trigger-style="top: 90px;"
-        collapsed-trigger-style="top: 90px;"
+        trigger-style="top: 85px;"
+        collapsed-trigger-style="top: 85px;"
         @collapse="browserStore.collapsed = true"
         @expand="browserStore.collapsed = false"
       >

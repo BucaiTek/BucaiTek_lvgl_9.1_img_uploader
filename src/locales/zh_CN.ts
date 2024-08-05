@@ -2,7 +2,8 @@ export default {
   nav_lable: {
     home: '主页',
     configurator: '配置器',
-    python: 'Python'
+    terminal: '终端',
+    setting: '设置'
   },
   connection: {
     connected: '已连接',

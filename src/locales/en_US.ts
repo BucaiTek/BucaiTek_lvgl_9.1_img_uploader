@@ -2,7 +2,8 @@ export default {
   nav_lable: {
     home: 'Home',
     configurator: 'Configurator',
-    python: 'Python'
+    terminal: 'Terminal',
+    setting: 'Setting',
   },
   connection: {
     connected: 'Connected',
