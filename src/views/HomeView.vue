@@ -37,13 +37,33 @@ const showMaxTemperature = computed(() => {
   return weatherStore.temperature.max + '°C'
 })
 
-const formatBytes = (bytes: number, decimals = 2) => {
+const formatBytes = (bytes: number | null, decimals = 2) => {
+  if (bytes === null) return ''
   if (bytes === 0) return '0 Bytes'
   const k = 1024
   const dm = decimals < 0 ? 0 : decimals
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
   const i = Math.floor(Math.log(bytes) / Math.log(k))
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
+}
+
+const formatNetSpeed = (bytes: number | null, decimals = 1) => {
+  if (bytes === null) return ''
+  if (bytes === 0) return '0 B/s'
+  const k = 1024
+  const dm = decimals < 0 ? 0 : decimals
+  const sizes = ['B/s', 'KB/s', 'MB/s', 'GB/s', 'TB/s', 'PB/s', 'EB/s', 'ZB/s', 'YB/s']
+  let i = Math.floor(Math.log(bytes) / Math.log(k))
+
+  if (bytes / Math.pow(k, i) > 999 && i < sizes.length - 1) {
+    i++
+  }
+
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
+}
+
+const formatSensor = (value: number) => {
+  return value.toFixed(1)
 }
 </script>
 
@@ -125,13 +145,6 @@ const formatBytes = (bytes: number, decimals = 2) => {
 
       <n-scrollbar style="max-height: 340px">
         <div v-if="hardwareStore.useSystemReader">
-          <n-collapse-transition :show="hardwareStore.cpu.averageTemperature != 0">
-            <div class="text_in_one_line">
-              <n-h3 style="margin: 0; min-width: 170px">{{ t('home.lable.cpu') }}</n-h3>
-              <n-text>{{ hardwareStore.cpu.averageTemperature.toFixed(1) }}</n-text>
-            </div>
-          </n-collapse-transition>
-
           <n-collapse-transition :show="hardwareStore.cpu.utilizationUser != 0">
             <n-collapse>
               <n-collapse-item style="margin-left: -22px">
@@ -165,13 +178,6 @@ const formatBytes = (bytes: number, decimals = 2) => {
                 </div>
               </n-collapse-item>
             </n-collapse>
-          </n-collapse-transition>
-
-          <n-collapse-transition :show="hardwareStore.gpu.averageTemperature != 0">
-            <div class="text_in_one_line">
-              <n-h3 style="margin: 0; min-width: 170px">{{ t('home.lable.gpu') }}</n-h3>
-              <n-text>{{ hardwareStore.gpu.averageTemperature.toFixed(1) }}</n-text>
-            </div>
           </n-collapse-transition>
 
           <n-collapse-transition :show="hardwareStore.gpu.utilizationDevice != 0">
@@ -212,9 +218,9 @@ const formatBytes = (bytes: number, decimals = 2) => {
             <n-collapse>
               <n-collapse-item style="margin-left: -22px">
                 <template #header>
-                  <n-h3 style="margin: 0; min-width: 100px">{{ t('home.lable.ram') }}</n-h3>
+                  <n-h3 style="margin: 0; min-width: 90px">{{ t('home.lable.ram') }}</n-h3>
                   <n-text>
-                    {{ formatBytes(hardwareStore.ram.memoryUsed) }}/
+                    {{ formatBytes(hardwareStore.ram.memoryUsed) }} /
                     {{ formatBytes(hardwareStore.ram.memoryTotal) }}
                   </n-text>
                 </template>
@@ -242,23 +248,177 @@ const formatBytes = (bytes: number, decimals = 2) => {
             </n-collapse>
           </n-collapse-transition>
 
-
-          
-          <n-collapse-transition
-            :show="hardwareStore.gpuTemp != null && hardwareStore.gpuTemp.length > 0"
-          >
-            <div class="text_in_one_line">
-              <n-h3 style="margin: 0; min-width: 170px">{{ t('home.lable.gpu') }}</n-h3>
-              <n-text>{{ hardwareStore.gpuAvgeTemp }}</n-text>
-            </div>
+          <n-collapse-transition :show="hardwareStore.net.bandwidthUp != null">
+            <n-collapse>
+              <n-collapse-item style="margin-left: -22px">
+                <template #header>
+                  <n-h3 style="margin: 0; min-width: 90px">{{ t('home.lable.netSpeed') }}</n-h3>
+                  <n-text>
+                    {{ formatNetSpeed(hardwareStore.net.bandwidthUp) }} /
+                    {{ formatNetSpeed(hardwareStore.net.bandwidthDown) }}
+                  </n-text>
+                </template>
+                <div style="margin-left: 30px; margin-top: -15px">
+                  <div class="text_in_one_line">
+                    <n-h6 style="min-width: 140px; margin: 0">{{
+                      t('home.lable.netUploading')
+                    }}</n-h6>
+                    <n-text>{{ formatNetSpeed(hardwareStore.net.bandwidthUp, 2) }}</n-text>
+                  </div>
+                  <div class="text_in_one_line">
+                    <n-h6 style="min-width: 140px; margin: 0">{{
+                      t('home.lable.netDownloading')
+                    }}</n-h6>
+                    <n-text>{{ formatNetSpeed(hardwareStore.net.bandwidthDown, 2) }}</n-text>
+                  </div>
+                </div>
+              </n-collapse-item>
+            </n-collapse>
           </n-collapse-transition>
-          <n-collapse-transition
-            :show="hardwareStore.fanData != null && hardwareStore.fanData.length > 0"
-          >
-            <div class="text_in_one_line">
-              <n-h3 style="margin: 0; min-width: 170px">{{ t('home.lable.fan') }}</n-h3>
-              <n-text>{{ hardwareStore.fanData![0]['actual'] }}</n-text>
-            </div>
+
+          <n-collapse-transition :show="hardwareStore.sensors.length > 0">
+            <n-collapse>
+              <n-collapse-item style="margin-left: -22px">
+                <template #header>
+                  <n-h3 style="margin: 0; min-width: 160px">{{ t('home.lable.sensor') }}</n-h3>
+                  <n-text> {{ hardwareStore.sensors.length }}</n-text>
+                </template>
+                <div style="margin-left: -10px; margin-top: -15px">
+                  <n-collapse>
+                    <n-collapse-item>
+                      <template #header>
+                        <n-h6 style="margin: 0; min-width: 100px">{{
+                          t('home.lable.temperature')
+                        }}</n-h6>
+                      </template>
+                      <div style="margin-left: 10px; margin-top: -15px">
+                        <div
+                          v-for="(sensor, index) in hardwareStore.sensor.temperatureSensors"
+                          :key="index"
+                        >
+                          <div class="text_in_one_line">
+                            <n-text style="min-width: 150px">{{ sensor.name }}: </n-text>
+                            <n-text>{{ formatSensor(sensor.value) }} °C</n-text>
+                          </div>
+                        </div>
+                      </div>
+                    </n-collapse-item>
+                  </n-collapse>
+                  <n-collapse>
+                    <n-collapse-item>
+                      <template #header>
+                        <n-h6 style="margin: 0; min-width: 100px">{{
+                          t('home.lable.voltage')
+                        }}</n-h6>
+                      </template>
+                      <div style="margin-left: 10px; margin-top: -15px">
+                        <div
+                          v-for="(sensor, index) in hardwareStore.sensor.voltageSensors"
+                          :key="index"
+                        >
+                          <div class="text_in_one_line">
+                            <n-text style="min-width: 150px">{{ sensor.name }}: </n-text>
+                            <n-text>{{ formatSensor(sensor.value) }} V</n-text>
+                          </div>
+                        </div>
+                      </div>
+                    </n-collapse-item>
+                  </n-collapse>
+                  <n-collapse>
+                    <n-collapse-item>
+                      <template #header>
+                        <n-h6 style="margin: 0; min-width: 100px">{{
+                          t('home.lable.current')
+                        }}</n-h6>
+                      </template>
+                      <div style="margin-left: 10px; margin-top: -15px">
+                        <div
+                          v-for="(sensor, index) in hardwareStore.sensor.currentSensors"
+                          :key="index"
+                        >
+                          <div class="text_in_one_line">
+                            <n-text style="min-width: 150px">{{ sensor.name }}: </n-text>
+                            <n-text>{{ formatSensor(sensor.value) }} A</n-text>
+                          </div>
+                        </div>
+                      </div>
+                    </n-collapse-item>
+                  </n-collapse>
+                  <n-collapse>
+                    <n-collapse-item>
+                      <template #header>
+                        <n-h6 style="margin: 0; min-width: 100px">{{ t('home.lable.power') }}</n-h6>
+                      </template>
+                      <div style="margin-left: 10px; margin-top: -15px">
+                        <div
+                          v-for="(sensor, index) in hardwareStore.sensor.powerSensors"
+                          :key="index"
+                        >
+                          <div class="text_in_one_line">
+                            <n-text style="min-width: 150px">{{ sensor.name }}: </n-text>
+                            <n-text>{{ formatSensor(sensor.value) }} W</n-text>
+                          </div>
+                        </div>
+                      </div>
+                    </n-collapse-item>
+                  </n-collapse>
+                </div>
+              </n-collapse-item>
+            </n-collapse>
+          </n-collapse-transition>
+
+          <n-collapse-transition :show="hardwareStore.disks.length > 0">
+            <n-collapse>
+              <n-collapse-item style="margin-left: -22px">
+                <template #header>
+                  <n-h3 style="margin: 0; min-width: 100px">{{ t('home.lable.disk') }}</n-h3>
+                  <n-text>
+                    {{ hardwareStore.disks.length }}
+                  </n-text>
+                </template>
+
+                <div style="margin-left: -10px; margin-top: -15px">
+                  <n-collapse v-for="disk in hardwareStore.disks" :key="disk.name">
+                    <n-collapse-item>
+                      <template #header>
+                        <n-text style="margin: 0; min-width: 100px">{{ disk.name }}</n-text>
+                      </template>
+                      <div style="margin-left: 15px; margin-top: -15px">
+                        <div class="text_in_one_line">
+                          <n-text style="margin: 0">已用空间:</n-text>
+                          <n-text>
+                            {{ formatBytes(disk.storeUsed) }}/{{ formatBytes(disk.storeTotal) }}
+                          </n-text>
+                        </div>
+                      </div>
+                    </n-collapse-item>
+                  </n-collapse>
+                </div>
+              </n-collapse-item>
+            </n-collapse>
+          </n-collapse-transition>
+
+          <n-collapse-transition :show="hardwareStore.fans.length > 0">
+            <n-collapse>
+              <n-collapse-item style="margin-left: -22px">
+                <template #header>
+                  <n-h3 style="margin: 0; min-width: 100px">{{ t('home.lable.fan') }}</n-h3>
+                  <n-text>
+                    {{ hardwareStore.fans.length }}
+                  </n-text>
+                </template>
+                <div style="margin-left: 30px; margin-top: -15px">
+                  <div v-for="(fan, index) in hardwareStore.fans" :key="index">
+                    <div class="text_in_one_line">
+                      <n-h6 style="min-width: 100px; margin: 0">Fan{{ index }}:</n-h6>
+                      <n-text>
+                        {{ fan.actual }}
+                      </n-text>
+                    </div>
+                  </div>
+                </div>
+              </n-collapse-item>
+            </n-collapse>
           </n-collapse-transition>
         </div>
         <div v-else-if="hardwareStore.useSystemReader == false">

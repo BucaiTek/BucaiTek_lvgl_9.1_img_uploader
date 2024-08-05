@@ -39,7 +39,6 @@ export const useWeatherStore = defineStore('weatherStore', {
         const response = await axios.get(
           'https://64090833871b4162bbbdbe9d92b87a1a-cn-shenzhen.alicloudapi.com/ip.json'
         )
-        console.log(response.data)
         this.coordinates = {
           latitude: response.data.lat,
           longitude: response.data.lon
@@ -67,7 +66,6 @@ export const useWeatherStore = defineStore('weatherStore', {
         let conditions = conditionsResponse.data.find((c: any) => c.code === currentWeather)
 
         const systemLanguage = navigator.language.split('-')[0]
-        console.log('System language:', systemLanguage)
 
         let languageDescription = conditions.languages.find(
           (lang: any) => lang.lang_iso === systemLanguage
@@ -78,9 +76,7 @@ export const useWeatherStore = defineStore('weatherStore', {
           } else {
             this.weather = languageDescription.day_text
           }
-        } else {
-          console.log('No description available for your language.')
-        }
+        } 
 
         this.temperature.current = weatherResponse.data.current.temp_c
         this.temperature.min = weatherResponse.data.forecast.forecastday[0].day.mintemp_c

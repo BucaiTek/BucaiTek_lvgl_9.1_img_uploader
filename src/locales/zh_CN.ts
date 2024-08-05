@@ -15,6 +15,9 @@ export default {
       time: '时间',
       location: '位置',
       temperature: '温度',
+      voltage: '电压',
+      current: '电流',
+      power: '功率',
       current_temperature: '当前温度:',
       min_temperature: '最低温度:',
       max_temperature: '最高温度:',
@@ -34,8 +37,12 @@ export default {
       ramWired: '联动内存:',
       ramCompressed: '被压缩:',
       ramSwap: '交换区:',
-
-      fan: '风扇转速',
+      sensor: '传感器',
+      disk: '磁盘',
+      fan: '风扇',
+      netSpeed: '网速',
+      netUploading: '上传:',
+      netDownloading: '下载:',
       system_data: '系统数据'
     },
     text: {
