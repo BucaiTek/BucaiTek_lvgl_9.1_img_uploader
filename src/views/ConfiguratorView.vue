@@ -2,22 +2,26 @@
 import { useBrowserStore } from '@/stores/useBrowserStore'
 
 const browserStore = useBrowserStore()
-const containerRef: Ref<HTMLElement | null> = ref(null)
 </script>
 
 <template>
   <main class="scroll-container">
-    <div class="cards-container" ref="containerRef">
-      <n-card :class="{ 'expanded-style': !browserStore.collapsed }">1</n-card>
-      <n-card :class="{ 'expanded-style': !browserStore.collapsed }">2</n-card>
-      <n-card :class="{ 'expanded-style': !browserStore.collapsed }">3</n-card>
-      <n-card>4</n-card>
-      <n-card>5</n-card>
-      <n-card>6</n-card>
-      <n-card>7</n-card>
-      <n-card>8</n-card>
-      <n-card>9</n-card>
-      <n-card>10</n-card>
+    <div class="cards-container">
+      <div class="card-border">
+        <n-card :class="{ 'expanded-style': !browserStore.collapsed }">1</n-card>
+      </div>
+      <div class="card-border">
+        <n-card :class="{ 'expanded-style': !browserStore.collapsed }">2</n-card>
+      </div>
+      <div class="card-border">
+        <n-card :class="{ 'expanded-style': !browserStore.collapsed }">3</n-card>
+      </div>
+      <div class="card-border">
+        <n-card :class="{ 'expanded-style': !browserStore.collapsed }">3</n-card>
+      </div>
+      <div class="card-border">
+        <n-card :class="{ 'expanded-style': !browserStore.collapsed }">3</n-card>
+      </div>
     </div>
   </main>
 </template>
@@ -34,16 +38,20 @@ const containerRef: Ref<HTMLElement | null> = ref(null)
   flex-direction: row; /* 横向排列 */
   align-items: center; /* 垂直居中对齐（根据需要调整） */
   scroll-snap-type: x mandatory; /* 滑动对齐 */
+  white-space: nowrap;
   overflow-x: scroll; /* 允许横向滚动 */
   overflow-y: hidden; /* 防止纵向滚动 */
+}
+.card-border {
+  scroll-snap-align: start;
+  padding-left: 14px; /* 为每个卡片设置左侧偏移 */
+  flex: 0 0 auto; /* 确保容器不会被拉伸或压缩 */
 }
 
 .n-card {
   flex: 0 0 auto; /* 避免卡片被拉伸或压缩 */
   width: 255px;
   height: 480px;
-  margin-right: 14px; /* 添加间隔 */
-  scroll-snap-align: center; /* 使卡片在滑动时自动对齐 */
   transition:
     margin 0.1s ease-in-out,
     width 0.2s ease-in-out; /* 添加max-width到过渡效果 */
@@ -60,7 +68,6 @@ const containerRef: Ref<HTMLElement | null> = ref(null)
 
 .expanded-style {
   width: 320px;
-  margin-right: 15px;
   margin-left: 3px;
 }
 </style>
