@@ -54,65 +54,69 @@ const formatBytes = (bytes: number, decimals = 2) => {
         <n-h2 style="margin: 0">{{ t('home.lable.info') }}</n-h2>
       </template>
 
-      <n-collapse-transition :show="weatherStore.time != null">
-        <div class="text_in_one_line">
-          <n-h3 style="margin: 0; min-width: 95px">{{ t('home.lable.time') }}</n-h3>
-          <n-text>
-            <n-time :time="weatherStore.time" type="datetime" />
-          </n-text>
-        </div>
-      </n-collapse-transition>
-      <n-collapse-transition :show="weatherStore.country != ''">
-        <div class="text_in_one_line">
-          <n-h3 style="margin: 0; min-width: 95px">{{ t('home.lable.location') }}</n-h3>
-          <n-text>{{ showLocation }}</n-text>
-        </div>
-      </n-collapse-transition>
+      <n-scrollbar style="max-height: 340px">
+        <n-collapse-transition :show="weatherStore.time != null">
+          <div class="text_in_one_line">
+            <n-h3 style="margin: 0; min-width: 95px">{{ t('home.lable.time') }}</n-h3>
+            <n-text>
+              <n-time :time="weatherStore.time" type="datetime" />
+            </n-text>
+          </div>
+        </n-collapse-transition>
+        <n-collapse-transition :show="weatherStore.country != ''">
+          <div class="text_in_one_line">
+            <n-h3 style="margin: 0; min-width: 95px">{{ t('home.lable.location') }}</n-h3>
+            <n-text>{{ showLocation }}</n-text>
+          </div>
+        </n-collapse-transition>
 
-      <n-collapse-transition :show="weatherStore.weather != ''">
-        <div class="text_in_one_line">
-          <n-h3 style="margin: 0; min-width: 95px">{{ t('home.lable.weather') }}</n-h3>
-          <n-text>{{ showWeather }}</n-text>
-        </div>
-      </n-collapse-transition>
+        <n-collapse-transition :show="weatherStore.weather != ''">
+          <div class="text_in_one_line">
+            <n-h3 style="margin: 0; min-width: 95px">{{ t('home.lable.weather') }}</n-h3>
+            <n-text>{{ showWeather }}</n-text>
+          </div>
+        </n-collapse-transition>
 
-      <n-collapse-transition :show="weatherStore.temperature.current != null">
-        <n-collapse>
-          <n-collapse-item style="margin-left: -22px">
-            <template #header>
-              <n-h3
-                :style="
-                  locale === 'zh_CN' ? 'margin: 0; min-width: 95px' : 'margin: 0; min-width: 147px'
-                "
-                >{{ t('home.lable.temperature') }}</n-h3
-              >
-              <n-text>
-                {{ showCurrentTemperature }}
-              </n-text>
-            </template>
-            <div style="margin-left: 30px; margin-top: -15px">
-              <div class="text_in_one_line">
-                <n-h6 style="min-width: 140px; margin: 0">{{
-                  t('home.lable.current_temperature')
-                }}</n-h6>
-                <n-text>{{ showCurrentTemperature }}</n-text>
+        <n-collapse-transition :show="weatherStore.temperature.current != null">
+          <n-collapse>
+            <n-collapse-item style="margin-left: -22px">
+              <template #header>
+                <n-h3
+                  :style="
+                    locale === 'zh_CN'
+                      ? 'margin: 0; min-width: 95px'
+                      : 'margin: 0; min-width: 147px'
+                  "
+                  >{{ t('home.lable.temperature') }}</n-h3
+                >
+                <n-text>
+                  {{ showCurrentTemperature }}
+                </n-text>
+              </template>
+              <div style="margin-left: 30px; margin-top: -15px">
+                <div class="text_in_one_line">
+                  <n-h6 style="min-width: 140px; margin: 0">{{
+                    t('home.lable.current_temperature')
+                  }}</n-h6>
+                  <n-text>{{ showCurrentTemperature }}</n-text>
+                </div>
+                <div class="text_in_one_line">
+                  <n-h6 style="min-width: 140px; margin: 0">{{
+                    t('home.lable.min_temperature')
+                  }}</n-h6>
+                  <n-text>{{ showMinTemperature }}</n-text>
+                </div>
+                <div class="text_in_one_line">
+                  <n-h6 style="min-width: 140px; margin: 0">{{
+                    t('home.lable.max_temperature')
+                  }}</n-h6>
+                  <n-text>{{ showMaxTemperature }}</n-text>
+                </div>
               </div>
-              <div class="text_in_one_line">
-                <n-h6 style="min-width: 140px; margin: 0">{{
-                  t('home.lable.min_temperature')
-                }}</n-h6>
-                <n-text>{{ showMinTemperature }}</n-text>
-              </div>
-              <div class="text_in_one_line">
-                <n-h6 style="min-width: 140px; margin: 0">{{
-                  t('home.lable.max_temperature')
-                }}</n-h6>
-                <n-text>{{ showMaxTemperature }}</n-text>
-              </div>
-            </div>
-          </n-collapse-item>
-        </n-collapse>
-      </n-collapse-transition>
+            </n-collapse-item>
+          </n-collapse>
+        </n-collapse-transition>
+      </n-scrollbar>
     </n-card>
     <n-card :class="{ 'expanded-style': browserStore.collapsed }" size="large">
       <template #header>
@@ -238,6 +242,8 @@ const formatBytes = (bytes: number, decimals = 2) => {
             </n-collapse>
           </n-collapse-transition>
 
+
+          
           <n-collapse-transition
             :show="hardwareStore.gpuTemp != null && hardwareStore.gpuTemp.length > 0"
           >

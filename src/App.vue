@@ -32,16 +32,16 @@ const hardwareStore = useHardwareStore()
 onMounted(async () => {
   colorStore.cycleColors()
   router.push({ name: 'home' })
-  weatherStore.startTimer()
 
   await hardwareStore.init()
   await hardwareStore.startReadSysData()
 
-  await weatherStore.fetchIPInfo()
-  await weatherStore.fetchWeatherInfo()
+  weatherStore.startTimer()
+  await weatherStore.init()
 })
 
 onUnmounted(() => {
+  hardwareStore.stopReadSysData()
   weatherStore.stopTimer()
   colorStore.stopCycle()
 })
