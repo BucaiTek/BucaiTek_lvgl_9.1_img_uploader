@@ -12,7 +12,7 @@
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
-    "dev-client": "vite build --config vite.config.electron.ts && vite --config vite.config.electron.ts",
+    "dev-client": "vite --config vite.config.electron.ts",
     "build-client": "vite build --config vite.config.electron.ts && electron-builder --mac"
   },
   "build": {

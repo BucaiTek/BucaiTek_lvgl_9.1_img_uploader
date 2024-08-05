@@ -55,8 +55,8 @@ function createWindow() {
     }
   })
 
-  mainWindow.loadFile('dist/index.html', { hash: 'home' })
-
+  //mainWindow.loadFile('dist/index.html', { hash: 'home' })
+  mainWindow.loadURL("http://localhost:5173")
   mainWindow.on('close', (e) => {
     if (!willQuitApp && mainWindow !== null) {
       e.preventDefault() // 阻止窗口的关闭事件
