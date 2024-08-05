@@ -9,17 +9,11 @@ const browserStore = useBrowserStore()
 const hardwareStore = useHardwareStore()
 
 onMounted(async () => {
-  infoStore.startTimer()
 
-  await infoStore.fetchIPInfo()
-  await infoStore.fetchWeatherInfo()
-
-  await hardwareStore.init()
-  await hardwareStore.startReadSysData()
 })
 
 onUnmounted(() => {
-  infoStore.stopTimer()
+  
 })
 
 const showLocation = computed(() => {

@@ -5,12 +5,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     const result = await ipcRenderer.invoke('check-electron')
     return result
   },
-  getChipModel: async (data: string) => {
-    const result = await ipcRenderer.invoke('request-chip-model', data)
+  BCMonitor: async (data: string) => {
+    const result = await ipcRenderer.invoke('request-BCMonitor', data)
     return result
   },
-  getSensorData: async (data: string) => {
-    const result = await ipcRenderer.invoke('request-sensor-data', data)
-    return result
-  }
 })

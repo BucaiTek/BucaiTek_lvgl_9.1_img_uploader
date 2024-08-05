@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useHidStore } from '@/stores/useHidStore'
 import { useColorStore } from '@/stores/useColorStore'
+import { useInfoStore } from '@/stores/useInfoStore'
 import { useBrowserStore } from '@/stores/useBrowserStore'
+import { useHardwareStore } from '@/stores/useHardwareStore'
 import { darkTheme, lightTheme } from 'naive-ui'
 import {
   BrightnessHigh32Filled as BrightnessHigh32FilledIcon,
@@ -24,12 +26,23 @@ const colorStore = useColorStore()
 const browserStore = useBrowserStore()
 const router = useRouter()
 
-onMounted(() => {
+const infoStore = useInfoStore()
+const hardwareStore = useHardwareStore()
+
+onMounted(async () => {
   colorStore.cycleColors()
   router.push({ name: 'home' })
+  infoStore.startTimer()
+
+  await infoStore.fetchIPInfo()
+  await infoStore.fetchWeatherInfo()
+
+  await hardwareStore.init()
+  await hardwareStore.startReadSysData()
 })
 
 onUnmounted(() => {
+  infoStore.stopTimer()
   colorStore.stopCycle()
 })
 
