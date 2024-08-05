@@ -105,32 +105,36 @@ export const useHardwareStore = defineStore('hardwareStore', {
     updateHardwareData(data: Record<string, any>) {
       this.sensors = data.Sensors
 
-      this.cpu.model = data.CPU.model
-      this.cpu.efficiencyCoreCount = data.CPU.cores[0]
-      this.cpu.performanceCoreCount = data.CPU.cores[1]
-      this.cpu.totalCoreCount = data.CPU.cores[0] + data.CPU.cores[1]
-      this.cpu.coresUtilization = data.CPU.coresUtilization
-      this.cpu.utilizationUser = data.CPU.utilizations[0]
-      this.cpu.utilizationSystem = data.CPU.utilizations[1]
-      this.cpu.utilizationIdle = data.CPU.utilizations[2]
+      if (data.CPU.utilizations[0] != 0) {
+        this.cpu.model = data.CPU.model
+        this.cpu.efficiencyCoreCount = data.CPU.cores[0]
+        this.cpu.performanceCoreCount = data.CPU.cores[1]
+        this.cpu.totalCoreCount = data.CPU.cores[0] + data.CPU.cores[1]
+        this.cpu.coresUtilization = data.CPU.coresUtilization
+        this.cpu.utilizationUser = data.CPU.utilizations[0]
+        this.cpu.utilizationSystem = data.CPU.utilizations[1]
+        this.cpu.utilizationIdle = data.CPU.utilizations[2]
 
-      const cpuTemperatureInfo = this.getTemperatureByModel(this.cpu.model, 'CPU')
-      if (cpuTemperatureInfo) {
-        this.cpu.averageTemperature = cpuTemperatureInfo.average
-        this.cpu.coresTemperature = cpuTemperatureInfo.temperatures
+        const cpuTemperatureInfo = this.getTemperatureByModel(this.cpu.model, 'CPU')
+        if (cpuTemperatureInfo) {
+          this.cpu.averageTemperature = cpuTemperatureInfo.average
+          this.cpu.coresTemperature = cpuTemperatureInfo.temperatures
+        }
       }
 
-      this.gpu.model = data.GPU.model
-      this.gpu.coreCount = data.GPU.coreCount
-      this.gpu.utilizationDevice = data.GPU.utilization.device
-      this.gpu.utilizationRenderer = data.GPU.utilization.renderer
-      this.gpu.utilizationTiler = data.GPU.utilization.tiler
+      if (data.GPU.utilization.device != 0) {
+        this.gpu.model = data.GPU.model
+        this.gpu.coreCount = data.GPU.coreCount
+        this.gpu.utilizationDevice = data.GPU.utilization.device
+        this.gpu.utilizationRenderer = data.GPU.utilization.renderer
+        this.gpu.utilizationTiler = data.GPU.utilization.tiler
 
-      const gpuTemperatureInfo = this.getTemperatureByModel(this.gpu.model, 'GPU')
+        const gpuTemperatureInfo = this.getTemperatureByModel(this.gpu.model, 'GPU')
 
-      if (gpuTemperatureInfo) {
-        this.gpu.averageTemperature = gpuTemperatureInfo.average
-        this.gpu.coresTemperature = gpuTemperatureInfo.temperatures
+        if (gpuTemperatureInfo) {
+          this.gpu.averageTemperature = gpuTemperatureInfo.average
+          this.gpu.coresTemperature = gpuTemperatureInfo.temperatures
+        }
       }
 
       this.ram.swapTotal = data.RAM.swap[1]
@@ -163,8 +167,6 @@ export const useHardwareStore = defineStore('hardwareStore', {
         this.fans.push(fanData)
       }
       this.updateUtilizationHistory()
-      console.log(this.cpuUtilizationHistory)
-      console.log(this.gpuUtilizationHistory)
     },
     getTemperatureByModel(
       model: string,

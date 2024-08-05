@@ -34,11 +34,11 @@ onMounted(async () => {
   router.push({ name: 'home' })
   weatherStore.startTimer()
 
-  await weatherStore.fetchIPInfo()
-  await weatherStore.fetchWeatherInfo()
-
   await hardwareStore.init()
   await hardwareStore.startReadSysData()
+
+  await weatherStore.fetchIPInfo()
+  await weatherStore.fetchWeatherInfo()
 })
 
 onUnmounted(() => {

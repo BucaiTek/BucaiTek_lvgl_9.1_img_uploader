@@ -71,8 +71,6 @@ export const useWeatherStore = defineStore('weatherStore', {
           } else {
             this.weather = languageDescription.day_text
           }
-
-          this.weather = `${languageDescription.day_text} / ${languageDescription.night_text}`
         } else {
           console.log('No description available for your language.')
         }
