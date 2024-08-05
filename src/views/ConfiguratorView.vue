@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { useBrowserStore } from '@/stores/useBrowserStore'
 import { useWeatherStore } from '@/stores/useWeatherStore'
+import { useTimeStore } from '@/stores/useTimeStore'
 
 const browserStore = useBrowserStore()
 const weatherStore = useWeatherStore()
 
+const timeStore = useTimeStore()
 </script>
 
 <template>
@@ -14,7 +16,17 @@ const weatherStore = useWeatherStore()
       :style="{ 'scroll-padding-left': browserStore.collapsed ? '12px' : '14px' }"
     >
       <n-card :class="{ 'expanded-card-style': !browserStore.collapsed }">
-
+        <template #header>
+          <div>
+            <div style="font-size: 80px">
+              {{ timeStore.days[timeStore.time!.getDay()] }}
+            </div>
+            <div style="font-size: 20px; margin-top: -25px; margin-left: 35px">
+              {{ timeStore.time!.getHours() }}:{{ timeStore.time!.getMinutes() }} ·
+              {{ timeStore.month[timeStore.time!.getMonth() - 1] }}, {{ timeStore.time!.getDay() }}
+            </div>
+          </div>
+        </template>
       </n-card>
       <n-card :class="{ 'expanded-card-style': !browserStore.collapsed }">2</n-card>
       <n-card :class="{ 'expanded-card-style': !browserStore.collapsed }">3</n-card>

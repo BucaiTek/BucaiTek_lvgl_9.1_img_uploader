@@ -235,7 +235,7 @@ export const useHardwareStore = defineStore('hardwareStore', {
       }
       this.intervalId = setInterval(() => {
         this.getSensorData()
-      }, 1000)
+      }, 1500)
     },
     stopReadSysData() {
       if (this.intervalId) {
