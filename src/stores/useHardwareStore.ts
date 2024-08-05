@@ -11,42 +11,51 @@ type HardwareType = 'CPU' | 'GPU'
 
 export const useHardwareStore = defineStore('hardwareStore', {
   state: () => ({
-    useSystemReader: null as boolean | null,
+    useSystemReader: false as boolean,
     intervalId: null as number | null,
     cpu: {
-      efficiencyCoreCount: null as number | null,
-      performanceCoreCount: null as number | null,
-      totalCoreCount: null as number | null,
-      utilizationUser: null as number | null,
-      utilizationSystem: null as number | null,
-      utilizationIdle: null as number | null,
+      efficiencyCoreCount: 0 as number,
+      performanceCoreCount: 0 as number,
+      totalCoreCount: 0 as number,
+      utilizationUser: 0 as number,
+      utilizationSystem: 0 as number,
+      utilizationIdle: 0 as number,
       coresUtilization: [] as number[],
-      averageTemperature: null as number | null,
+      averageTemperature: 0 as number,
       coresTemperature: [] as number[],
       model: ''
     },
     gpu: {
-      coreCount: null as number | null,
+      coreCount: 0 as number,
       model: '',
-      utilizationRenderer: null as number | null,
-      utilizationTiler: null as number | null,
-      utilizationDevice: null as number | null,
-      averageTemperature: null as number | null,
+      utilizationRenderer: 0 as number,
+      utilizationTiler: 0 as number,
+      utilizationDevice: 0 as number,
+      averageTemperature: 0 as number,
       coresTemperature: [] as number[]
     },
+    cpuUtilizationHistory: {
+      user: [] as number[],
+      system: [] as number[]
+    },
+    gpuUtilizationHistory: {
+      renderer: [] as number[],
+      tiler: [] as number[],
+      device: [] as number[]
+    },
     ram: {
-      memoryUsed: null as number | null,
-      memoryTotal: null as number | null,
-      appMemory: null as number | null,
-      wiredMemory: null as number | null,
-      compressedMemory: null as number | null,
-      swapUsed: null as number | null,
-      swapTotal: null as number | null,
-      cachedMemory: null as number | null
+      memoryUsed: 0 as number,
+      memoryTotal: 0 as number,
+      appMemory: 0 as number,
+      wiredMemory: 0 as number,
+      compressedMemory: 0 as number,
+      swapUsed: 0 as number,
+      swapTotal: 0 as number,
+      cachedMemory: 0 as number
     },
     net: {
-      bandwidthUp: null as number | null,
-      bandwidthDown: null as number | null
+      bandwidthUp: 0 as number,
+      bandwidthDown: 0 as number
     },
     disks: [] as { storeUsed: number; storeFree: number; storeTotal: number; name: string }[],
     fans: [] as FanData[],
@@ -153,6 +162,9 @@ export const useHardwareStore = defineStore('hardwareStore', {
         }
         this.fans.push(fanData)
       }
+      this.updateUtilizationHistory()
+      console.log(this.cpuUtilizationHistory)
+      console.log(this.gpuUtilizationHistory)
     },
     getTemperatureByModel(
       model: string,
@@ -235,6 +247,25 @@ export const useHardwareStore = defineStore('hardwareStore', {
       return {
         average,
         temperatures
+      }
+    },
+    updateUtilizationHistory() {
+      this.cpuUtilizationHistory.user.push(this.cpu.utilizationUser)
+      this.cpuUtilizationHistory.system.push(this.cpu.utilizationSystem)
+      this.gpuUtilizationHistory.renderer.push(this.gpu.utilizationRenderer)
+      this.gpuUtilizationHistory.tiler.push(this.gpu.utilizationTiler)
+      this.gpuUtilizationHistory.device.push(this.gpu.utilizationDevice)
+
+      // 保持数组长度，例如最多保留100个数据点
+      const maxLength = 100
+      if (this.cpuUtilizationHistory.user.length > maxLength) {
+        this.cpuUtilizationHistory.user.shift()
+        this.cpuUtilizationHistory.system.shift()
+      }
+      if (this.gpuUtilizationHistory.renderer.length > maxLength) {
+        this.gpuUtilizationHistory.renderer.shift()
+        this.gpuUtilizationHistory.tiler.shift()
+        this.gpuUtilizationHistory.device.shift()
       }
     }
   }
