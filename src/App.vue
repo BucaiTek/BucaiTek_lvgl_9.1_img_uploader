@@ -234,8 +234,8 @@ hljs.registerLanguage('python', python)
         :width="210"
         :collapsed="browserStore.collapsed"
         show-trigger
-        trigger-style="top: 80px;"
-        collapsed-trigger-style="top: 80px;"
+        trigger-style="top: 90px;"
+        collapsed-trigger-style="top: 90px;"
         @collapse="browserStore.collapsed = true"
         @expand="browserStore.collapsed = false"
       >
