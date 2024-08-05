@@ -24,14 +24,26 @@ const timeStore = useTimeStore()
             justify-content: center;
           "
         >
-          <div style="font-size: 80px">
+          <div style="font-size: 60px">
             {{ timeStore.days[timeStore.time!.getDay()] }}
           </div>
-          <div style="font-size: 21px; margin-top: -25px">
+          <div style="font-size: 18px; margin-top: -18px">
             {{ timeStore.formatTime(timeStore.time!.getHours()) }}:{{
               timeStore.formatTime(timeStore.time!.getMinutes())
             }}
             · {{ timeStore.month[timeStore.time!.getMonth() - 1] }}, {{ timeStore.time!.getDay() }}
+          </div>
+
+          <div style="font-size: 18px; margin-top: -5px">
+            {{ weatherStore.region }} {{ weatherStore.city }}
+          </div>
+
+          <i
+            style="font-size: 60px; margin-top: 20px"
+            :class="'qi-' + weatherStore.weatherIcon"
+          ></i>
+          <div style="font-size: 28px; margin-top: -10px">
+            {{ weatherStore.temperature.current }}°C
           </div>
         </div>
       </n-card>
