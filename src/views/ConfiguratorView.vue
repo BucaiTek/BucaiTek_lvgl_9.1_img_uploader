@@ -25,48 +25,62 @@ const timeStore = useTimeStore()
           "
         >
           <div style="font-size: 60px">
-            {{ timeStore.days[timeStore.time!.getDay()] }}
+            <n-collapse-transition :show="timeStore.time != null">
+              {{ timeStore.days[timeStore.time!.getDay()] }}
+            </n-collapse-transition>
           </div>
           <div style="font-size: 18px; margin-top: -18px">
-            {{ timeStore.formatTime(timeStore.time!.getHours()) }}:{{
-              timeStore.formatTime(timeStore.time!.getMinutes())
-            }}
-            · {{ timeStore.month[timeStore.time!.getMonth() - 1] }}, {{ timeStore.time!.getDay() }}
+            <n-collapse-transition :show="timeStore.time != null">
+              {{ timeStore.formatTime(timeStore.time!.getHours()) }}:{{
+                timeStore.formatTime(timeStore.time!.getMinutes())
+              }}
+              · {{ timeStore.month[timeStore.time!.getMonth() - 1] }},
+              {{ timeStore.time!.getDay() }}
+            </n-collapse-transition>
           </div>
 
           <div style="font-size: 18px; margin-top: -5px">
-            {{ weatherStore.region }} {{ weatherStore.city }}
+            <n-collapse-transition :show="weatherStore.region != ''">
+              {{ weatherStore.region }} {{ weatherStore.city }}
+            </n-collapse-transition>
           </div>
 
           <i
-            style="font-size: 60px; margin-top: 25px"
+            style="font-size: 60px; margin-top: 30px"
             :class="'qi-' + weatherStore.weatherIcon"
           ></i>
+
           <div style="font-size: 28px; margin-top: -10px">
-            {{ weatherStore.temperature.current }}°C
+            <n-collapse-transition :show="weatherStore.temperature.current != null">
+              {{ weatherStore.temperature.current }}°C
+            </n-collapse-transition>
           </div>
-          <div style="display: flex; justify-content: space-around; margin-top: 50px">
-            <div
-              class="dynamic-margin"
-              style="display: flex; flex-direction: column; align-items: center"
-              :style="{ 'margin-right': browserStore.collapsed ? '16px' : '30px' }"
-            >
-              <span>Element 1</span>
-              <span>Details</span>
+          <n-collapse-transition :show="weatherStore.windDirction.length > 0">
+            <div style="display: flex; justify-content: space-around; margin-top: 50px">
+              <div
+                class="dynamic-margin"
+                style="display: flex; flex-direction: column; align-items: center; min-width: 60px"
+                :style="{ 'margin-right': browserStore.collapsed ? '16px' : '30px' }"
+              >
+                <span>UV</span>
+                <span>{{ weatherStore.uv }}</span>
+              </div>
+              <div
+                class="dynamic-margin"
+                style="display: flex; flex-direction: column; align-items: center; min-width: 60px"
+                :style="{ 'margin-right': browserStore.collapsed ? '16px' : '30px' }"
+              >
+                <span>Wind</span>
+                <span>{{ weatherStore.windDirction }} {{ weatherStore.wind }} km/h</span>
+              </div>
+              <div
+                style="display: flex; flex-direction: column; align-items: center; min-width: 60px"
+              >
+                <span>Humidity</span>
+                <span>{{ weatherStore.humidity }}</span>
+              </div>
             </div>
-            <div
-              class="dynamic-margin"
-              style="display: flex; flex-direction: column; align-items: center"
-              :style="{ 'margin-right': browserStore.collapsed ? '16px' : '30px' }"
-            >
-              <span>Element 2</span>
-              <span>Details</span>
-            </div>
-            <div style="display: flex; flex-direction: column; align-items: center">
-              <span>Element 3</span>
-              <span>Details</span>
-            </div>
-          </div>
+          </n-collapse-transition>
         </div>
       </n-card>
       <n-card :class="{ 'expanded-card-style': !browserStore.collapsed }">2</n-card>

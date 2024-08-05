@@ -301,6 +301,10 @@ export const useWeatherStore = defineStore('weatherStore', {
     coordinates: { latitude: 0 as number, longitude: 0 as number },
     weather: '' as string,
     weatherIcon: '' as string,
+    humidity: null as number | null,
+    uv: null as number | null,
+    wind: null as number | null,
+    windDirction: '' as string,
     temperature: {
       current: null as number | null,
       min: null as number | null,
@@ -334,6 +338,7 @@ export const useWeatherStore = defineStore('weatherStore', {
           'https://64090833871b4162bbbdbe9d92b87a1a-cn-shenzhen.alicloudapi.com/weather.json?q=' +
             this.ip
         )
+        console.log(weatherResponse.data)
         let currentWeather = weatherResponse.data.current.condition.code
 
         let conditionsResponse = await axios.get('https://www.weatherapi.com/docs/conditions.json')
@@ -365,6 +370,10 @@ export const useWeatherStore = defineStore('weatherStore', {
             this.weather = languageDescription.day_text
           }
         }
+        this.humidity = weatherResponse.data.current.humidity
+        this.uv = weatherResponse.data.current.uv
+        this.wind = weatherResponse.data.current.wind_kph
+        this.windDirction = weatherResponse.data.current.wind_dir
 
         this.temperature.current = weatherResponse.data.current.temp_c
         this.temperature.min = weatherResponse.data.forecast.forecastday[0].day.mintemp_c
