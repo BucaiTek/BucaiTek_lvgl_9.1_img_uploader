@@ -39,11 +39,33 @@ const timeStore = useTimeStore()
           </div>
 
           <i
-            style="font-size: 60px; margin-top: 20px"
+            style="font-size: 60px; margin-top: 25px"
             :class="'qi-' + weatherStore.weatherIcon"
           ></i>
           <div style="font-size: 28px; margin-top: -10px">
             {{ weatherStore.temperature.current }}°C
+          </div>
+          <div style="display: flex; justify-content: space-around; margin-top: 50px">
+            <div
+              class="dynamic-margin"
+              style="display: flex; flex-direction: column; align-items: center"
+              :style="{ 'margin-right': browserStore.collapsed ? '16px' : '30px' }"
+            >
+              <span>Element 1</span>
+              <span>Details</span>
+            </div>
+            <div
+              class="dynamic-margin"
+              style="display: flex; flex-direction: column; align-items: center"
+              :style="{ 'margin-right': browserStore.collapsed ? '16px' : '30px' }"
+            >
+              <span>Element 2</span>
+              <span>Details</span>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: center">
+              <span>Element 3</span>
+              <span>Details</span>
+            </div>
           </div>
         </div>
       </n-card>
@@ -103,5 +125,9 @@ const timeStore = useTimeStore()
   width: 320px;
   margin-right: 15px;
   margin-left: 3px;
+}
+
+.dynamic-margin {
+  transition: margin-right 0.2s ease-in-out; /* 平滑过渡动画 */
 }
 </style>
