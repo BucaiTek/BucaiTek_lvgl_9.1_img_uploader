@@ -18,7 +18,6 @@ import {
   LogoGithub as LogoGithubIcon,
   LinkOutline as LinkOutlineIcon,
   TerminalOutline as TerminalOutlineIcon
-  
 } from '@vicons/ionicons5'
 import { NIcon } from 'naive-ui'
 import { useI18n } from 'vue-i18n'
@@ -236,109 +235,23 @@ hljs.registerLanguage('python', python)
 
 <template>
   <n-config-provider :theme="browserStore.theme" :theme-overrides="themeOverrides" :hljs="hljs">
-    <n-layout has-sider>
-      <n-layout-sider
-        content-style="padding: 15px;"
-        bordered
-        collapse-mode="width"
-        :collapsed-width="82"
-        :width="210"
-        :collapsed="browserStore.collapsed"
-        show-trigger
-        trigger-style="top: 85px;"
-        collapsed-trigger-style="top: 85px;"
-        @collapse="browserStore.collapsed = true"
-        @expand="browserStore.collapsed = false"
-      >
-        <n-text tag="div" class="ui-logo" :depth="1" @click="handleLogoClick">
-          <n-icon size="55" style="margin: 3px 12px 15px 0px">
-            <svg
-              width="564"
-              height="868"
-              viewBox="0 0 564 868"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M50 50L50 562"
-                :stroke="browserStore.theme.name === 'dark' ? 'white' : 'black'"
-                stroke-width="100"
-                stroke-linecap="round"
-              />
-              <path
-                d="M513.108 712.473C481.332 756.21 436.524 788.764 385.108 805.47C333.692 822.177 278.308 822.177 226.892 805.47C175.476 788.764 130.668 756.21 98.8916 712.473C67.1148 668.736 50 616.062 50 562C50 507.938 67.1149 455.264 98.8917 411.527C130.668 367.79 175.476 335.236 226.892 318.53C278.308 301.823 333.693 301.823 385.108 318.53C436.524 335.236 481.332 367.79 513.108 411.527"
-                :stroke="browserStore.theme.name === 'dark' ? 'white' : 'black'"
-                stroke-width="100"
-                stroke-linecap="round"
-              />
-            </svg>
-          </n-icon>
-          <span class="rgb" style="font-size: 28px">BucaiTek</span>
-        </n-text>
-        <div>
-          <n-menu
-            :value="menuValue"
-            :collapsed="browserStore.collapsed"
-            :collapsed-width="52"
-            :collapsed-icon-size="30"
-            :icon-size="30"
-            :options="menuOptions"
-            style="font-size: 15px"
-          />
-        </div>
-      </n-layout-sider>
-      <n-layout style="height: 100vh">
-        <n-layout-header class="nav" style="-webkit-app-region: drag">
-          <div>
-            <h1 style="font-size: 30px; margin: 10px 0 0 20px">
-              {{ t('nav_lable.' + menuValue) }}
-            </h1>
-          </div>
-          <div class="nav-end">
-            <n-dropdown
-              :disabled="hidStore.device === null"
-              :options="dropdownOptions"
-              @select="handleDropdownSelect"
-              style="-webkit-app-region: no-drag"
-            >
-              <n-button
-                :disabled="!browserStore.supportHid"
-                size="large"
-                quaternary
-                @click="handleConectionStateButtonClick"
-                style="-webkit-app-region: no-drag"
-              >
-                {{ getConnecttionState }}
-              </n-button>
-            </n-dropdown>
-            <n-divider vertical style="margin-right: 8px" />
-            <div class="themeButton">
-              <n-icon @click="changeTheme" size="30" v-if="browserStore.theme.name != 'dark'">
-                <BrightnessHigh32RegularIcon />
-              </n-icon>
-              <n-icon @click="changeTheme" size="30" v-else>
-                <BrightnessHigh32FilledIcon />
-              </n-icon>
-            </div>
-          </div>
-        </n-layout-header>
-        <n-layout-content
-          @mousemove="handleMouseMove"
-          @mouseleave="handleMouseLeave"
-          style="z-index: 0"
+    <n-message-provider>
+      <n-layout has-sider>
+        <n-layout-sider
+          content-style="padding: 15px;"
+          bordered
+          collapse-mode="width"
+          :collapsed-width="82"
+          :width="210"
+          :collapsed="browserStore.collapsed"
+          show-trigger
+          trigger-style="top: 85px;"
+          collapsed-trigger-style="top: 85px;"
+          @collapse="browserStore.collapsed = true"
+          @expand="browserStore.collapsed = false"
         >
-          <router-view />
-          <n-float-button
-            type="default"
-            menu-trigger="hover"
-            :style="{ transform: buttonTransform }"
-            :right="25"
-            :bottom="20"
-            width="60"
-            height="60"
-            :show-menu="showMenu"
-          >
-            <n-icon size="40">
+          <n-text tag="div" class="ui-logo" :depth="1" @click="handleLogoClick">
+            <n-icon size="55" style="margin: 3px 12px 15px 0px">
               <svg
                 width="564"
                 height="868"
@@ -360,27 +273,115 @@ hljs.registerLanguage('python', python)
                 />
               </svg>
             </n-icon>
-            <template #menu>
-              <n-button quaternary round style="right: 2px">
-                <n-icon size="30">
-                  <LinkOutlineIcon />
+            <span class="rgb" style="font-size: 28px">BucaiTek</span>
+          </n-text>
+          <div>
+            <n-menu
+              :value="menuValue"
+              :collapsed="browserStore.collapsed"
+              :collapsed-width="52"
+              :collapsed-icon-size="30"
+              :icon-size="30"
+              :options="menuOptions"
+              style="font-size: 15px"
+            />
+          </div>
+        </n-layout-sider>
+        <n-layout style="height: 100vh">
+          <n-layout-header class="nav" style="-webkit-app-region: drag">
+            <div>
+              <h1 style="font-size: 30px; margin: 10px 0 0 20px">
+                {{ t('nav_lable.' + menuValue) }}
+              </h1>
+            </div>
+            <div class="nav-end">
+              <n-dropdown
+                :disabled="hidStore.device === null"
+                :options="dropdownOptions"
+                @select="handleDropdownSelect"
+                style="-webkit-app-region: no-drag"
+              >
+                <n-button
+                  :disabled="!browserStore.supportHid"
+                  size="large"
+                  quaternary
+                  @click="handleConectionStateButtonClick"
+                  style="-webkit-app-region: no-drag"
+                >
+                  {{ getConnecttionState }}
+                </n-button>
+              </n-dropdown>
+              <n-divider vertical style="margin-right: 8px" />
+              <div class="themeButton">
+                <n-icon @click="changeTheme" size="30" v-if="browserStore.theme.name != 'dark'">
+                  <BrightnessHigh32RegularIcon />
                 </n-icon>
-              </n-button>
-              <n-button quaternary round style="right: 2px">
-                <n-icon size="30">
-                  <LogoGithubIcon />
+                <n-icon @click="changeTheme" size="30" v-else>
+                  <BrightnessHigh32FilledIcon />
                 </n-icon>
-              </n-button>
-              <n-button quaternary round style="right: 2px">
-                <n-icon size="30">
-                  <SettingsOutlineIcon />
-                </n-icon>
-              </n-button>
-            </template>
-          </n-float-button>
-        </n-layout-content>
+              </div>
+            </div>
+          </n-layout-header>
+          <n-layout-content
+            @mousemove="handleMouseMove"
+            @mouseleave="handleMouseLeave"
+            style="z-index: 0"
+          >
+            <router-view />
+            <n-float-button
+              type="default"
+              menu-trigger="hover"
+              :style="{ transform: buttonTransform }"
+              :right="25"
+              :bottom="20"
+              width="60"
+              height="60"
+              :show-menu="showMenu"
+            >
+              <n-icon size="40">
+                <svg
+                  width="564"
+                  height="868"
+                  viewBox="0 0 564 868"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M50 50L50 562"
+                    :stroke="browserStore.theme.name === 'dark' ? 'white' : 'black'"
+                    stroke-width="100"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M513.108 712.473C481.332 756.21 436.524 788.764 385.108 805.47C333.692 822.177 278.308 822.177 226.892 805.47C175.476 788.764 130.668 756.21 98.8916 712.473C67.1148 668.736 50 616.062 50 562C50 507.938 67.1149 455.264 98.8917 411.527C130.668 367.79 175.476 335.236 226.892 318.53C278.308 301.823 333.693 301.823 385.108 318.53C436.524 335.236 481.332 367.79 513.108 411.527"
+                    :stroke="browserStore.theme.name === 'dark' ? 'white' : 'black'"
+                    stroke-width="100"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </n-icon>
+              <template #menu>
+                <n-button quaternary round style="right: 2px">
+                  <n-icon size="30">
+                    <LinkOutlineIcon />
+                  </n-icon>
+                </n-button>
+                <n-button quaternary round style="right: 2px">
+                  <n-icon size="30">
+                    <LogoGithubIcon />
+                  </n-icon>
+                </n-button>
+                <n-button quaternary round style="right: 2px">
+                  <n-icon size="30">
+                    <SettingsOutlineIcon />
+                  </n-icon>
+                </n-button>
+              </template>
+            </n-float-button>
+          </n-layout-content>
+        </n-layout>
       </n-layout>
-    </n-layout>
+    </n-message-provider>
   </n-config-provider>
 </template>
 

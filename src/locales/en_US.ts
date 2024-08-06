@@ -44,7 +44,10 @@ export default {
       netSpeed: 'Net Speed',
       netUploading: 'Uploading:',
       netDownloading: 'Downloading:',
-      system_data: 'System Data'
+      system_data: 'System Data',
+      UVIndex: 'UV Index',
+      wind: 'Wind',
+      humidity: 'Humidity',
     },
     text: {
       not_support: 'The browser does not support obtaining system data, please use the application!'

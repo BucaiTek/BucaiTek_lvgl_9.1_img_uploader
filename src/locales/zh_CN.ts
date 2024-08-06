@@ -44,7 +44,10 @@ export default {
       netSpeed: '网速',
       netUploading: '上传:',
       netDownloading: '下载:',
-      system_data: '系统数据'
+      system_data: '系统数据',
+      UVIndex: '紫外线',
+      wind: '风',
+      humidity: '湿度'
     },
     text: {
       not_support: '浏览器不支持获取系统数据，请使用应用程序！'
