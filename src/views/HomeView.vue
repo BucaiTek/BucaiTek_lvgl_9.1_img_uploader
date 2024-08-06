@@ -146,7 +146,7 @@ const formatSensor = (value: number) => {
       </template>
 
       <n-scrollbar style="max-height: 340px">
-        <div v-if="hardwareStore.useSystemReader">
+        <div v-if="hardwareStore.suppportBCMonitor">
           <n-collapse-transition :show="hardwareStore.cpu.utilizationUser != 0">
             <n-collapse>
               <n-collapse-item style="margin-left: -22px">
@@ -423,7 +423,7 @@ const formatSensor = (value: number) => {
             </n-collapse>
           </n-collapse-transition>
         </div>
-        <div v-else-if="hardwareStore.useSystemReader == false">
+        <div v-else-if="hardwareStore.suppportBCMonitor == false">
           <n-text>{{ t('home.text.not_support') }}</n-text>
         </div>
       </n-scrollbar>

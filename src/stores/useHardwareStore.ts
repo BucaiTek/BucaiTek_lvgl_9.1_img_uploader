@@ -144,7 +144,7 @@ let All_Sensors = [
 
 export const useHardwareStore = defineStore('hardwareStore', {
   state: () => ({
-    useSystemReader: null as boolean | null,
+    suppportBCMonitor: null as boolean | null,
     intervalId: null as number | null,
     platform: Platform.ALL,
     cpu: {
@@ -207,18 +207,18 @@ export const useHardwareStore = defineStore('hardwareStore', {
       try {
         const flag = await window.electronAPI?.check_electron()
         if (flag === 'BucaiTek') {
-          this.useSystemReader = true
+          this.suppportBCMonitor = true
           this.startReadSysData()
         } else {
-          this.useSystemReader = false
+          this.suppportBCMonitor = false
         }
       } catch (e) {
         console.error(e)
-        this.useSystemReader = false
+        this.suppportBCMonitor = false
       }
     },
     async getSensorData() {
-      if (!this.useSystemReader) return
+      if (!this.suppportBCMonitor) return
       let jsonString = await window.electronAPI?.BCMonitor('json')
       if (jsonString) {
         try {
@@ -230,7 +230,7 @@ export const useHardwareStore = defineStore('hardwareStore', {
       }
     },
     startReadSysData() {
-      if (this.intervalId || !this.useSystemReader) {
+      if (this.intervalId || !this.suppportBCMonitor) {
         return
       }
       this.intervalId = setInterval(() => {

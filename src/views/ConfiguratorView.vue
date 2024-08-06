@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { useBrowserStore } from '@/stores/useBrowserStore'
 import { useWeatherStore } from '@/stores/useWeatherStore'
+import { useHardwareStore } from '@/stores/useHardwareStore'
 import { useTimeStore } from '@/stores/useTimeStore'
-
-import { h } from 'vue'
 
 import { useI18n } from 'vue-i18n'
 const { t, locale } = useI18n()
 
 const browserStore = useBrowserStore()
 const weatherStore = useWeatherStore()
+const hardwareStore = useHardwareStore()
 
 const timeStore = useTimeStore()
 </script>
@@ -117,17 +117,31 @@ const timeStore = useTimeStore()
           </n-collapse-transition>
         </div>
       </n-card>
-      <n-card :class="{ 'expanded-card-style': !browserStore.collapsed }">2</n-card>
-      <n-card :class="{ 'expanded-card-style': !browserStore.collapsed }">3</n-card>
-      <n-card :class="{ 'expanded-card-style': !browserStore.collapsed }">1</n-card>
-      <n-card :class="{ 'expanded-card-style': !browserStore.collapsed }">2</n-card>
-      <n-card :class="{ 'expanded-card-style': !browserStore.collapsed }">3</n-card>
-      <n-card :class="{ 'expanded-card-style': !browserStore.collapsed }">1</n-card>
-      <n-card :class="{ 'expanded-card-style': !browserStore.collapsed }">2</n-card>
-      <n-card :class="{ 'expanded-card-style': !browserStore.collapsed }">3</n-card>
-      <n-card :class="{ 'expanded-card-style': !browserStore.collapsed }">1</n-card>
-      <n-card :class="{ 'expanded-card-style': !browserStore.collapsed }">2</n-card>
-      <n-card :class="{ 'expanded-card-style': !browserStore.collapsed }">3</n-card>
+      <n-card
+        v-show="hardwareStore.suppportBCMonitor"
+        :class="{ 'expanded-card-style': !browserStore.collapsed }"
+      >
+        2
+      </n-card>
+      <n-card
+        v-show="hardwareStore.suppportBCMonitor"
+        :class="{ 'expanded-card-style': !browserStore.collapsed }"
+      >
+        3
+      </n-card>
+      <n-card
+        v-show="hardwareStore.suppportBCMonitor"
+        :class="{ 'expanded-card-style': !browserStore.collapsed }"
+      >
+        4
+      </n-card>
+
+      <n-card
+        v-show="!hardwareStore.suppportBCMonitor"
+        :class="{ 'expanded-card-style': !browserStore.collapsed }"
+      >
+        Not Support
+      </n-card>
     </div>
   </main>
 </template>
