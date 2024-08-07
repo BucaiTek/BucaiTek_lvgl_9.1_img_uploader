@@ -11,8 +11,6 @@ const browserStore = useBrowserStore()
       <n-card class="n-card one-by-one">1x1</n-card>
       <n-card class="n-card one-by-one">1x1</n-card>
       <n-card class="n-card one-by-one">1x1</n-card>
-      <n-card class="n-card two-by-two">2x2</n-card>
-      <n-card class="n-card two-by-one">2x1</n-card>
       <n-card class="n-card one-by-one">1x1</n-card>
     </div>
   </main>
@@ -33,22 +31,35 @@ const browserStore = useBrowserStore()
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(6, 100px); /* 简化列定义 */
-  grid-template-rows: repeat(2, 100px); /* 简化行定义 */
-  gap: 10px;
-  padding: 10px;
+  grid-template-columns: repeat(3, 330px); /* 简化列定义 */
+  grid-template-rows: repeat(2, 250px); /* 简化行定义 */
+  gap: 0px 10px;
+
+  padding-top: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  scroll-snap-type: x mandatory; /* 滑动对齐 */
+  overflow-x: scroll; /* 允许横向滚动 */
+  overflow-y: hidden; /* 防止纵向滚动 */
+  scroll-padding-left: 10px;
+  -ms-overflow-style: none; /* IE 和 Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.grid-scroll-container::-webkit-scrollbar {
+  display: none; /* 针对WebKit浏览器 */
 }
 
 .one-by-one {
-  width: 100px;
-  height: 100px;
+  width: 330px;
+  height: 240px;
   grid-column: span 1;
   grid-row: span 1;
 }
 
 .one-by-two {
-  width: 100px;
-  height: 200px; /* 调整为两倍高度 */
+  width: 330px;
+  height: 490px; /* 调整为两倍高度 */
   grid-column: span 1;
   grid-row: span 2;
 }
