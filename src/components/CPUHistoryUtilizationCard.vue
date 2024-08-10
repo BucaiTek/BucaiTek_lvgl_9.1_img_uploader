@@ -14,6 +14,8 @@ import VChart from 'vue-echarts'
 import { ref } from 'vue'
 import { useHardwareStore } from '@/stores/useHardwareStore'
 import { useBrowserStore } from '@/stores/useBrowserStore'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 const hardwareStore = useHardwareStore()
 const browserStore = useBrowserStore()
 
@@ -48,7 +50,7 @@ const chartOption = ref({
   animation: false,
   backgroundColor: '',
   title: {
-    text: 'CPU Utilization',
+    text: computed(() => t('card.cpu.CPU_Utilization_History')),
     subtext: computed(() => hardwareStore.cpu.model),
     left: 'center'
   },
@@ -123,6 +125,6 @@ const chartOption = ref({
   transition: width 0.3s ease;
 }
 .chart {
-  padding-top: 20px;
+  padding-top: 13px;
 }
 </style>

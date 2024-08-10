@@ -55,7 +55,8 @@ export default {
   },
   card:{
     cpu:{
-      
+      CPU_Utilization_History: 'CPU历史利用率',
+      GPU_Utilization_History: 'GPU历史利用率',
     }
   }
 }

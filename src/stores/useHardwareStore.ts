@@ -343,12 +343,11 @@ export const useHardwareStore = defineStore('hardwareStore', {
       this.gpuUtilizationHistory.tiler.push(this.gpu.utilizationTiler)
       this.gpuUtilizationHistory.device.push(this.gpu.utilizationDevice)
 
-      const maxLength = 50
-      if (this.cpuUtilizationHistory.user.length > maxLength) {
+      if (this.cpuUtilizationHistory.user.length > 50) {
         this.cpuUtilizationHistory.user.shift()
         this.cpuUtilizationHistory.system.shift()
       }
-      if (this.gpuUtilizationHistory.renderer.length > maxLength) {
+      if (this.gpuUtilizationHistory.renderer.length > 50) {
         this.gpuUtilizationHistory.renderer.shift()
         this.gpuUtilizationHistory.tiler.shift()
         this.gpuUtilizationHistory.device.shift()
