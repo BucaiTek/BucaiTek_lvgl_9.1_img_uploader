@@ -342,8 +342,6 @@ export const useHardwareStore = defineStore('hardwareStore', {
       this.gpuUtilizationHistory.renderer.push(this.gpu.utilizationRenderer)
       this.gpuUtilizationHistory.tiler.push(this.gpu.utilizationTiler)
       this.gpuUtilizationHistory.device.push(this.gpu.utilizationDevice)
-      console.log(this.cpuUtilizationHistory)
-      console.log(this.gpuUtilizationHistory)
 
       const maxLength = 50
       if (this.cpuUtilizationHistory.user.length > maxLength) {
