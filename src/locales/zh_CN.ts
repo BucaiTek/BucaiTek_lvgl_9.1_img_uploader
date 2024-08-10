@@ -52,5 +52,10 @@ export default {
     text: {
       not_support: '浏览器不支持获取系统数据，请使用应用程序！'
     }
+  },
+  card:{
+    cpu:{
+      
+    }
   }
 }
