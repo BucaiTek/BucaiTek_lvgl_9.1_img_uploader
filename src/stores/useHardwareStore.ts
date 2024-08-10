@@ -290,8 +290,8 @@ export const useHardwareStore = defineStore('hardwareStore', {
         this.cpu.performanceCoreCount = data.CPU.cores[1]
         this.cpu.totalCoreCount = data.CPU.cores[0] + data.CPU.cores[1]
         this.cpu.coresUtilization = data.CPU.coresUtilization
-        this.cpu.utilizationUser = data.CPU.utilizations[0]
-        this.cpu.utilizationSystem = data.CPU.utilizations[1]
+        this.cpu.utilizationSystem = data.CPU.utilizations[0]
+        this.cpu.utilizationUser = data.CPU.utilizations[1]
         this.cpu.utilizationIdle = data.CPU.utilizations[2]
       }
 
@@ -345,7 +345,7 @@ export const useHardwareStore = defineStore('hardwareStore', {
       console.log(this.cpuUtilizationHistory)
       console.log(this.gpuUtilizationHistory)
 
-      const maxLength = 100
+      const maxLength = 50
       if (this.cpuUtilizationHistory.user.length > maxLength) {
         this.cpuUtilizationHistory.user.shift()
         this.cpuUtilizationHistory.system.shift()

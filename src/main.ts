@@ -15,6 +15,9 @@ import naive from 'naive-ui'
 import 'vfonts/Lato.css'
 import 'vfonts/FiraCode.css'
 
+import 'echarts'
+import VueECharts from 'vue-echarts'
+
 declare global {
   interface Window {
     electronAPI: any
@@ -45,4 +48,4 @@ app
     }
   })
 
-app.mount('#app')
+app.component('v-chart', VueECharts).mount('#app')

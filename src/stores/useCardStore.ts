@@ -8,7 +8,8 @@ import APUCard from '@/components/APUCard.vue'
 
 export const useCardStore = defineStore('cardStore', {
   state: () => ({
-    cards: [] as { name: string; component: any; type: string; hasBorder: boolean }[]
+    cards: [] as { name: string; component: any; type: string; hasBorder: boolean }[],
+    gridLenth: 2
   }),
   actions: {
     init() {
@@ -22,7 +23,6 @@ export const useCardStore = defineStore('cardStore', {
       return {
         cards: [
           { name: 'IndexCard', component: markRaw(IndexCard), type: '12', hasBorder: true },
-          { name: 'APUCard', component: markRaw(APUCard), type: '12', hasBorder: false },
           { name: 'CPUCard', component: markRaw(CPUCard), type: '11', hasBorder: true },
           { name: 'GPUCard', component: markRaw(GPUCard), type: '11', hasBorder: true }
         ]
@@ -104,11 +104,11 @@ export const useCardStore = defineStore('cardStore', {
 
       if (browserStore.collapsed) {
         return {
-          gridTemplateColumns: `repeat(3, 260px)`
+          gridTemplateColumns: `repeat(${this.gridLenth}, 260px)`
         }
       } else {
         return {
-          gridTemplateColumns: `repeat(3, 330px)`
+          gridTemplateColumns: `repeat(${this.gridLenth}, 330px)`
         }
       }
     }

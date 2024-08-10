@@ -3,52 +3,94 @@
 </template>
 
 <script setup>
-import { use } from 'echarts/core'
-import { CanvasRenderer } from 'echarts/renderers'
-import { PieChart } from 'echarts/charts'
-import { TitleComponent, TooltipComponent, LegendComponent } from 'echarts/components'
-import VChart from 'vue-echarts'
+import VChart, { THEME_KEY } from 'vue-echarts'
 import { ref } from 'vue'
+import { useHardwareStore } from '@/stores/useHardwareStore'
+import { useBrowserStore } from '@/stores/useBrowserStore'
+const hardwareStore = useHardwareStore()
+const browserStore = useBrowserStore()
 
-use([CanvasRenderer, PieChart, TitleComponent, TooltipComponent, LegendComponent])
+const calcTotalUtilization = computed(() => {
+  return hardwareStore.cpuUtilizationHistory.user.map((userUtil, index) => {
+    const systemUtil = hardwareStore.cpuUtilizationHistory.system[index] || 0
+    return [index, userUtil + systemUtil]
+  })
+})
 
 const option = ref({
+  animation: false,
+  backgroundColor: '',
   title: {
-    text: 'Traffic Sources',
+    text: 'CPU Utilization',
+    subtext: computed(() => hardwareStore.cpu.model),
     left: 'center'
   },
   tooltip: {
-    trigger: 'item',
-    formatter: '{a} <br/>{b} : {c} ({d}%)'
+    show: true,
+    trigger: 'axis',
+    formatter: (params) => {
+      let totalUtil = params.find((p) => p.seriesName === 'Total').value[1]
+      let systemUtil = params.find((p) => p.seriesName === 'System').value[1]
+      return `User: ${totalUtil - systemUtil}%<br>System: ${systemUtil}%<br>Idle: ${100 - totalUtil}%`
+    }
   },
-  legend: {
-    orient: 'vertical',
-    left: 'left',
-    data: ['Direct', 'Email', 'Ad Networks', 'Video Ads', 'Search Engines']
+  darkMode: 'dark',
+  grid: {
+    top: 55,
+    left: 40,
+    right: 40,
+    bottom: 30
+  },
+  xAxis: {
+    show: false,
+    min: 0,
+    max: 50
+  },
+  yAxis: {
+    min: 0,
+    max: 100,
+    axisLabel: {
+      formatter: '{value}%'
+    }
   },
   series: [
     {
-      name: 'Traffic Sources',
-      type: 'pie',
-      radius: '55%',
-      center: ['50%', '60%'],
-      data: [
-        { value: 335, name: 'Direct' },
-        { value: 310, name: 'Email' },
-        { value: 234, name: 'Ad Networks' },
-        { value: 135, name: 'Video Ads' },
-        { value: 1548, name: 'Search Engines' }
-      ],
-      emphasis: {
-        itemStyle: {
-          shadowBlur: 10,
-          shadowOffsetX: 0,
-          shadowColor: 'rgba(0, 0, 0, 0.5)'
-        }
+      name: 'Total',
+      data: calcTotalUtilization,
+      type: 'line',
+      smooth: true,
+      symbol: 'none',
+      sampling: 'lttb',
+      stack: 'total',
+
+      itemStyle: {
+        color: 'rgba(0, 122, 255, 0.4)'
+      },
+      areaStyle: {
+        color: 'rgba(0, 122, 255, 1)' // 蓝色半透明
+      }
+    },
+    {
+      name: 'System',
+      data: computed(() =>
+        hardwareStore.cpuUtilizationHistory.system.map((usage, index) => [index, usage])
+      ),
+      type: 'line',
+      smooth: true,
+      symbol: 'none',
+      itemStyle: {
+        color: 'rgba(255, 59, 47, 0)'
+      },
+      areaStyle: {
+        color: 'rgba(255, 59, 47, 1)' // 红色半透明
       }
     }
   ]
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.chart {
+  padding-top: 20px;
+}
+</style>
