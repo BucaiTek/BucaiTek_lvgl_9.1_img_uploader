@@ -42,7 +42,8 @@ export const useMusicStore = defineStore('musicStore', {
         if (
           this.title != data.kMRMediaRemoteNowPlayingInfoTitle ||
           this.lyric == '' ||
-          this.lyricsData.length == 0
+          this.lyricsData.length == 0 ||
+          this.musicInfo.ti != this.title
         ) {
           this.lyric = ''
           this.lyricsData = []
@@ -68,8 +69,9 @@ export const useMusicStore = defineStore('musicStore', {
     },
     parseLRC(lrcContent: string): LyricLine[] {
       const lines = lrcContent.split('\n')
-      const lrcData: LyricLine[] = [] // 显式指定 lrcData 的类型
+      const lrcData: LyricLine[] = []
       const timeRegex = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/
+      const metadataRegex = /\[(ti|ar|al):(.+)\]/
 
       lines.forEach((line) => {
         const timeMatch = line.match(timeRegex)
@@ -80,6 +82,24 @@ export const useMusicStore = defineStore('musicStore', {
           const time = minutes * 60 * 1000 + seconds * 1000 + milliseconds
           const text = line.replace(timeRegex, '').trim()
           lrcData.push({ time, text })
+        } else {
+          // Parse metadata tags
+          const metadataMatch = line.match(metadataRegex)
+          if (metadataMatch) {
+            const tag = metadataMatch[1]
+            const value = metadataMatch[2]
+            switch (tag) {
+              case 'ti':
+                this.musicInfo.ti = value
+                break
+              case 'ar':
+                this.musicInfo.ar = value
+                break
+              case 'al':
+                this.musicInfo.al = value
+                break
+            }
+          }
         }
       })
 

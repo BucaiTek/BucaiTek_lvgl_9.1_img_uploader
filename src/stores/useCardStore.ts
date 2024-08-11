@@ -12,7 +12,7 @@ import MusicCard from '@/components/MusicCard.vue'
 export const useCardStore = defineStore('cardStore', {
   state: () => ({
     cards: [] as { name: string; component: any; type: string; hasBorder: boolean }[],
-    gridLenth: 4
+    gridLenth: 3
   }),
   actions: {
     init() {
