@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { useMusicStore } from './useMusicStore'
 
 interface FanData {
   actual: number
@@ -335,6 +336,8 @@ export const useHardwareStore = defineStore('hardwareStore', {
         this.fans = tempFan
       }
       this.updateUtilizationHistory()
+      const musicStore = useMusicStore()
+      musicStore.updatePlayingMusic(data.Music)
     },
     updateUtilizationHistory() {
       this.cpuUtilizationHistory.user.push(this.cpu.utilizationUser)

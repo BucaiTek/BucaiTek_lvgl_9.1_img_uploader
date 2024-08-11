@@ -3,7 +3,7 @@ export default {
     home: 'Home',
     configurator: 'Configurator',
     terminal: 'Terminal',
-    setting: 'Setting',
+    setting: 'Setting'
   },
   connection: {
     connected: 'Connected',
@@ -47,10 +47,16 @@ export default {
       system_data: 'System Data',
       UVIndex: 'UV Index',
       wind: 'Wind',
-      humidity: 'Humidity',
+      humidity: 'Humidity'
     },
     text: {
       not_support: 'The browser does not support obtaining system data, please use the application!'
+    }
+  },
+  card: {
+    cpu: {
+      CPU_Utilization_History: 'CPU Utilization History',
+      GPU_Utilization_History: 'GPU Utilization History'
     }
   }
 }

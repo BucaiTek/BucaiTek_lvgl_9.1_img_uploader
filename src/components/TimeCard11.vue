@@ -9,9 +9,18 @@ const timeStore = useTimeStore()
   <div class="time-card">
     <n-collapse-transition :show="timeStore.time != null">
       <div style="font-size: 60px; display: flex; align-items: center; justify-content: center">
-        {{ timeStore.time?.getHours() }} : {{ timeStore.time?.getMinutes() }}
+        {{ timeStore.formatTime(timeStore.time!.getHours()) }} :
+        {{ timeStore.formatTime(timeStore.time!.getMinutes()) }}
       </div>
-      <div style=" margin-top: -10px;font-size: 21px; display: flex; align-items: center; justify-content: center">
+      <div
+        style="
+          margin-top: -10px;
+          font-size: 21px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        "
+      >
         <div style="min-width: 90px; display: flex; align-items: center; justify-content: center">
           {{ timeStore.days_All[timeStore.time!.getDay()] }}
         </div>
