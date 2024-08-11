@@ -36,6 +36,51 @@ ipcMain.handle('request-BCMonitor', async (event, value) => {
   })
 })
 
+ipcMain.handle('music-lyric', async (event, value) => {
+  return new Promise((resolve, reject) => {
+    const BCMonitor = spawn(BCMonitorPath, ['music'])
+    let BCMonitorStdout = ''
+
+    BCMonitor.stdout.on('data', (data) => {
+      BCMonitorStdout += data.toString()
+    })
+
+    BCMonitor.stderr.on('data', (data) => {})
+
+    BCMonitor.on('error', (err) => {
+      reject(err)
+    })
+
+    BCMonitor.on('close', (code) => {
+      resolve(BCMonitorStdout)
+    })
+  })
+})
+
+ipcMain.handle('music-play', async () => {
+  return new Promise(() => {
+    spawn(BCMonitorPath, ['music', 'play'])
+  })
+})
+
+ipcMain.handle('music-pause', async () => {
+  return new Promise(() => {
+    spawn(BCMonitorPath, ['music', 'pause'])
+  })
+})
+
+ipcMain.handle('music-next', async () => {
+  return new Promise(() => {
+    spawn(BCMonitorPath, ['music', 'next'])
+  })
+})
+
+ipcMain.handle('music-previous', async () => {
+  return new Promise(() => {
+    spawn(BCMonitorPath, ['music', 'previous'])
+  })
+})
+
 ipcMain.handle('check-electron', (event, value) => {
   return 'BucaiTek'
 })
@@ -56,7 +101,7 @@ function createWindow() {
   })
 
   //mainWindow.loadFile('dist/index.html', { hash: 'home' })
-  mainWindow.loadURL("http://localhost:5173")
+  mainWindow.loadURL('http://localhost:5173')
   mainWindow.on('close', (e) => {
     if (!willQuitApp && mainWindow !== null) {
       e.preventDefault() // 阻止窗口的关闭事件
