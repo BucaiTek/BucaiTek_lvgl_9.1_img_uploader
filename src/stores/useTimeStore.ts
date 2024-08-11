@@ -5,6 +5,7 @@ export const useTimeStore = defineStore('timeStore', {
     time: null as null | Date,
     timerIntervalId: null as number | null,
     days: ['Sun.', 'Mon.', 'Tues.', 'Wed.', 'Thur.', 'Fri.', 'Sat.'],
+    days_All: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     days_zh: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
     month: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     month_zh: [

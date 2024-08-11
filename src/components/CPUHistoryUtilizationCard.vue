@@ -1,11 +1,6 @@
 <template>
   <div class="chart-container" ref="chartContainerRef">
-    <v-chart
-      :theme="browserStore.theme.name === 'dark' ? 'dark' : 'light'"
-      class="chart"
-      ref="chartRef"
-      :option="chartOption"
-    />
+    <v-chart :theme="theme" class="chart" ref="chartRef" :option="chartOption" />
   </div>
 </template>
 
@@ -18,6 +13,7 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 const hardwareStore = useHardwareStore()
 const browserStore = useBrowserStore()
+const theme = computed(() => (browserStore.theme.name === 'dark' ? 'dark' : 'light'))
 
 const chartRef = ref<typeof VChart | null>(null)
 const chartContainerRef = ref<HTMLElement | null>(null)
@@ -29,7 +25,7 @@ const calcTotalUtilization = computed(() => {
   })
 })
 
-let resizeObserver = null
+let resizeObserver: ResizeObserver | null = null
 
 onMounted(() => {
   const chartContainerDom = chartContainerRef.value
@@ -44,6 +40,13 @@ onMounted(() => {
   })
 
   resizeObserver.observe(chartContainerDom)
+})
+
+onUnmounted(() => {
+  if (resizeObserver) {
+    resizeObserver.disconnect()
+    resizeObserver = null
+  }
 })
 
 const chartOption = ref({
@@ -87,7 +90,6 @@ const chartOption = ref({
       name: 'Total',
       data: calcTotalUtilization,
       type: 'line',
-      smooth: true,
       symbol: 'none',
       sampling: 'lttb',
       stack: 'total',

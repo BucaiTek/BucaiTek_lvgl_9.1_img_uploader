@@ -1,15 +1,17 @@
 import { defineStore } from 'pinia'
 import { useBrowserStore } from '@/stores/useBrowserStore'
 
-import WeatherCard from '@/components/WeatherCard.vue'
+import WeatherCard12 from '@/components/WeatherCard12.vue'
 import CPUHistoryUtilizationCard from '@/components/CPUHistoryUtilizationCard.vue'
 import GPUHistoryUtilizationCard from '@/components/GPUHistoryUtilizationCard.vue'
 import APUCard from '@/components/APUCard.vue'
+import WeatherCard11 from '@/components/WeatherCard11.vue'
+import TimeCard11 from '@/components/TimeCard11.vue'
 
 export const useCardStore = defineStore('cardStore', {
   state: () => ({
     cards: [] as { name: string; component: any; type: string; hasBorder: boolean }[],
-    gridLenth: 3
+    gridLenth: 4
   }),
   actions: {
     init() {
@@ -22,18 +24,20 @@ export const useCardStore = defineStore('cardStore', {
       // 模拟配置获取，实际应用中可以替换为从服务器或本地配置获取
       return {
         cards: [
-          { name: 'WeatherCard', component: markRaw(WeatherCard), type: '12', hasBorder: true },
+          { name: 'TimeCard11', component: markRaw(TimeCard11), type: '11', hasBorder: true },
           {
             name: 'CPUHistoryUtilizationCard',
             component: markRaw(CPUHistoryUtilizationCard),
-            type: '11',
+            type: '21',
             hasBorder: true
           },
-          { name: 'WeatherCard', component: markRaw(WeatherCard), type: '12', hasBorder: true },
+
+          { name: 'WeatherCard12', component: markRaw(WeatherCard12), type: '12', hasBorder: true },
+          { name: 'WeatherCard11', component: markRaw(WeatherCard11), type: '11', hasBorder: true },
           {
             name: 'GPUHistoryUtilizationCard',
             component: markRaw(GPUHistoryUtilizationCard),
-            type: '11',
+            type: '21',
             hasBorder: true
           }
         ]

@@ -1,7 +1,7 @@
 <template>
   <div class="chart-container" ref="chartContainerRef">
     <v-chart
-      :theme="browserStore.theme.name === 'dark' ? 'dark' : 'light'"
+      :theme="theme"
       class="chart"
       ref="chartRef"
       :option="chartOption"
@@ -18,11 +18,12 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 const hardwareStore = useHardwareStore()
 const browserStore = useBrowserStore()
+const theme = computed(() => (browserStore.theme.name === 'dark' ? 'dark' : 'light'))
 
 const chartRef = ref<typeof VChart | null>(null)
 const chartContainerRef = ref<HTMLElement | null>(null)
 
-let resizeObserver = null
+let resizeObserver: ResizeObserver | null = null
 
 onMounted(() => {
   const chartContainerDom = chartContainerRef.value
@@ -37,6 +38,13 @@ onMounted(() => {
   })
 
   resizeObserver.observe(chartContainerDom)
+})
+
+onUnmounted(() => {
+  if (resizeObserver) {
+    resizeObserver.disconnect()
+    resizeObserver = null
+  }
 })
 
 const chartOption = ref({
@@ -81,7 +89,6 @@ const chartOption = ref({
         hardwareStore.gpuUtilizationHistory.device.map((usage, index) => [index, usage])
       ),
       type: 'line',
-      smooth: true,
       symbol: 'none',
       sampling: 'lttb',
       stack: 'total',
