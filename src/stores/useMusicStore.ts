@@ -55,7 +55,6 @@ export const useMusicStore = defineStore('musicStore', {
       await window.electronAPI?.music('lyric').then((lyric: string) => {
         this.lyric = lyric
         this.lyricsData = this.parseLRC(lyric)
-        console.log(this.lyricsData)
         if (this.intervalId) {
           if (this.intervalId) {
             clearInterval(this.intervalId)

@@ -338,7 +338,7 @@ export const useWeatherStore = defineStore('weatherStore', {
           'https://64090833871b4162bbbdbe9d92b87a1a-cn-shenzhen.alicloudapi.com/weather.json?q=' +
             this.ip
         )
-        console.log(weatherResponse.data)
+        
         let currentWeather = weatherResponse.data.current.condition.code
 
         let conditionsResponse = await axios.get('https://www.weatherapi.com/docs/conditions.json')
