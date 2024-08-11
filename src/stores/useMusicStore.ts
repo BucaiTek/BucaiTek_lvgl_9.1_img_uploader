@@ -38,10 +38,6 @@ export const useMusicStore = defineStore('musicStore', {
           this.duration = data.kMRMediaRemoteNowPlayingInfoDuration
           this.elapsedTime = data.kMRMediaRemoteNowPlayingInfoElapsedTime
           this.timestamp = data.kMRMediaRemoteNowPlayingInfoTimestamp
-
-          this.lyric = ''
-          this.lyricsData = []
-          this.updateLyric()
         }
         if (
           this.title != data.kMRMediaRemoteNowPlayingInfoTitle ||
