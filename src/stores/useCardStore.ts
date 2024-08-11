@@ -7,6 +7,7 @@ import GPUHistoryUtilizationCard from '@/components/GPUHistoryUtilizationCard.vu
 import APUCard from '@/components/APUCard.vue'
 import WeatherCard11 from '@/components/WeatherCard11.vue'
 import TimeCard11 from '@/components/TimeCard11.vue'
+import MusicCard from '@/components/MusicCard.vue'
 
 export const useCardStore = defineStore('cardStore', {
   state: () => ({
@@ -25,19 +26,18 @@ export const useCardStore = defineStore('cardStore', {
       return {
         cards: [
           { name: 'TimeCard11', component: markRaw(TimeCard11), type: '11', hasBorder: true },
+          { name: 'Music', component: markRaw(MusicCard), type: '12', hasBorder: true },
           {
             name: 'CPUHistoryUtilizationCard',
             component: markRaw(CPUHistoryUtilizationCard),
-            type: '21',
+            type: '11',
             hasBorder: true
           },
-
-          { name: 'WeatherCard12', component: markRaw(WeatherCard12), type: '12', hasBorder: true },
           { name: 'WeatherCard11', component: markRaw(WeatherCard11), type: '11', hasBorder: true },
           {
             name: 'GPUHistoryUtilizationCard',
             component: markRaw(GPUHistoryUtilizationCard),
-            type: '21',
+            type: '11',
             hasBorder: true
           }
         ]
