@@ -27,10 +27,10 @@ export const useMusicStore = defineStore('musicStore', {
   actions: {
     updatePlayingMusic(data: Record<string, any>) {
       if (data) {
-        if (data.kMRMediaRemoteNowPlayingInfoTimestamp != this.timestamp) {
-          if (this.title != data.kMRMediaRemoteNowPlayingInfoTitle) {
-            this.updateLyric()
-          }
+        if (
+          data.kMRMediaRemoteNowPlayingInfoTimestamp != this.timestamp ||
+          data.kMRMediaRemoteNowPlayingInfoTitle != this.title
+        ) {
           this.album = data.kMRMediaRemoteNowPlayingInfoAlbum
           this.title = data.kMRMediaRemoteNowPlayingInfoTitle
           this.artist = data.kMRMediaRemoteNowPlayingInfoArtist
@@ -38,6 +38,19 @@ export const useMusicStore = defineStore('musicStore', {
           this.duration = data.kMRMediaRemoteNowPlayingInfoDuration
           this.elapsedTime = data.kMRMediaRemoteNowPlayingInfoElapsedTime
           this.timestamp = data.kMRMediaRemoteNowPlayingInfoTimestamp
+
+          this.lyric = ''
+          this.lyricsData = []
+          this.updateLyric()
+        }
+        if (
+          this.title != data.kMRMediaRemoteNowPlayingInfoTitle ||
+          this.lyric == '' ||
+          this.lyricsData.length == 0
+        ) {
+          this.lyric = ''
+          this.lyricsData = []
+          this.updateLyric()
         }
       }
     },
@@ -45,6 +58,7 @@ export const useMusicStore = defineStore('musicStore', {
       await window.electronAPI?.music('lyric').then((lyric: string) => {
         this.lyric = lyric
         this.lyricsData = this.parseLRC(lyric)
+        console.log(this.lyricsData)
         if (this.intervalId) {
           if (this.intervalId) {
             clearInterval(this.intervalId)
@@ -80,7 +94,7 @@ export const useMusicStore = defineStore('musicStore', {
         const now = Date.now()
         const timestampDate = new Date(this.timestamp).getTime()
         // 计算当前应该播放的时间点
-        const adjustedTime = this.elapsedTime + (now - timestampDate) * this.playbackRate
+        const adjustedTime = this.elapsedTime * 1000 + (now - timestampDate) * this.playbackRate
         // 找到最后一个时间戳小于或等于 adjustedTime 的歌词
         let currentLyricIndex = this.lyricsData.findIndex((line, index) => {
           // 判断是否为最后一行或下一行时间戳大于 adjustedTime
