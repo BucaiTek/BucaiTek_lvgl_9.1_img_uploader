@@ -117,6 +117,9 @@ export const useMusicStore = defineStore('musicStore', {
         })
         // 确保找到有效的索引，并且设置当前歌词
         if (currentLyricIndex !== -1) {
+          if (this.lyricsData[currentLyricIndex].text.startsWith('[tr]')) {
+            currentLyricIndex -= 1
+          }
           this.currentLyric = this.lyricsData[currentLyricIndex].text
         }
       }
