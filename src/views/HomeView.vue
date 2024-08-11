@@ -41,7 +41,7 @@ cardStore.init()
 
   padding-top: 20px;
   padding-left: 10px;
-  padding-right: 8px;
+  padding-right: 10px;
   scroll-snap-type: x mandatory; /* 滑动对齐 */
   overflow-x: scroll; /* 允许横向滚动 */
   overflow-y: hidden; /* 防止纵向滚动 */
