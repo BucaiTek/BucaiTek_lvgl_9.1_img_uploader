@@ -334,17 +334,17 @@ export const useWeatherStore = defineStore('weatherStore', {
     async fetchWeatherInfo() {
       try {
         if (!this.ip) return
-        let weatherResponse = await axios.get(
+        var url =
           'https://64090833871b4162bbbdbe9d92b87a1a-cn-shenzhen.alicloudapi.com/weather.json?q=' +
-            this.ip
-        )
-        
+          this.ip
+        if (navigator.language.includes('zh')) {
+          url += '&lang=zh'
+        }
+        let weatherResponse = await axios.get(url)
+
         let currentWeather = weatherResponse.data.current.condition.code
 
-        let conditionsResponse = await axios.get('https://www.weatherapi.com/docs/conditions.json')
-        let conditions = conditionsResponse.data.find((c: any) => c.code === currentWeather)
-
-        if (conditions.code == '1000' || conditions.code == '1003') {
+        if (currentWeather == '1000' || currentWeather == '1003') {
           if (new Date().getHours() > 18 || new Date().getHours() < 6) {
             this.weatherIcon = weatherCodeToIcon
               .find((c: any) => c.code === currentWeather)!
@@ -357,19 +357,7 @@ export const useWeatherStore = defineStore('weatherStore', {
         } else {
           this.weatherIcon = weatherCodeToIcon.find((c: any) => c.code === currentWeather)!.icon
         }
-
-        const systemLanguage = navigator.language.split('-')[0]
-        let languageDescription = conditions.languages.find(
-          (lang: any) => lang.lang_iso === systemLanguage
-        )
-        if (languageDescription) {
-          let time = new Date()
-          if (time && (time.getHours() > 18 || time.getHours() < 6)) {
-            this.weather = languageDescription.night_text
-          } else {
-            this.weather = languageDescription.day_text
-          }
-        }
+        this.weather = weatherResponse.data.current.condition.text
         this.humidity = weatherResponse.data.current.humidity
         this.uv = weatherResponse.data.current.uv
         this.wind = weatherResponse.data.current.wind_kph
