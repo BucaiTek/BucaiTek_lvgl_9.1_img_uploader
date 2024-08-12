@@ -72,6 +72,9 @@ const themeOverrides = computed(() => {
     },
     FloatButton: {
       colorHover: null
+    },
+    Card: {
+      color: null
     }
   }
 })
