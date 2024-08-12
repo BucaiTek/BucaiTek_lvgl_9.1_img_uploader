@@ -22,5 +22,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
       case 'previous':
         return await ipcRenderer.invoke('music-previous')
     }
+  },
+  hideWindows: async () => {
+    return await ipcRenderer.invoke('hide-windows')
   }
 })

@@ -105,8 +105,12 @@ function createWindow() {
   mainWindow.on('close', (e) => {
     if (!willQuitApp && mainWindow !== null) {
       e.preventDefault() // 阻止窗口的关闭事件
-      mainWindow.hide() // 只隐藏窗口
+      mainWindow.minimize() // 只隐藏窗口
     }
+  })
+
+  ipcMain.handle('hide-windows', (event, value) => {
+    if (mainWindow) mainWindow.minimize()
   })
 }
 
@@ -137,9 +141,9 @@ app.on('ready', () => {
       app.quit()
     } else {
       if (mainWindow.isVisible()) {
-        mainWindow.hide()
+        mainWindow.minimize()
       } else {
-        mainWindow.show()
+        mainWindow.maximize()
       }
     }
   })

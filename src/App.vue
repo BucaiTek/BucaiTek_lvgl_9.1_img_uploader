@@ -230,6 +230,10 @@ const handleMouseMove = (event: MouseEvent) => {
 const handleMouseLeave = () => {
   isMouseNearButton.value = false
 }
+
+const hideWindows = async () => {
+  await window.electronAPI?.hideWindows()
+}
 import hljs from 'highlight.js/lib/core'
 import python from 'highlight.js/lib/languages/javascript'
 
@@ -244,7 +248,7 @@ hljs.registerLanguage('python', python)
           content-style="padding: 15px;"
           bordered
           collapse-mode="width"
-          :collapsed-width="82"
+          :collapsed-width="80"
           :width="210"
           :collapsed="browserStore.collapsed"
           show-trigger
@@ -333,6 +337,76 @@ hljs.registerLanguage('python', python)
             <router-view />
           </n-layout-content>
         </n-layout>
+
+        <div style="position: fixed; left: 8px; bottom: 3px; z-index: 1000">
+          <n-icon @click="hideWindows" size="30">
+            <svg
+              width="836"
+              height="840"
+              viewBox="0 0 836 840"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M804 800L292 800"
+                :stroke="browserStore.theme.name === 'dark' ? 'white' : 'black'"
+                stroke-width="64"
+                stroke-linecap="round"
+              />
+              <path
+                d="M36 544L36.0001 32.0001"
+                :stroke="browserStore.theme.name === 'dark' ? 'white' : 'black'"
+                stroke-width="64"
+                stroke-linecap="round"
+              />
+              <g filter="url(#filter0_d_43_43)">
+                <path
+                  d="M36 544C36 577.618 42.6217 610.908 55.4869 641.967C68.3521 673.026 87.2089 701.248 110.981 725.019C134.752 748.791 162.974 767.648 194.033 780.513C225.092 793.378 258.382 800 292 800"
+                  :stroke="browserStore.theme.name === 'dark' ? 'white' : 'black'"
+                  stroke-width="64"
+                  stroke-linecap="round"
+                />
+              </g>
+              <defs>
+                <filter
+                  id="filter0_d_43_43"
+                  x="1.52588e-05"
+                  y="512"
+                  width="328"
+                  height="328"
+                  filterUnits="userSpaceOnUse"
+                  color-interpolation-filters="sRGB"
+                >
+                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                  <feColorMatrix
+                    in="SourceAlpha"
+                    type="matrix"
+                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                    result="hardAlpha"
+                  />
+                  <feOffset dy="4" />
+                  <feGaussianBlur stdDeviation="2" />
+                  <feComposite in2="hardAlpha" operator="out" />
+                  <feColorMatrix
+                    type="matrix"
+                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in2="BackgroundImageFix"
+                    result="effect1_dropShadow_43_43"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="effect1_dropShadow_43_43"
+                    result="shape"
+                  />
+                </filter>
+              </defs>
+            </svg>
+          </n-icon>
+        </div>
       </n-layout>
     </n-message-provider>
   </n-config-provider>
