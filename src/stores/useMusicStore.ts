@@ -33,7 +33,6 @@ export const useMusicStore = defineStore('musicStore', {
           data.kMRMediaRemoteNowPlayingInfoTimestamp != this.timestamp ||
           data.kMRMediaRemoteNowPlayingInfoTitle != this.title
         ) {
-          console.log('updatePlayingMusic')
           this.album = data.kMRMediaRemoteNowPlayingInfoAlbum
           this.title = data.kMRMediaRemoteNowPlayingInfoTitle
           this.artist = data.kMRMediaRemoteNowPlayingInfoArtist
@@ -68,7 +67,6 @@ export const useMusicStore = defineStore('musicStore', {
       }
       this.lyric = ''
       this.lyricsData = []
-      console.log('updateLyric')
       await window.electronAPI?.music('lyric').then((lyric: string) => {
         this.lyric = lyric
         this.lyricsData = this.parseLRC(lyric)

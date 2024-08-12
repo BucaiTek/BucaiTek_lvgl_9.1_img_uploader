@@ -314,14 +314,19 @@ export const useWeatherStore = defineStore('weatherStore', {
   actions: {
     async init() {
       try {
-        const response = await axios.get(
+        const ipResponse = await axios.get(
           'https://64090833871b4162bbbdbe9d92b87a1a-cn-shenzhen.alicloudapi.com/ip.json'
         )
+
+        this.ip = ipResponse.data.ip
+
+        const response = await axios.get('https://ipapi.co/' + this.ip + '/json/')
+
         this.coordinates = {
-          latitude: response.data.lat,
-          longitude: response.data.lon
+          longitude: response.data.longitude,
+          latitude: response.data.latitude
         }
-        this.ip = response.data.ip
+
         this.country = response.data.country_name
         this.region = response.data.region
         this.city = response.data.city
@@ -336,12 +341,13 @@ export const useWeatherStore = defineStore('weatherStore', {
         if (!this.ip) return
         var url =
           'https://64090833871b4162bbbdbe9d92b87a1a-cn-shenzhen.alicloudapi.com/weather.json?q=' +
-          this.ip
+          this.coordinates.latitude +
+          ',' +
+          this.coordinates.longitude
         if (navigator.language.includes('zh')) {
           url += '&lang=zh'
         }
         let weatherResponse = await axios.get(url)
-
         let currentWeather = weatherResponse.data.current.condition.code
 
         if (currentWeather == '1000' || currentWeather == '1003') {
