@@ -5,6 +5,7 @@ import WeatherCard12 from '@/components/WeatherCard12.vue'
 import CPUHistoryUtilizationCard from '@/components/CPUHistoryUtilizationCard.vue'
 import GPUHistoryUtilizationCard from '@/components/GPUHistoryUtilizationCard.vue'
 import APUCard from '@/components/APUCard.vue'
+import ClockCaed from '@/components/ClockCaed.vue'
 import WeatherCard11 from '@/components/WeatherCard11.vue'
 import TimeCard11 from '@/components/TimeCard11.vue'
 import MusicCard from '@/components/MusicCard.vue'
@@ -34,6 +35,7 @@ export const useCardStore = defineStore('cardStore', {
             hasBorder: true
           },
           { name: 'WeatherCard11', component: markRaw(WeatherCard11), type: '11', hasBorder: true },
+          { name: 'ClockCaed', component: markRaw(ClockCaed), type: '11', hasBorder: true },
           {
             name: 'GPUHistoryUtilizationCard',
             component: markRaw(GPUHistoryUtilizationCard),

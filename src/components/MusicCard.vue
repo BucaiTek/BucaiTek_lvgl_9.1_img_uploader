@@ -22,11 +22,13 @@ const musicStore = useMusicStore()
       </div>
       <div>
         <div>
-          <span style="font-size: 20px">{{ musicStore.title }}</span>
+          <n-ellipsis style="max-width: 160px" tooltip="false">
+            <span style="font-size: 20px">{{ musicStore.title }}</span>
+          </n-ellipsis>
         </div>
-        <div>
+        <n-ellipsis style="max-width: 180px" tooltip="false">
           <span style="font-size: 12px">{{ musicStore.artist }}</span>
-        </div>
+        </n-ellipsis>
       </div>
     </n-collapse-transition>
   </div>
