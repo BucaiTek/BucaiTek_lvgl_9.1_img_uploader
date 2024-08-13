@@ -5,11 +5,13 @@ const timeStore = useTimeStore()
 
 <template>
   <div class="clock-container">
-    <div class="clock">
-      <div class="hour" :style="{ transform: timeStore.clockHourCss }"></div>
-      <div class="min" :style="{ transform: timeStore.clockMinCss }"></div>
-      <div class="sec" :style="{ transform: timeStore.clockSecCss }"></div>
-      <div class="center-dot"></div>
+    <div>
+      <div class="clock">
+        <div class="hour" :style="{ transform: timeStore.clockHourCss }"></div>
+        <div class="min" :style="{ transform: timeStore.clockMinCss }"></div>
+        <div class="sec" :style="{ transform: timeStore.clockSecCss }"></div>
+        <div class="center-dot"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -26,7 +28,7 @@ const timeStore = useTimeStore()
   width: 100%;
 }
 .clock {
-  position: relative; /* 设置为相对定位 */
+  position: relative;
   width: 18em;
   height: 18em;
   display: flex;
