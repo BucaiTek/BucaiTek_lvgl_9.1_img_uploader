@@ -23,7 +23,8 @@ export const useMusicStore = defineStore('musicStore', {
       length: '' as string // 歌曲长度
     },
     intervalId: null as number | null,
-    lyricUpdateFailures: 0 as number
+    lyricUpdateFailures: 0 as number,
+    percentage: 0 as number
   }),
   actions: {
     togglePlayPause() {
@@ -145,6 +146,11 @@ export const useMusicStore = defineStore('musicStore', {
           const timestampDate = new Date(this.timestamp).getTime()
           // 计算当前应该播放的时间点
           const adjustedTime = this.elapsedTime * 1000 + (now - timestampDate) * this.playbackRate
+
+          if (this.duration > 0) {
+            this.percentage = adjustedTime / (this.duration * 10)
+            console.log(this.percentage)
+          }
           // 找到最后一个时间戳小于或等于 adjustedTime 的歌词
           let currentLyricIndex = this.lyricsData.findIndex((line, index) => {
             // 判断是否为最后一行或下一行时间戳大于 adjustedTime
