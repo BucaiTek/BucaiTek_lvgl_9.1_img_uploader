@@ -29,12 +29,12 @@ const showTitle = computed(() => {
     <i
       @mouseenter="handleMouseEnter"
       @mouseleave="handleMouseLeave"
-      style="font-size: 65px; margin-top: 0px"
+      style="font-size: 65px; margin-top: -5px"
       :class="'qi-' + weatherStore.weatherIcon"
     >
     </i>
 
-    <div style="font-size: 30px; margin-top: -10px">
+    <div style="font-size: 30px; margin-top: -8px">
       <n-collapse-transition :show="weatherStore.temperature.current != null">
         {{ weatherStore.temperature.current }}°C
       </n-collapse-transition>
