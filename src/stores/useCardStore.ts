@@ -26,7 +26,7 @@ export const useCardStore = defineStore('cardStore', {
       return {
         cards: [
           { name: 'TimeCard11', component: markRaw(TimeCard11), type: '11', hasBorder: true },
-          { name: 'Music', component: markRaw(MusicCard), type: '12', hasBorder: true },
+          { name: 'Music', component: markRaw(MusicCard), type: '11', hasBorder: true },
           {
             name: 'CPUHistoryUtilizationCard',
             component: markRaw(CPUHistoryUtilizationCard),

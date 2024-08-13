@@ -26,8 +26,26 @@ export const useMusicStore = defineStore('musicStore', {
     lyricUpdateFailures: 0 as number
   }),
   actions: {
+    togglePlayPause() {
+      if (this.playbackRate == 0) {
+        this.playbackRate = 1
+        window.electronAPI?.music('play')
+      } else {
+        this.playbackRate = 0
+        window.electronAPI?.music('pause')
+      }
+    },
+    next() {
+      window.electronAPI?.music('next')
+    },
+    previous() {
+      window.electronAPI?.music('previous')
+    },
     updatePlayingMusic(data: Record<string, any>) {
       if (data) {
+        if (data.kMRMediaRemoteNowPlayingInfoTitle != this.title) {
+          this.playbackRate = data.kMRMediaRemoteNowPlayingInfoPlaybackRate
+        }
         //更新音乐
         if (
           data.kMRMediaRemoteNowPlayingInfoTimestamp != this.timestamp ||
@@ -36,7 +54,6 @@ export const useMusicStore = defineStore('musicStore', {
           this.album = data.kMRMediaRemoteNowPlayingInfoAlbum
           this.title = data.kMRMediaRemoteNowPlayingInfoTitle
           this.artist = data.kMRMediaRemoteNowPlayingInfoArtist
-          this.playbackRate = data.kMRMediaRemoteNowPlayingInfoPlaybackRate
           this.duration = data.kMRMediaRemoteNowPlayingInfoDuration
           this.elapsedTime = data.kMRMediaRemoteNowPlayingInfoElapsedTime
           this.timestamp = data.kMRMediaRemoteNowPlayingInfoTimestamp

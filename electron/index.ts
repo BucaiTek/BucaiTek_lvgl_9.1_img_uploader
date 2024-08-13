@@ -58,26 +58,50 @@ ipcMain.handle('music-lyric', async (event, value) => {
 })
 
 ipcMain.handle('music-play', async () => {
-  return new Promise(() => {
-    spawn(BCMonitorPath, ['music', 'play'])
+  return new Promise((resolve, reject) => {
+    const playerProcess = spawn(BCMonitorPath, ['music', 'play'])
+    playerProcess.on('close', () => {
+      resolve('OK') // Resolve the promise when the spawn process closes
+    })
+    playerProcess.on('error', (err) => {
+      reject(err) // Reject the promise if an error occurs
+    })
   })
 })
 
 ipcMain.handle('music-pause', async () => {
-  return new Promise(() => {
-    spawn(BCMonitorPath, ['music', 'pause'])
+  return new Promise((resolve, reject) => {
+    const pauseProcess = spawn(BCMonitorPath, ['music', 'pause'])
+    pauseProcess.on('close', () => {
+      resolve('OK') // Resolve the promise when the spawn process closes
+    })
+    pauseProcess.on('error', (err) => {
+      reject(err) // Reject the promise if an error occurs
+    })
   })
 })
 
 ipcMain.handle('music-next', async () => {
-  return new Promise(() => {
-    spawn(BCMonitorPath, ['music', 'next'])
+  return new Promise((resolve, reject) => {
+    const pauseProcess = spawn(BCMonitorPath, ['music', 'next'])
+    pauseProcess.on('close', () => {
+      resolve('OK') // Resolve the promise when the spawn process closes
+    })
+    pauseProcess.on('error', (err) => {
+      reject(err) // Reject the promise if an error occurs
+    })
   })
 })
 
 ipcMain.handle('music-previous', async () => {
-  return new Promise(() => {
-    spawn(BCMonitorPath, ['music', 'previous'])
+  return new Promise((resolve, reject) => {
+    const pauseProcess = spawn(BCMonitorPath, ['music', 'previous'])
+    pauseProcess.on('close', () => {
+      resolve('OK') // Resolve the promise when the spawn process closes
+    })
+    pauseProcess.on('error', (err) => {
+      reject(err) // Reject the promise if an error occurs
+    })
   })
 })
 
