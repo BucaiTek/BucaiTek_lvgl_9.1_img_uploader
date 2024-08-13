@@ -60,6 +60,19 @@ const chartOption = ref({
   tooltip: {
     show: true,
     trigger: 'axis',
+    backgroundColor: computed(() => {
+      if (browserStore.theme.name === 'dark') return 'rgba(0, 0, 0, 0.8)'
+      else return 'rgba(255, 255, 255, 0.8)'
+    }),
+    borderColor: computed(() => {
+      if (browserStore.theme.name === 'dark') return 'rgba(0, 0, 0, 0.8)'
+      else return 'rgba(255, 255, 255, 0.8)'
+    }),
+    textStyle: {
+      color: computed(() =>
+        browserStore.theme.name === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)'
+      )
+    },
     formatter: (params: any) => {
       let totalUtil = params.find((p: any) => p.seriesName === 'Total').value[1]
       let systemUtil = params.find((p: any) => p.seriesName === 'System').value[1]

@@ -1,26 +1,38 @@
 <script setup lang="ts">
 import { useWeatherStore } from '@/stores/useWeatherStore'
 const weatherStore = useWeatherStore()
+// 添加一个响应式变量控制悬停状态
+const showWeatherDetails = ref(false)
 
+// 定义鼠标进入和离开的事件处理函数
+const handleMouseEnter = () => {
+  showWeatherDetails.value = true
+}
+const handleMouseLeave = () => {
+  showWeatherDetails.value = false
+}
+const showTitle = computed(() => {
+  return showWeatherDetails.value
+    ? weatherStore.weather
+    : `${weatherStore.region} ${weatherStore.city}`
+})
 </script>
 
 <template>
   <div style="display: flex; flex-direction: column; align-items: center; justify-content: center">
     <div style="font-size: 18px; margin-top: 10px">
       <n-collapse-transition :show="weatherStore.region != ''">
-        {{ weatherStore.region }} {{ weatherStore.city }}
+        {{ showTitle }}
       </n-collapse-transition>
     </div>
 
-    <n-popover trigger="hover" placement="top" :show-arrow="false" style="margin-bottom: -15px">
-      <template #trigger>
-        <i style="font-size: 65px; margin-top: 0px" :class="'qi-' + weatherStore.weatherIcon"> </i>
-      </template>
-      <span>
-        <i style="font-size: 13px" :class="'qi-' + weatherStore.weatherIcon"> </i>
-        {{ weatherStore.weather }}</span
-      >
-    </n-popover>
+    <i
+      @mouseenter="handleMouseEnter"
+      @mouseleave="handleMouseLeave"
+      style="font-size: 65px; margin-top: 0px"
+      :class="'qi-' + weatherStore.weatherIcon"
+    >
+    </i>
 
     <div style="font-size: 30px; margin-top: -10px">
       <n-collapse-transition :show="weatherStore.temperature.current != null">
