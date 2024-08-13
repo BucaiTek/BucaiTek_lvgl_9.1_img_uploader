@@ -35,7 +35,7 @@ export const useCardStore = defineStore('cardStore', {
             hasBorder: true
           },
           { name: 'WeatherCard11', component: markRaw(WeatherCard11), type: '11', hasBorder: true },
-          { name: 'ClockCaed', component: markRaw(ClockCaed), type: '11', hasBorder: true },
+          { name: 'ClockCaed', component: markRaw(ClockCaed), type: '11', hasBorder: false },
           {
             name: 'GPUHistoryUtilizationCard',
             component: markRaw(GPUHistoryUtilizationCard),

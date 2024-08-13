@@ -4,7 +4,7 @@ const timeStore = useTimeStore()
 </script>
 
 <template>
-  <div class="clock-container">
+  <n-collapse-transition class="clock-container" :show="timeStore.clockHourCss != ''">
     <div>
       <div class="clock">
         <div class="hour" :style="{ transform: timeStore.clockHourCss }"></div>
@@ -13,7 +13,7 @@ const timeStore = useTimeStore()
         <div class="center-dot"></div>
       </div>
     </div>
-  </div>
+  </n-collapse-transition>
 </template>
 
 <style scoped>
@@ -35,7 +35,7 @@ const timeStore = useTimeStore()
   justify-content: center;
   align-items: center;
   background-color: var(--n-color);
-  background-image: url('http://codingstella.com/wp-content/uploads/2024/01/download-3.png');
+  background-image: url(@/assets/clock-face.png);
   background-position: center center;
   background-size: cover;
   border-radius: 50%;
