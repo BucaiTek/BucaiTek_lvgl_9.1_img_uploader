@@ -314,6 +314,24 @@ export const useWeatherStore = defineStore('weatherStore', {
   actions: {
     async init() {
       try {
+        var url = 'https://64090833871b4162bbbdbe9d92b87a1a-cn-shenzhen.alicloudapi.com/ip.json'
+        if (navigator.language.includes('zh')) {
+          url += '?lang=zh'
+        }
+        const response = await axios.get(url)
+        let responseData = response.data.data
+        console.log(responseData)
+        this.ip = responseData.ip
+        this.coordinates = {
+          longitude: responseData.location.longitude,
+          latitude: responseData.location.latitude
+        }
+        this.country = responseData.location.country.name_translated
+        this.region = responseData.location.region.name_translated
+        this.city = responseData.location.city.name_translated
+
+        this.startWeatherUpdates()
+        /* 
         const ipResponse = await axios.get(
           'https://64090833871b4162bbbdbe9d92b87a1a-cn-shenzhen.alicloudapi.com/ip.json'
         )
@@ -331,6 +349,7 @@ export const useWeatherStore = defineStore('weatherStore', {
         this.region = response.data.region
         this.city = response.data.city
         this.startWeatherUpdates()
+        */
       } catch (error) {
         console.error('Failed to fetch IP info:', error)
         setTimeout(() => this.init(), 3000)
