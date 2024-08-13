@@ -1,32 +1,15 @@
-<script setup lang="ts">
-const deg = 6
-const hour = ref<HTMLElement | null>(null)
-const min = ref<HTMLElement | null>(null)
-const sec = ref<HTMLElement | null>(null)
-onMounted(() => {
-  setClock()
-  setInterval(setClock, 1000)
-})
-const setClock = () => {
-  let day = new Date()
-  let hh = day.getHours() * 30
-  let mm = day.getMinutes() * deg
-  let ss = day.getSeconds() * deg
-
-  if (hour.value && min.value && sec.value) {
-    hour.value.style.transform = `rotateZ(${hh + mm / 12}deg)`
-    min.value.style.transform = `rotateZ(${mm}deg)`
-    sec.value.style.transform = `rotateZ(${ss}deg)`
-  }
-}
+<script setup>
+import { useTimeStore } from '@/stores/useTimeStore'
+const timeStore = useTimeStore()
 </script>
 
 <template>
   <div class="clock-container">
     <div class="clock">
-      <div class="hour" ref="hour"></div>
-      <div class="min" ref="min"></div>
-      <div class="sec" ref="sec"></div>
+      <div class="hour" :style="{ transform: timeStore.clockHourCss }"></div>
+      <div class="min" :style="{ transform: timeStore.clockMinCss }"></div>
+      <div class="sec" :style="{ transform: timeStore.clockSecCss }"></div>
+      <div class="center-dot"></div>
     </div>
   </div>
 </template>
@@ -49,28 +32,17 @@ const setClock = () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--main-bg-color);
+  background-color: var(--n-color);
   background-image: url('http://codingstella.com/wp-content/uploads/2024/01/download-3.png');
   background-position: center center;
   background-size: cover;
   border-radius: 50%;
-  border: 4px solid var(--main-bg-color);
+  border: 5px solid var(--n-color);
   box-shadow:
     0 -15px 15px rgba(255, 255, 255, 0.05),
     inset 0 -15px 15px rgba(255, 255, 255, 0.05),
     0 15px 15px rgba(0, 0, 0, 0.3),
     inset 0 15px 15px rgba(0, 0, 0, 0.3);
-}
-.clock:before {
-  content: '';
-  height: 0.75rem;
-  width: 0.75rem;
-  background-color: var(--main-text-color);
-  border: 2px solid var(--main-bg-color);
-  position: absolute;
-  border-radius: 50%;
-  z-index: 1000;
-  transition: all ease 0.2s;
 }
 .hour,
 .min,
@@ -83,35 +55,46 @@ const setClock = () => {
 .hour {
   height: 10em;
   width: 10em;
-}
-.hour:before {
-  content: '';
-  position: absolute;
-  height: 50%;
-  width: 6px;
-  background-color: var(--main-text-color);
-  border-radius: 6px;
+  background-color: transparent;
 }
 .min {
   height: 12em;
   width: 12em;
-}
-.min:before {
-  content: '';
-  height: 50%;
-  width: 4px;
-  background-color: var(--main-text-color);
-  border-radius: 4px;
+  background-color: transparent;
 }
 .sec {
   height: 13em;
   width: 13em;
+  background-color: transparent;
 }
-.sec:before {
+.hour::before,
+.min::before,
+.sec::before {
   content: '';
+  position: absolute;
+  border-radius: 6px;
+}
+.hour::before {
+  height: 50%;
+  width: 6px;
+  background-color: #888;
+}
+.min::before {
+  height: 50%;
+  width: 4px;
+  background-color: #888;
+}
+.sec::before {
   height: 60%;
   width: 2px;
   background-color: #f00;
-  border-radius: 2px;
+}
+
+.center-dot {
+  height: 1em;
+  width: 1em;
+  background-color: #888;
+  z-index: 10;
+  border-radius: 50%;
 }
 </style>

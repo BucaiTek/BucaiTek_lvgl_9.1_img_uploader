@@ -21,7 +21,10 @@ export const useTimeStore = defineStore('timeStore', {
       '10月',
       '11月',
       '12月'
-    ]
+    ],
+    clockHourCss: '',
+    clockMinCss: '',
+    clockSecCss: ''
   }),
   actions: {
     start() {
@@ -31,6 +34,13 @@ export const useTimeStore = defineStore('timeStore', {
       this.time = new Date()
       this.timerIntervalId = setInterval(() => {
         this.time = new Date()
+        const hh = this.time.getHours() * 30
+        const mm = this.time.getMinutes() * 6
+        const ss = this.time.getSeconds() * 6
+
+        this.clockHourCss = `rotateZ(${hh + mm / 12}deg)`
+        this.clockMinCss = `rotateZ(${mm}deg)`
+        this.clockSecCss = `rotateZ(${ss}deg)`
       }, 1000)
     },
     stop() {
