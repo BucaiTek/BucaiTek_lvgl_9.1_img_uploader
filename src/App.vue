@@ -290,7 +290,7 @@ hljs.registerLanguage('python', python)
               :collapsed-icon-size="30"
               :icon-size="30"
               :options="menuOptions"
-              style="font-size: 15px"
+              style="font-size: 15px; margin-left: -2px"
             />
           </div>
         </n-layout-sider>

@@ -149,7 +149,6 @@ export const useMusicStore = defineStore('musicStore', {
 
           if (this.duration > 0) {
             this.percentage = adjustedTime / (this.duration * 10)
-            console.log(this.percentage)
           }
           // 找到最后一个时间戳小于或等于 adjustedTime 的歌词
           let currentLyricIndex = this.lyricsData.findIndex((line, index) => {
