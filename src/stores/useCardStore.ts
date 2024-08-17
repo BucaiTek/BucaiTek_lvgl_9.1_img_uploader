@@ -5,16 +5,19 @@ import WeatherCard12 from '@/components/WeatherCard12.vue'
 import CPUHistoryUtilizationCard from '@/components/CPUHistoryUtilizationCard.vue'
 import GPUHistoryUtilizationCard from '@/components/GPUHistoryUtilizationCard.vue'
 import APUCard from '@/components/APUCard.vue'
-import ClockCaed from '@/components/ClockCaed.vue'
+import ClockCard from '@/components/ClockCard.vue'
 import WeatherCard11 from '@/components/WeatherCard11.vue'
 import TimeCard11 from '@/components/TimeCard11.vue'
 import MusicCard from '@/components/MusicCard.vue'
 import NetSpeedCard from '@/components/NetSpeedCard.vue'
+import CPUCard from '@/components/CPUCard.vue'
+import GPUCard from '@/components/GPUCard.vue'
+import RAMCard from '@/components/RAMCard.vue'
 
 export const useCardStore = defineStore('cardStore', {
   state: () => ({
     cards: [] as { name: string; component: any; type: string; hasBorder: boolean }[],
-    gridLenth: 4
+    gridLenth: 5
   }),
   actions: {
     init() {
@@ -37,7 +40,11 @@ export const useCardStore = defineStore('cardStore', {
             hasBorder: true
           },
           { name: 'WeatherCard11', component: markRaw(WeatherCard11), type: '11', hasBorder: true },
-          { name: 'ClockCaed', component: markRaw(ClockCaed), type: '11', hasBorder: false },
+
+          { name: 'RAMCard', component: markRaw(RAMCard), type: '11', hasBorder: true },
+          { name: 'CPUCard', component: markRaw(CPUCard), type: '11', hasBorder: true },
+          { name: 'GPUCard', component: markRaw(GPUCard), type: '11', hasBorder: true },
+          { name: 'ClockCaed', component: markRaw(ClockCard), type: '11', hasBorder: false },
           {
             name: 'GPUHistoryUtilizationCard',
             component: markRaw(GPUHistoryUtilizationCard),

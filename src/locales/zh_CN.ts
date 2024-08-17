@@ -34,6 +34,7 @@ export default {
       utilizationTiler: 'Tiler:',
       utilizationRenderer: '渲染:',
       ram: '内存',
+      ramUsed:'已用',
       ramApp: 'App内存:',
       ramWired: '联动内存:',
       ramCompressed: '被压缩:',
