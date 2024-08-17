@@ -238,6 +238,7 @@ import hljs from 'highlight.js/lib/core'
 import python from 'highlight.js/lib/languages/javascript'
 
 hljs.registerLanguage('python', python)
+const isMouseNearIcon = ref(false)
 </script>
 
 <template>
@@ -338,8 +339,15 @@ hljs.registerLanguage('python', python)
           </n-layout-content>
         </n-layout>
 
-        <div style="position: fixed; left: 8px; bottom: 3px; z-index: 1000">
-          <n-icon @click="hideWindows" size="30">
+        <div
+          @mouseenter="isMouseNearIcon = true"
+          @mouseleave="isMouseNearIcon = false"
+          @click="hideWindows"
+          style="position: fixed; left: 8px; bottom: 3px; z-index: 1000;width: 60px;"
+          class="fade-text"
+          :class="{ visible: isMouseNearIcon }"
+        >
+          <n-icon size="30">
             <svg
               width="836"
               height="840"
@@ -458,5 +466,16 @@ hljs.registerLanguage('python', python)
 
 .n-float-button {
   transition: transform 0.3s ease-in-out;
+}
+
+.fade-text {
+  transition: opacity 0.3s ease-in-out;
+  opacity: 0; /* 默认不可见 */
+  position: fixed;
+  left: 17px;
+}
+
+.fade-text.visible {
+  opacity: 1; /* 添加 visible 类时变为可见 */
 }
 </style>

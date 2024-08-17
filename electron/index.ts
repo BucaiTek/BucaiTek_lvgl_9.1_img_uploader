@@ -126,15 +126,16 @@ function createWindow() {
 
   //mainWindow.loadFile('dist/index.html', { hash: 'home' })
   mainWindow.loadURL('http://localhost:5173')
+  mainWindow.setAlwaysOnTop(true, 'floating');
   mainWindow.on('close', (e) => {
     if (!willQuitApp && mainWindow !== null) {
       e.preventDefault() // 阻止窗口的关闭事件
-      mainWindow.minimize() // 只隐藏窗口
+      mainWindow.hide() // 只隐藏窗口
     }
   })
 
   ipcMain.handle('hide-windows', (event, value) => {
-    if (mainWindow) mainWindow.minimize()
+    if (mainWindow) mainWindow.hide()
   })
 }
 
@@ -155,7 +156,7 @@ app.on('before-quit', () => {
 
 let tray = null as Tray | null
 app.on('ready', () => {
-  //app.dock.hide()
+  app.dock.hide()
 
   tray = new Tray(logo_path)
 
@@ -165,9 +166,9 @@ app.on('ready', () => {
       app.quit()
     } else {
       if (mainWindow.isVisible()) {
-        mainWindow.minimize()
+        mainWindow.hide()
       } else {
-        mainWindow.maximize()
+        mainWindow.show()
       }
     }
   })
