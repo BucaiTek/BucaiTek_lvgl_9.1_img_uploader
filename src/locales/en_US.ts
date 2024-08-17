@@ -57,6 +57,9 @@ export default {
     cpu: {
       CPU_Utilization_History: 'CPU Utilization History',
       GPU_Utilization_History: 'GPU Utilization History'
+    },
+    net: {
+      netSpeed: 'Network Speed'
     }
   }
 }

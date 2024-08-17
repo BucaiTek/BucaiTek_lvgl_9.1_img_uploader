@@ -53,10 +53,13 @@ export default {
       not_support: '浏览器不支持获取系统数据，请使用应用程序！'
     }
   },
-  card:{
-    cpu:{
+  card: {
+    cpu: {
       CPU_Utilization_History: 'CPU历史利用率',
-      GPU_Utilization_History: 'GPU历史利用率',
+      GPU_Utilization_History: 'GPU历史利用率'
+    },
+    net: {
+      netSpeed: '网速'
     }
   }
 }

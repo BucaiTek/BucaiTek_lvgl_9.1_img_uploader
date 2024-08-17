@@ -9,11 +9,12 @@ import ClockCaed from '@/components/ClockCaed.vue'
 import WeatherCard11 from '@/components/WeatherCard11.vue'
 import TimeCard11 from '@/components/TimeCard11.vue'
 import MusicCard from '@/components/MusicCard.vue'
+import NetSpeedCard from '@/components/NetSpeedCard.vue'
 
 export const useCardStore = defineStore('cardStore', {
   state: () => ({
     cards: [] as { name: string; component: any; type: string; hasBorder: boolean }[],
-    gridLenth: 3
+    gridLenth: 4
   }),
   actions: {
     init() {
@@ -27,6 +28,7 @@ export const useCardStore = defineStore('cardStore', {
       return {
         cards: [
           { name: 'TimeCard11', component: markRaw(TimeCard11), type: '11', hasBorder: true },
+          { name: 'NetSpeed', component: markRaw(NetSpeedCard), type: '11', hasBorder: true },
           { name: 'Music', component: markRaw(MusicCard), type: '11', hasBorder: true },
           {
             name: 'CPUHistoryUtilizationCard',

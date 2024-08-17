@@ -67,8 +67,10 @@ export const useMusicStore = defineStore('musicStore', {
           this.lyricsData.length == 0 ||
           this.musicInfo.ti != this.title
         ) {
-          this.updateLyric()
-          this.lyricUpdateFailures += 1
+          if (this.title != undefined && this.title != '') {
+            this.updateLyric()
+            this.lyricUpdateFailures += 1
+          }
         }
       }
     },

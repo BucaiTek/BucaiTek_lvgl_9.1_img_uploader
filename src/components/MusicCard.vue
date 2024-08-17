@@ -22,7 +22,7 @@ const browserStore = useBrowserStore()
         </n-icon>
       </div>
       <div>
-        <div>
+        <div style="margin-bottom: -11px">
           <n-ellipsis style="max-width: 160px" :tooltip="false">
             <span style="font-size: 20px">{{ musicStore.title }}</span>
           </n-ellipsis>
@@ -34,7 +34,7 @@ const browserStore = useBrowserStore()
     </n-collapse-transition>
   </div>
 
-  <div style="width: 100%; height: 60px; text-align: center; margin-top: 25px">
+  <div style="width: 100%; height: 60px; text-align: center; margin-top: 20px">
     <n-collapse-transition :show="musicStore.currentLyric != ''">
       <div style="font-size: 15px">
         {{ musicStore.currentLyric }}
