@@ -52,6 +52,7 @@
     "axios": "^1.7.2",
     "child_process": "^1.0.2",
     "echarts": "^5.5.1",
+    "es-drager": "^1.2.11",
     "highlight.js": "^11.10.0",
     "lv_img_conv": "^0.4.0",
     "pinia": "^2.1.7",

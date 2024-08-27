@@ -252,7 +252,7 @@ const isMouseNearIcon = ref(false)
           :collapsed-width="80"
           :width="210"
           :collapsed="browserStore.collapsed"
-          show-trigger
+          :show-trigger="true"
           trigger-style="top: 85px;"
           collapsed-trigger-style="top: 85px;"
           @collapse="browserStore.collapsed = true"
